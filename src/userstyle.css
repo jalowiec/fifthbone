@@ -1,0 +1,22 @@
+#tableheader{
+    -fx-font-size: 20pt;
+    -fx-text-alignment: right;
+}
+
+#tablerow{
+    -fx-font-size: 15pt;
+
+}
+
+#cellminus{
+    -fx-font-size: 25pt;
+}
+
+#cellplus{
+    -fx-font-size: 25pt;
+}
+
+#score{
+    -fx-font-size: 35pt;
+
+}

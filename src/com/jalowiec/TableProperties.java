@@ -12,14 +12,21 @@ public class TableProperties {
         this.grid = grid;
     }
 
-    public void setColumnProperties(int firstColumnWidth, int restColumnsWidth){
+    public void setColumnProperties(int firstColumnWidth, int restColumnsWidth, int firstColumnIndex){
+        for(int i=0; i<firstColumnIndex; i++){
+            grid.getColumnConstraints().add(new ColumnConstraints(restColumnsWidth));
+        }
+
         grid.getColumnConstraints().add(new ColumnConstraints(firstColumnWidth));
+
         for(int i=0; i<11; i++){
             grid.getColumnConstraints().add(new ColumnConstraints(restColumnsWidth));
         }
     }
     public void setRowsProperties(int allColumnsHeight){
-        grid.getRowConstraints().add(new RowConstraints(allColumnsHeight));
+        for(int i=0; i<15; i++) {
+            grid.getRowConstraints().add(new RowConstraints(allColumnsHeight));
+        }
     }
 
 }
