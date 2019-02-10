@@ -1,5 +1,6 @@
 package com.jalowiec;
 
+import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -8,6 +9,7 @@ import javafx.scene.text.TextAlignment;
 public class UserGameTableDrawer {
 
     private Scene scene;
+    //TODO - sprawdzic czy nie usunac scene z tej klasy
     private GridPane grid;
 
     public UserGameTableDrawer(GridPane grid, Scene scene) {
@@ -21,6 +23,7 @@ public class UserGameTableDrawer {
 
         for(int i=0; i<rowValues.length; i++){
             cellText = new Text(rowValues[i]);
+            GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tableheader");
             grid.add(cellText,  i+firstColumnIndex, 0);
         }
@@ -32,6 +35,7 @@ public class UserGameTableDrawer {
 
         for(int i=0; i<rowValues.length; i++){
             cellText = new Text(rowValues[i]);
+            GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tablerow");
             grid.add(cellText,  i+firstColumnIndex, 1);
         }
@@ -39,6 +43,7 @@ public class UserGameTableDrawer {
     public void drawMinusSection(int firstColumnIndex) {
         Text cellText = new Text("-");
         cellText.setId("cellminus");
+        GridPane.setHalignment(cellText, HPos.CENTER);
         GridPane.setConstraints(cellText, firstColumnIndex, 2, 1,4);
         grid.getChildren().add(cellText);
     }
@@ -47,6 +52,7 @@ public class UserGameTableDrawer {
     public void drawPlusSection(int firstColumnIndex) {
         Text cellText = new Text("+");
         cellText.setId("cellplus");
+        GridPane.setHalignment(cellText, HPos.CENTER);
         GridPane.setConstraints(cellText,firstColumnIndex, 6, 1,5);
         grid.getChildren().add(cellText);
     }
@@ -54,6 +60,7 @@ public class UserGameTableDrawer {
     public void drawFifthBoneHeader(int firstColumnIndex) {
         Text cellText = new Text("PIĄTA KOŚĆ");
         cellText.setId("tableheader");
+        GridPane.setHalignment(cellText, HPos.CENTER);
         grid.add(cellText,  firstColumnIndex, 11);
     }
 
@@ -61,6 +68,7 @@ public class UserGameTableDrawer {
         Text cellText = new Text("*");
         for(int i=0; i<3; i++){
             cellText = new Text("*");
+            GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tableheader");
             grid.add(cellText,  firstColumnIndex, 12+i);
         }
@@ -72,14 +80,16 @@ public class UserGameTableDrawer {
     public void drawScoreHeader(int firstColumnIndex) {
         Text cellText = new Text("WYNIK");
         cellText.setId("tableheader");
-        GridPane.setConstraints(cellText,10+firstColumnIndex, 11, 1,2);
+        GridPane.setHalignment(cellText, HPos.CENTER);
+        GridPane.setConstraints(cellText,10+firstColumnIndex, 11);
         grid.getChildren().add(cellText);
     }
 
     public void drawScore(int firstColumnIndex) {
         Text cellText = new Text("200");
         cellText.setId("score");
-        GridPane.setConstraints(cellText,10+firstColumnIndex, 13, 1,2);
+        GridPane.setHalignment(cellText, HPos.CENTER);
+        GridPane.setConstraints(cellText,10+firstColumnIndex, 12, 1,2);
         grid.getChildren().add(cellText);
     }
 

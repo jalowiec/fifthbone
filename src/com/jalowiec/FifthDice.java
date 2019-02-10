@@ -6,7 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class FifthBone extends Application {
+
+
+public class FifthDice extends Application {
 
     public static void main(String[] args){
         launch(args);
@@ -23,13 +25,12 @@ public class FifthBone extends Application {
         GridPane userGride = new GridPane();
         GridPane computerGride = new GridPane();
 
-        userGride.setGridLinesVisible(true);
+        userGride.setGridLinesVisible(false);
 
         Scene userScene = new Scene(userGride, 1600, 900);
         Scene computerScene = new Scene(computerGride, 1000, 900);
         userScene.getStylesheets().add("userstyle.css");
         computerScene.getStylesheets().add("computerstyle.css");
-//        userScene.getStylesheets().add(getClass().getResource("userstyle.css").toExternalForm());
 
         int firstColumnIndex = 1;
 
@@ -46,6 +47,14 @@ public class FifthBone extends Application {
         userGameTableDrawer.drawScore(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneHeader(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneSection(firstColumnIndex);
+
+        DiceGenerator diceGenerator = new DiceGenerator(userGride);
+        diceGenerator.createDices();
+        diceGenerator.generateDicesInSlots();
+
+
+
+
         Button userSceneButton = new Button("idz do planszy komputera");
         Button computerSceneButton = new Button("idz do planszy uzytkownika");
         userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
