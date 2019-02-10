@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 
 
-public class FifthDice extends Application {
+public class FifthDie extends Application {
 
     public static void main(String[] args){
         launch(args);
@@ -48,18 +48,23 @@ public class FifthDice extends Application {
         userGameTableDrawer.drawFifthBoneHeader(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneSection(firstColumnIndex);
 
-        DiceGenerator diceGenerator = new DiceGenerator(userGride);
-        diceGenerator.createDices();
-        diceGenerator.generateDicesInSlots();
-
-
+        DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(userGride);
+        diceSlotsManager.generateDice();
+        diceSlotsManager.generateSlots();
+        diceSlotsManager.generateDicesInSlots();
 
 
         Button userSceneButton = new Button("idz do planszy komputera");
+        Button genereteDicesButton = new Button("losuj kosci");
+        Button removeDicesButton = new Button("usun kosci");
         Button computerSceneButton = new Button("idz do planszy uzytkownika");
         userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
+        genereteDicesButton.setOnAction(e->diceSlotsManager.generateDicesInSlots());
+        removeDicesButton.setOnAction(e->diceSlotsManager.removeAllDiceFromSlots());
         computerSceneButton.setOnAction(e-> mainStage.setScene(userScene));
         userGride.add(userSceneButton, 13, 17);
+        userGride.add(genereteDicesButton, 13, 18);
+        userGride.add(removeDicesButton, 15, 18);
         computerGride.add(computerSceneButton, 14, 17);
 
 
