@@ -76,6 +76,16 @@ public class UserGameTableDrawer {
 
     }
 
+    public void drawChosenPair(int firstColumnIndex) {
+        Text cellFirstText = new Text("PIERWSZA PARA:");
+        Text cellSecondText = new Text("DRUGA PARA:");
+        cellFirstText.setId("tablerow");
+        cellSecondText.setId("tablerow");
+        GridPane.setHalignment(cellFirstText, HPos.CENTER);
+        GridPane.setHalignment(cellSecondText, HPos.CENTER);
+        grid.add(cellFirstText,  firstColumnIndex+2, 20);
+        grid.add(cellSecondText,  firstColumnIndex+8, 20);
+    }
 
     public void drawScoreHeader(int firstColumnIndex) {
         Text cellText = new Text("WYNIK");

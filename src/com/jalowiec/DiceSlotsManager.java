@@ -14,6 +14,8 @@ public class DiceSlotsManager {
     private List<ImageView> imageViewList = new ArrayList<>();
     private List<Die> diceLists;
     private List<DieSlot> dieSlotsList;
+    private List<DieSlot> dieFreeSlotsList;
+    private List<DieSlot> dieBusySlotsList = new ArrayList<>();
     private DiceGenerator diceGenerator = new DiceGenerator(grid);
 
     private static DiceSlotsManager instance;
@@ -28,6 +30,10 @@ public class DiceSlotsManager {
         return instance;
     }
 
+    public List<ImageView> getImageViewList() {
+        return imageViewList;
+    }
+
     public void generateDice(){
         diceGenerator.createDices();
         diceLists = diceGenerator.getDiceList();
@@ -37,6 +43,7 @@ public class DiceSlotsManager {
         DieSlotsGenerator dieSlotsGenerator = new DieSlotsGenerator();
         dieSlotsGenerator.generateSlots();
         dieSlotsList = dieSlotsGenerator.getSlotsList();
+        dieFreeSlotsList = dieSlotsGenerator.getFreeSlotsList();
     }
 
 
@@ -51,15 +58,18 @@ public class DiceSlotsManager {
 
     public void drawDieInSlot(Die die, int slotNumber) {
         EventHandler<MouseEvent> mouseHandler = e -> {
-            System.out.print("Handler: " + slotNumber);
-
+            hideDieFromSlot(slotNumber);
+            showDieInFreeSlot(slotNumber);
         };
 
         ImageView imageView = new ImageView(die.getDieImage());
         imageView.setOnMouseClicked(mouseHandler);
         imageViewList.add(imageView);
 
-        grid.add(imageView, dieSlotsList.get(slotNumber).getColumnIndex(), dieSlotsList.get(slotNumber).getRowIndex(), dieSlotsList.get(slotNumber).getColumnSpan(), dieSlotsList.get(slotNumber).getRowSpan());
+        grid.add(imageView, dieSlotsList.get(slotNumber).getColumnIndex(),
+                dieSlotsList.get(slotNumber).getRowIndex(),
+                dieSlotsList.get(slotNumber).getColumnSpan(),
+                dieSlotsList.get(slotNumber).getRowSpan());
     }
 
 
@@ -70,6 +80,24 @@ public class DiceSlotsManager {
         imageViewList.clear();
 
     }
+
+    public void hideDieFromSlot(int slotNumber) {
+            grid.getChildren().remove(imageViewList.get(slotNumber));
+    }
+
+    public void showDieInFreeSlot(int slotNumber) {
+        int firstFreeSlot = dieBusySlotsList.size();
+        System.out.println(firstFreeSlot);
+        grid.add(imageViewList.get(slotNumber),
+                dieFreeSlotsList.get(firstFreeSlot).getColumnIndex(),
+                dieFreeSlotsList.get(firstFreeSlot).getRowIndex(),
+                dieFreeSlotsList.get(firstFreeSlot).getColumnSpan(),
+                dieFreeSlotsList.get(firstFreeSlot).getRowSpan());
+        dieBusySlotsList.add(dieFreeSlotsList.get(firstFreeSlot));
+        //TODO cos chyba mozna prosciej
+    }
+
+
 
 
 }

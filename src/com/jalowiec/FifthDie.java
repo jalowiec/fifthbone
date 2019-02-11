@@ -47,6 +47,7 @@ public class FifthDie extends Application {
         userGameTableDrawer.drawScore(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneHeader(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneSection(firstColumnIndex);
+        userGameTableDrawer.drawChosenPair(firstColumnIndex);
 
         DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(userGride);
         diceSlotsManager.generateDice();
@@ -68,7 +69,7 @@ public class FifthDie extends Application {
         computerGride.add(computerSceneButton, 14, 17);
 
 
-        mainStage.setTitle("The Fifth Bone");
+        mainStage.setTitle("The Fifth Die");
         mainStage.setScene(userScene);
         mainStage.show();
 

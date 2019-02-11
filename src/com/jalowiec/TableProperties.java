@@ -24,7 +24,7 @@ public class TableProperties {
         }
     }
     public void setRowsProperties(int allColumnsHeight){
-        for(int i=0; i<15; i++) {
+        for(int i=0; i<25; i++) {
             grid.getRowConstraints().add(new RowConstraints(allColumnsHeight));
         }
     }
