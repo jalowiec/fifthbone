@@ -12,7 +12,7 @@ public class DiceSlotsManager {
 
     private GridPane grid;
     private List<ImageView> imageViewList = new ArrayList<>();
-    private List<Die> diceLists;
+    private Die[] diceLists = new Die[5];
     private List<DieSlot> diceSlotsList;
     private List<DieSlot> freeSlotsList;
     private int[] freeSlotState = new int[4];
@@ -30,10 +30,12 @@ public class DiceSlotsManager {
         return instance;
     }
 
+    public int[] getFreeSlotState() {
+        return freeSlotState;
+    }
 
     public void generateDice(){
         diceGenerator.createDices();
-        diceLists = diceGenerator.getDiceList();
     }
 
     public void generateSlots(){
@@ -45,7 +47,6 @@ public class DiceSlotsManager {
              freeSlotState[i] = -1;
         }
     }
-
 
     public void generateDicesInSlots() {
         removeAllDiceFromSlots();
@@ -61,6 +62,7 @@ public class DiceSlotsManager {
             swapDieInSlots(slotNumber);
         };
 
+        diceLists[slotNumber] = die;
         ImageView imageView = new ImageView(die.getDieImage());
         imageView.setOnMouseClicked(mouseHandler);
         imageViewList.add(imageView);
@@ -80,7 +82,6 @@ public class DiceSlotsManager {
         return false;
     }
 
-
     public void removeAllDiceFromSlots() {
         for(ImageView element : imageViewList){
             grid.getChildren().remove(element);
@@ -88,10 +89,9 @@ public class DiceSlotsManager {
         imageViewList.clear();
     }
 
-    public void hideDieInSlot(int slotNumber) {
+    public void removeDieInSlot(int slotNumber) {
             grid.getChildren().remove(imageViewList.get(slotNumber));
     }
-
 
 
     public int getFirstFreeSlotIndex(){
@@ -104,6 +104,9 @@ public class DiceSlotsManager {
     }
 
 
+    public Die[] getDiceLists() {
+        return diceLists;
+    }
 
     public boolean isFreeSlot(){
         for(int i=0; i<freeSlotState.length; i++){
@@ -131,7 +134,7 @@ public class DiceSlotsManager {
     public void swapDieInSlots(int slotNumber) {
         if (isSlotNumberChosen(slotNumber)) {
             openFreeSlot(slotNumber);
-            hideDieInSlot(slotNumber);
+            removeDieInSlot(slotNumber);
             grid.add(imageViewList.get(slotNumber),
                     diceSlotsList.get(slotNumber).getColumnIndex(),
                     diceSlotsList.get(slotNumber).getRowIndex(),
@@ -141,7 +144,7 @@ public class DiceSlotsManager {
             if (isFreeSlot()) {
                 int firstFreeSlot = getFirstFreeSlotIndex();
                 closeFreeSlot(firstFreeSlot, slotNumber);
-                hideDieInSlot(slotNumber);
+                removeDieInSlot(slotNumber);
                 grid.add(imageViewList.get(slotNumber),
                         freeSlotsList.get(firstFreeSlot).getColumnIndex(),
                         freeSlotsList.get(firstFreeSlot).getRowIndex(),
@@ -150,7 +153,5 @@ public class DiceSlotsManager {
             }
         }
     }
-
-
 }
 

@@ -95,12 +95,12 @@ public class UserGameTableDrawer {
         grid.getChildren().add(cellText);
     }
 
-    public void drawScore(int firstColumnIndex) {
-        Text cellText = new Text("200");
+
+    public void drawScore(int firstColumnIndex, int score) {
+        Text cellText = new Text(Integer.toString(score));
         cellText.setId("score");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        GridPane.setConstraints(cellText,10+firstColumnIndex, 12, 1,2);
-        grid.getChildren().add(cellText);
+        grid.add(cellText,11, 12, 2, 2);
     }
 
 

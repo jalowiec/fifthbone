@@ -44,7 +44,7 @@ public class FifthDie extends Application {
         userGameTableDrawer.drawMinusSection(firstColumnIndex);
         userGameTableDrawer.drawPlusSection(firstColumnIndex);
         userGameTableDrawer.drawScoreHeader(firstColumnIndex);
-        userGameTableDrawer.drawScore(firstColumnIndex);
+   //     userGameTableDrawer.drawScore(firstColumnIndex, 0);
         userGameTableDrawer.drawFifthBoneHeader(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneSection(firstColumnIndex);
         userGameTableDrawer.drawChosenPair(firstColumnIndex);
@@ -53,18 +53,19 @@ public class FifthDie extends Application {
         diceSlotsManager.generateDice();
         diceSlotsManager.generateSlots();
         diceSlotsManager.generateDicesInSlots();
+        ScoreManager scoreManager = new ScoreManager(userGride, userScene);
 
 
         Button userSceneButton = new Button("idz do planszy komputera");
-        Button genereteDicesButton = new Button("losuj kosci");
+        Button endTurnButton = new Button("zakoncz runde");
         Button removeDicesButton = new Button("usun kosci");
         Button computerSceneButton = new Button("idz do planszy uzytkownika");
         userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
-        genereteDicesButton.setOnAction(e->diceSlotsManager.generateDicesInSlots());
+        endTurnButton.setOnAction(e-> scoreManager.countScore());
         removeDicesButton.setOnAction(e->diceSlotsManager.removeAllDiceFromSlots());
         computerSceneButton.setOnAction(e-> mainStage.setScene(userScene));
         userGride.add(userSceneButton, 13, 17);
-        userGride.add(genereteDicesButton, 13, 18);
+        userGride.add(endTurnButton, 13, 18);
         userGride.add(removeDicesButton, 15, 18);
         computerGride.add(computerSceneButton, 14, 17);
 
