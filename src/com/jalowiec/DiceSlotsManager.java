@@ -13,9 +13,9 @@ public class DiceSlotsManager {
     private GridPane grid;
     private List<ImageView> imageViewList = new ArrayList<>();
     private List<Die> diceLists;
-    private List<DieSlot> dieSlotsList;
-    private List<DieSlot> dieFreeSlotsList;
-    private List<DieSlot> dieBusySlotsList = new ArrayList<>();
+    private List<DieSlot> diceSlotsList;
+    private List<DieSlot> freeSlotsList;
+    private int[] freeSlotState = new int[4];
     private DiceGenerator diceGenerator = new DiceGenerator(grid);
 
     private static DiceSlotsManager instance;
@@ -30,9 +30,6 @@ public class DiceSlotsManager {
         return instance;
     }
 
-    public List<ImageView> getImageViewList() {
-        return imageViewList;
-    }
 
     public void generateDice(){
         diceGenerator.createDices();
@@ -42,8 +39,11 @@ public class DiceSlotsManager {
     public void generateSlots(){
         DieSlotsGenerator dieSlotsGenerator = new DieSlotsGenerator();
         dieSlotsGenerator.generateSlots();
-        dieSlotsList = dieSlotsGenerator.getSlotsList();
-        dieFreeSlotsList = dieSlotsGenerator.getFreeSlotsList();
+        diceSlotsList = dieSlotsGenerator.getSlotsList();
+        freeSlotsList = dieSlotsGenerator.getFreeSlotsList();
+        for(int i=0; i<freeSlotState.length; i++){
+             freeSlotState[i] = -1;
+        }
     }
 
 
@@ -58,18 +58,26 @@ public class DiceSlotsManager {
 
     public void drawDieInSlot(Die die, int slotNumber) {
         EventHandler<MouseEvent> mouseHandler = e -> {
-            hideDieFromSlot(slotNumber);
-            showDieInFreeSlot(slotNumber);
+            swapDieInSlots(slotNumber);
         };
 
         ImageView imageView = new ImageView(die.getDieImage());
         imageView.setOnMouseClicked(mouseHandler);
         imageViewList.add(imageView);
 
-        grid.add(imageView, dieSlotsList.get(slotNumber).getColumnIndex(),
-                dieSlotsList.get(slotNumber).getRowIndex(),
-                dieSlotsList.get(slotNumber).getColumnSpan(),
-                dieSlotsList.get(slotNumber).getRowSpan());
+        grid.add(imageView, diceSlotsList.get(slotNumber).getColumnIndex(),
+                diceSlotsList.get(slotNumber).getRowIndex(),
+                diceSlotsList.get(slotNumber).getColumnSpan(),
+                diceSlotsList.get(slotNumber).getRowSpan());
+    }
+
+    public boolean isSlotNumberChosen(int slotNumber){
+        for(int i=0; i<freeSlotState.length; i++){
+            if(freeSlotState[i] == slotNumber){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -78,26 +86,71 @@ public class DiceSlotsManager {
             grid.getChildren().remove(element);
         }
         imageViewList.clear();
-
     }
 
-    public void hideDieFromSlot(int slotNumber) {
+    public void hideDieInSlot(int slotNumber) {
             grid.getChildren().remove(imageViewList.get(slotNumber));
     }
 
-    public void showDieInFreeSlot(int slotNumber) {
-        int firstFreeSlot = dieBusySlotsList.size();
-        System.out.println(firstFreeSlot);
-        grid.add(imageViewList.get(slotNumber),
-                dieFreeSlotsList.get(firstFreeSlot).getColumnIndex(),
-                dieFreeSlotsList.get(firstFreeSlot).getRowIndex(),
-                dieFreeSlotsList.get(firstFreeSlot).getColumnSpan(),
-                dieFreeSlotsList.get(firstFreeSlot).getRowSpan());
-        dieBusySlotsList.add(dieFreeSlotsList.get(firstFreeSlot));
-        //TODO cos chyba mozna prosciej
+
+
+    public int getFirstFreeSlotIndex(){
+        for(int i=0; i<freeSlotState.length; i++){
+            if(freeSlotState[i] == -1){
+                return i;
+            }
+        }
+        return -1;
     }
 
 
 
+    public boolean isFreeSlot(){
+        for(int i=0; i<freeSlotState.length; i++){
+            if(freeSlotState[i]==-1){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void closeFreeSlot(int freeSlotPosition, int slotNumber){
+        freeSlotState[freeSlotPosition] = slotNumber;
+    }
+
+    public void openFreeSlot(int slotNumber){
+        for(int i=0; i<freeSlotState.length; i++){
+            if(freeSlotState[i]==slotNumber){
+                freeSlotState[i]=-1;
+            }
+        }
+    }
+
+
+    public void swapDieInSlots(int slotNumber) {
+        if (isSlotNumberChosen(slotNumber)) {
+            openFreeSlot(slotNumber);
+            hideDieInSlot(slotNumber);
+            grid.add(imageViewList.get(slotNumber),
+                    diceSlotsList.get(slotNumber).getColumnIndex(),
+                    diceSlotsList.get(slotNumber).getRowIndex(),
+                    diceSlotsList.get(slotNumber).getColumnSpan(),
+                    diceSlotsList.get(slotNumber).getRowSpan());
+        } else {
+            if (isFreeSlot()) {
+                int firstFreeSlot = getFirstFreeSlotIndex();
+                closeFreeSlot(firstFreeSlot, slotNumber);
+                hideDieInSlot(slotNumber);
+                grid.add(imageViewList.get(slotNumber),
+                        freeSlotsList.get(firstFreeSlot).getColumnIndex(),
+                        freeSlotsList.get(firstFreeSlot).getRowIndex(),
+                        freeSlotsList.get(firstFreeSlot).getColumnSpan(),
+                        freeSlotsList.get(firstFreeSlot).getRowSpan());
+            }
+        }
+    }
+
 
 }
+
