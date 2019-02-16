@@ -1,8 +1,13 @@
 package com.jalowiec;
 
 import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -72,8 +77,6 @@ public class UserGameTableDrawer {
             cellText.setId("tableheader");
             grid.add(cellText,  firstColumnIndex, 12+i);
         }
-
-
     }
 
     public void drawChosenPair(int firstColumnIndex) {
@@ -85,7 +88,37 @@ public class UserGameTableDrawer {
         GridPane.setHalignment(cellSecondText, HPos.CENTER);
         grid.add(cellFirstText,  firstColumnIndex+2, 20);
         grid.add(cellSecondText,  firstColumnIndex+8, 20);
+
+
+
     }
+
+    public void drawHorizontalLines(int firstColumnIndex){
+        for(int i=0; i<5; i++){
+            Line line = new Line(0, 0, 780, 0);
+            GridPane.setValignment(line, VPos.BOTTOM);
+            line.setStrokeWidth(1);
+            switch(i){
+                case 0 :
+                    grid.add(line, firstColumnIndex, 0);
+                    break;
+                case 1:
+                    grid.add(line, firstColumnIndex, 1);
+                    break;
+                case 2:
+                    grid.add(line, firstColumnIndex, 5);
+                    break;
+                case 3:
+                    grid.add(line, firstColumnIndex, 10);
+                    break;
+                case 4:
+                    grid.add(line, firstColumnIndex, 14);
+                    break;
+            }
+
+        }
+    }
+
 
     public void drawScoreHeader(int firstColumnIndex) {
         Text cellText = new Text("WYNIK");
@@ -100,10 +133,20 @@ public class UserGameTableDrawer {
         Text cellText = new Text(Integer.toString(score));
         cellText.setId("score");
         GridPane.setHalignment(cellText, HPos.CENTER);
+        grid.getChildren().remove(cellText);
         grid.add(cellText,11, 12, 2, 2);
     }
 
+    public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {
+        ImageView usedSlotCross = new ImageView("file:resources/markx.png");
+        GridPane.setHalignment(usedSlotCross, HPos.CENTER);
+        grid.add(usedSlotCross, pairSum, rowPairPosition);
+    }
 
+    public void drawChosenFifthDieNumber(int fifthDieValue) {
 
+    }
 
 }
+
+

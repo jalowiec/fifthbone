@@ -21,6 +21,7 @@ public class DiceSlotsManager {
     private static DiceSlotsManager instance;
 
     private DiceSlotsManager(GridPane grid){
+
         this.grid = grid;
     }
     public static DiceSlotsManager getInstance(GridPane grid){

@@ -3,17 +3,20 @@ package com.jalowiec;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ScoreManager {
 
     private GridPane gridPane;
     private Scene scene;
+    private int firstPairSum;
+    private int secondPairSum;
     private int[][] scoreSchema;
+    private List<Integer> chosenFifthDice = new ArrayList<>();
     private Map<Integer, Integer> scorePointerMap;
-    DiceSlotsManager diceSlotsManager;
-    UserGameTableDrawer userGameTableDrawer;
+    private DiceSlotsManager diceSlotsManager;
+    private UserGameTableDrawer userGameTableDrawer;
+
 
     public ScoreManager(GridPane gridPane, Scene scene) {
         this.gridPane = gridPane;
@@ -21,6 +24,7 @@ public class ScoreManager {
         initScoreSchema();
         initScorePointerMap();
     }
+
 
     public void initScoreSchema(){
         scoreSchema = new int[][] {
@@ -37,16 +41,16 @@ public class ScoreManager {
                 {12, 0, -30, -20, -10, 0, 10, 20, 30, 40, 50}};
     }
 
-    public int getScoreFromSchema(int coupleSum, int couplePointer){
+    public int getScoreFromSchema(){
         int result= 0;
         for(int i=0; i<11; i++){
-            if(coupleSum==scoreSchema[i][0]){
-                return scoreSchema[i][couplePointer];
-            }
+            result += scoreSchema[i][scorePointerMap.get(scoreSchema[i][0])];
+
         }
 
         return result;
     }
+
 
     public void initScorePointerMap(){
         scorePointerMap = new HashMap<>();
@@ -63,20 +67,36 @@ public class ScoreManager {
         scorePointerMap.put(12, 1);
     }
 
-    public void countScore(){
+
+    private int getFifthDieValue(int[] coupleTable, Die[] diceList){
+        int result = 0;
+        for(int i=0; i<coupleTable.length; i++){
+
+        }
+
+        return result;
+    }
+
+
+
+
+
+
+    public void countScoreAfterRound(){
         diceSlotsManager = DiceSlotsManager.getInstance(gridPane);
         userGameTableDrawer = new UserGameTableDrawer(gridPane, scene);
 
         int[] coupleTable = diceSlotsManager.getFreeSlotState();
         Die[] diceList = diceSlotsManager.getDiceLists();
-        int firstCoupleSum = diceList[coupleTable[0]].getDiceValue() + diceList[coupleTable[1]].getDiceValue();
-        int secondCoupleSum = diceList[coupleTable[2]].getDiceValue() + diceList[coupleTable[3]].getDiceValue();
-        int firstCouplePointer = scorePointerMap.get(firstCoupleSum);
-        scorePointerMap.replace(firstCoupleSum, ++firstCouplePointer);
-        int secondCouplePointer = scorePointerMap.get(secondCoupleSum);
-        scorePointerMap.replace(secondCoupleSum, ++secondCouplePointer);
-        userGameTableDrawer.drawScore(1,
-                getScoreFromSchema(firstCoupleSum, scorePointerMap.get(firstCoupleSum)) + getScoreFromSchema(secondCoupleSum, scorePointerMap.get(secondCoupleSum)));
+        firstPairSum = diceList[coupleTable[0]].getDiceValue() + diceList[coupleTable[1]].getDiceValue();
+        secondPairSum = diceList[coupleTable[2]].getDiceValue() + diceList[coupleTable[3]].getDiceValue();
+        int firstCouplePointer = scorePointerMap.get(firstPairSum);
+        scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
+        userGameTableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+        int secondCouplePointer = scorePointerMap.get(secondPairSum);
+        scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
+        userGameTableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
+        userGameTableDrawer.drawScore(1, getScoreFromSchema());
         //TODO - usunąc index pierwszej kolmny
     }
 

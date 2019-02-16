@@ -1,10 +1,9 @@
 #tableheader{
-    -fx-font-size: 20pt;
-    -fx-text-alignment: right;
+    -fx-font-size: 17pt;
 }
 
 #tablerow{
-    -fx-font-size: 15pt;
+    -fx-font-size: 17pt;
 
 }
 

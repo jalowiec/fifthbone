@@ -1,8 +1,10 @@
 package com.jalowiec;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -48,12 +50,13 @@ public class FifthDie extends Application {
         userGameTableDrawer.drawFifthBoneHeader(firstColumnIndex);
         userGameTableDrawer.drawFifthBoneSection(firstColumnIndex);
         userGameTableDrawer.drawChosenPair(firstColumnIndex);
+        userGameTableDrawer.drawHorizontalLines(firstColumnIndex);
 
         DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(userGride);
         diceSlotsManager.generateDice();
         diceSlotsManager.generateSlots();
         diceSlotsManager.generateDicesInSlots();
-        ScoreManager scoreManager = new ScoreManager(userGride, userScene);
+        EndRoundManager endRoundManager = new EndRoundManager(userGride, userScene);
 
 
         Button userSceneButton = new Button("idz do planszy komputera");
@@ -61,7 +64,7 @@ public class FifthDie extends Application {
         Button removeDicesButton = new Button("usun kosci");
         Button computerSceneButton = new Button("idz do planszy uzytkownika");
         userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
-        endTurnButton.setOnAction(e-> scoreManager.countScore());
+        endTurnButton.setOnAction(e-> endRoundManager.endRound());
         removeDicesButton.setOnAction(e->diceSlotsManager.removeAllDiceFromSlots());
         computerSceneButton.setOnAction(e-> mainStage.setScene(userScene));
         userGride.add(userSceneButton, 13, 17);
@@ -69,12 +72,9 @@ public class FifthDie extends Application {
         userGride.add(removeDicesButton, 15, 18);
         computerGride.add(computerSceneButton, 14, 17);
 
-
-        mainStage.setTitle("The Fifth Die");
+        mainStage.setTitle("The Fifth Dice");
         mainStage.setScene(userScene);
         mainStage.show();
-
-
     }
 
     @Override
