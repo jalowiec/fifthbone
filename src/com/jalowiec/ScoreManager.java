@@ -5,6 +5,8 @@ import javafx.scene.layout.GridPane;
 
 import java.util.*;
 
+import static java.util.Arrays.sort;
+
 public class ScoreManager {
 
     private GridPane gridPane;
@@ -12,8 +14,9 @@ public class ScoreManager {
     private int firstPairSum;
     private int secondPairSum;
     private int[][] scoreSchema;
-    private List<Integer> chosenFifthDice = new ArrayList<>();
+    private List<Integer> fifthDiceList = new ArrayList<>();
     private Map<Integer, Integer> scorePointerMap;
+    private Map<Integer, Integer> chosenFiftDice = new HashMap<>();
     private DiceSlotsManager diceSlotsManager;
     private UserGameTableDrawer userGameTableDrawer;
 
@@ -35,7 +38,7 @@ public class ScoreManager {
                 {6, 0, -12, -8, -4, 0, 4, 8, 12, 16, 20},
                 {7, 0, -9, -6, -3, 0, 3, 6, 9, 12, 15},
                 {8, 0, -12, -8, -4, 0, 4, 8, 12, 16, 20},
-                {9, 0, -5, -10, -5, 0, 5, 10, 15, 20, 25},
+                {9, 0, -15, -10, -5, 0, 5, 10, 15, 20, 25},
                 {10, 0, -18, -12, -6, 0, 6, 12, 18, 24, 30},
                 {11, 0, -21, -14, -7, 0, 7, 14, 21, 28, 35},
                 {12, 0, -30, -20, -10, 0, 10, 20, 30, 40, 50}};
@@ -68,16 +71,39 @@ public class ScoreManager {
     }
 
 
-    private int getFifthDieValue(int[] coupleTable, Die[] diceList){
-        int result = 0;
-        for(int i=0; i<coupleTable.length; i++){
 
+
+
+    public int getFifthDieValue(int[] coupleTable, Die[] diceList){
+
+        int[] chosenSlots = coupleTable.clone();
+        Arrays.sort(chosenSlots);
+        int fifthDieIndex = 4;
+        for(int i=0; i<4; i++){
+            if(i!=chosenSlots[i]){
+                fifthDieIndex =  i;
+                break;
+            }
         }
-
-        return result;
+        return diceList[fifthDieIndex].getDiceValue();
     }
 
+    private void processFifthDie(int fifthDieValue){
+        if(!fifthDiceList.contains(fifthDieValue)){
+            if(fifthDiceList.size()<3){
+                fifthDiceList.add(fifthDieValue);
+                userGameTableDrawer.drawChosenFifthDie(fifthDieValue, chosenFiftDice.size());
+                chosenFiftDice.put(fifthDieValue, 1);
+                userGameTableDrawer.drawChosenFifthDieSlots(chosenFiftDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
+            }
+        } else{
+            chosenFiftDice.put(fifthDieValue, chosenFiftDice.get(fifthDieValue)+1);
+            userGameTableDrawer.drawChosenFifthDieSlots(chosenFiftDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
+        }
 
+
+
+    }
 
 
 
@@ -97,6 +123,7 @@ public class ScoreManager {
         scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
         userGameTableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
         userGameTableDrawer.drawScore(1, getScoreFromSchema());
+        processFifthDie(getFifthDieValue(coupleTable, diceList));
         //TODO - usunąc index pierwszej kolmny
     }
 

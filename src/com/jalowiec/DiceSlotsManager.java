@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,15 @@ public class DiceSlotsManager {
     private List<DieSlot> diceSlotsList;
     private List<DieSlot> freeSlotsList;
     private int[] freeSlotState = new int[4];
-    private DiceGenerator diceGenerator = new DiceGenerator(grid);
+    private DiceGenerator diceGenerator;
+    private Text scoreText;
 
     private static DiceSlotsManager instance;
 
     private DiceSlotsManager(GridPane grid){
 
         this.grid = grid;
+        diceGenerator = new DiceGenerator(grid);
     }
     public static DiceSlotsManager getInstance(GridPane grid){
         if(instance==null){
@@ -33,6 +36,14 @@ public class DiceSlotsManager {
 
     public int[] getFreeSlotState() {
         return freeSlotState;
+    }
+
+    public Text getScoreText() {
+        return scoreText;
+    }
+
+    public void setScoreText(Text scoreText) {
+        this.scoreText = scoreText;
     }
 
     public void generateDice(){
