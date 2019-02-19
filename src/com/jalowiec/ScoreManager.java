@@ -71,9 +71,6 @@ public class ScoreManager {
     }
 
 
-
-
-
     public int getFifthDieValue(int[] coupleTable, Die[] diceList){
 
         int[] chosenSlots = coupleTable.clone();
@@ -93,16 +90,30 @@ public class ScoreManager {
             if(fifthDiceList.size()<3){
                 fifthDiceList.add(fifthDieValue);
                 userGameTableDrawer.drawChosenFifthDie(fifthDieValue, chosenFiftDice.size());
-                chosenFiftDice.put(fifthDieValue, 1);
-                userGameTableDrawer.drawChosenFifthDieSlots(chosenFiftDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
+                chosenFiftDice.put(fifthDieValue, 0);
             }
         } else{
             chosenFiftDice.put(fifthDieValue, chosenFiftDice.get(fifthDieValue)+1);
             userGameTableDrawer.drawChosenFifthDieSlots(chosenFiftDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
         }
+    }
+
+    public boolean isFifthSlotFree(int fifthDieValue){
+        if(chosenFiftDice.containsKey(fifthDieValue) && chosenFiftDice.get(fifthDieValue) == 8){
+            return false;
+        }
 
 
+        return true;
+    }
 
+
+    public boolean isPairSlotFree(int pairSum){
+
+        if(scorePointerMap.get(pairSum)>9){
+            return false;
+        }
+        return true;
     }
 
 
@@ -117,14 +128,26 @@ public class ScoreManager {
         firstPairSum = diceList[coupleTable[0]].getDiceValue() + diceList[coupleTable[1]].getDiceValue();
         secondPairSum = diceList[coupleTable[2]].getDiceValue() + diceList[coupleTable[3]].getDiceValue();
         int firstCouplePointer = scorePointerMap.get(firstPairSum);
-        scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
-        userGameTableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+        if(isPairSlotFree(firstPairSum)) {
+            scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
+            userGameTableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+        }
+
         int secondCouplePointer = scorePointerMap.get(secondPairSum);
-        scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
-        userGameTableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
-        userGameTableDrawer.drawScore(1, getScoreFromSchema());
-        processFifthDie(getFifthDieValue(coupleTable, diceList));
-        //TODO - usunąc index pierwszej kolmny
+        if(isPairSlotFree(secondPairSum)) {
+            scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
+            userGameTableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
+        }
+        userGameTableDrawer.drawScore(getScoreFromSchema());
+        int chosenFifthDieValue = getFifthDieValue(coupleTable, diceList);
+
+        if(isFifthSlotFree(chosenFifthDieValue)) {
+            processFifthDie(chosenFifthDieValue);
+        }
+
+        diceSlotsManager.generateSlots();
+        diceSlotsManager.generateDicesInSlots();
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.jalowiec;
 
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -77,6 +78,7 @@ public class DiceSlotsManager {
         diceLists[slotNumber] = die;
         ImageView imageView = new ImageView(die.getDieImage());
         imageView.setOnMouseClicked(mouseHandler);
+        imageView.setCursor(Cursor.CLOSED_HAND);
         imageViewList.add(imageView);
 
         grid.add(imageView, diceSlotsList.get(slotNumber).getColumnIndex(),
@@ -145,7 +147,7 @@ public class DiceSlotsManager {
 
     public void swapDieInSlots(int slotNumber) {
         if (isSlotNumberChosen(slotNumber)) {
-            openFreeSlot(slotNumber);
+             openFreeSlot(slotNumber);
             removeDieInSlot(slotNumber);
             grid.add(imageViewList.get(slotNumber),
                     diceSlotsList.get(slotNumber).getColumnIndex(),
@@ -155,7 +157,7 @@ public class DiceSlotsManager {
         } else {
             if (isFreeSlot()) {
                 int firstFreeSlot = getFirstFreeSlotIndex();
-                closeFreeSlot(firstFreeSlot, slotNumber);
+                 closeFreeSlot(firstFreeSlot, slotNumber);
                 removeDieInSlot(slotNumber);
                 grid.add(imageViewList.get(slotNumber),
                         freeSlotsList.get(firstFreeSlot).getColumnIndex(),

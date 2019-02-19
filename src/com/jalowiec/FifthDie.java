@@ -2,6 +2,7 @@ package com.jalowiec;
 
 import javafx.application.Application;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -25,36 +26,36 @@ public class FifthDie extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         GridPane userGride = new GridPane();
+        userGride.setPadding(new Insets(50, 50, 50, 50));
         GridPane computerGride = new GridPane();
 
         userGride.setGridLinesVisible(false);
 
-        Scene userScene = new Scene(userGride, 1600, 900);
+        Scene userScene = new Scene(userGride, 880, 900);
         Scene computerScene = new Scene(computerGride, 1000, 900);
         userScene.getStylesheets().add("userstyle.css");
         computerScene.getStylesheets().add("computerstyle.css");
 
-        int firstColumnIndex = 1;
-
         TableProperties tableProperties = new TableProperties(userGride);
-        tableProperties.setColumnProperties(120, 60,  firstColumnIndex);
+        tableProperties.setColumnProperties(120, 60);
         tableProperties.setRowsProperties(30);
 
         UserGameTableDrawer userGameTableDrawer = new UserGameTableDrawer(userGride, userScene);
-        userGameTableDrawer.drawTableHeader(firstColumnIndex);
-        userGameTableDrawer.drawPointsRow(firstColumnIndex);
-        userGameTableDrawer.drawMinusSection(firstColumnIndex);
-        userGameTableDrawer.drawPlusSection(firstColumnIndex);
-        userGameTableDrawer.drawScoreHeader(firstColumnIndex);
-        userGameTableDrawer.drawScore(firstColumnIndex, 0);
-        userGameTableDrawer.drawFifthBoneHeader(firstColumnIndex);
-        userGameTableDrawer.drawFifthBoneSection(firstColumnIndex);
-        userGameTableDrawer.drawChosenPair(firstColumnIndex);
-        userGameTableDrawer.drawHorizontalLines(firstColumnIndex);
+        userGameTableDrawer.drawTableHeader();
+        userGameTableDrawer.drawPointsRow();
+        userGameTableDrawer.drawMinusSection();
+        userGameTableDrawer.drawPlusSection();
+        userGameTableDrawer.drawScoreHeader();
+        userGameTableDrawer.drawScore(0);
+        userGameTableDrawer.drawFifthBoneHeader();
+        userGameTableDrawer.drawFifthBoneSection();
+        userGameTableDrawer.drawChosenPair();
+        userGameTableDrawer.drawHorizontalLines();
 
         DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(userGride);
         diceSlotsManager.generateDice();
         diceSlotsManager.generateSlots();
+
         diceSlotsManager.generateDicesInSlots();
 
         ScoreManager scoreManager = new ScoreManager(userGride, userScene);
@@ -62,15 +63,12 @@ public class FifthDie extends Application {
 
         Button userSceneButton = new Button("idz do planszy komputera");
         Button endTurnButton = new Button("zakoncz runde");
-        Button removeDicesButton = new Button("usun kosci");
         Button computerSceneButton = new Button("idz do planszy uzytkownika");
         userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
         endTurnButton.setOnAction(e-> scoreManager.countScoreAfterRound());
-        removeDicesButton.setOnAction(e->diceSlotsManager.removeAllDiceFromSlots());
         computerSceneButton.setOnAction(e-> mainStage.setScene(userScene));
-        userGride.add(userSceneButton, 13, 17);
-        userGride.add(endTurnButton, 13, 18);
-        userGride.add(removeDicesButton, 15, 18);
+        userGride.add(userSceneButton, 8, 25, 3, 1);
+        userGride.add(endTurnButton, 4, 25, 3, 1);
         computerGride.add(computerSceneButton, 14, 17);
 
         mainStage.setTitle("The Fifth Dice");

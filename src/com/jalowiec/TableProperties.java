@@ -12,10 +12,7 @@ public class TableProperties {
         this.grid = grid;
     }
 
-    public void setColumnProperties(int firstColumnWidth, int restColumnsWidth, int firstColumnIndex){
-        for(int i=0; i<firstColumnIndex; i++){
-            grid.getColumnConstraints().add(new ColumnConstraints(restColumnsWidth));
-        }
+    public void setColumnProperties(int firstColumnWidth, int restColumnsWidth){
 
         grid.getColumnConstraints().add(new ColumnConstraints(firstColumnWidth));
 
@@ -24,7 +21,7 @@ public class TableProperties {
         }
     }
     public void setRowsProperties(int allColumnsHeight){
-        for(int i=0; i<25; i++) {
+        for(int i=0; i<27; i++) {
             grid.getRowConstraints().add(new RowConstraints(allColumnsHeight));
         }
     }
