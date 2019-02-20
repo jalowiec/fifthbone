@@ -1,6 +1,7 @@
 package com.jalowiec;
 
 
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class DiceGenerator {
     private List<Die> diceList = new ArrayList<>();
 
 
-    public DiceGenerator(GridPane gride) {
+    public DiceGenerator(GridPane gride, Scene scene) {
         this.gride = gride;
     }
 

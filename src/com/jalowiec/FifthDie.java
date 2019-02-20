@@ -1,11 +1,9 @@
 package com.jalowiec;
 
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -26,10 +24,10 @@ public class FifthDie extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         GridPane userGride = new GridPane();
-        userGride.setPadding(new Insets(50, 50, 50, 50));
+        userGride.setPadding(new Insets(-80, 50, 50, 50));
         GridPane computerGride = new GridPane();
 
-        userGride.setGridLinesVisible(false);
+        userGride.setGridLinesVisible(true);
 
         Scene userScene = new Scene(userGride, 880, 900);
         Scene computerScene = new Scene(computerGride, 1000, 900);
@@ -52,23 +50,20 @@ public class FifthDie extends Application {
         userGameTableDrawer.drawChosenPair();
         userGameTableDrawer.drawHorizontalLines();
 
-        DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(userGride);
+        DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(userGride, userScene);
         diceSlotsManager.generateDice();
         diceSlotsManager.generateSlots();
-
         diceSlotsManager.generateDicesInSlots();
 
-        ScoreManager scoreManager = new ScoreManager(userGride, userScene);
+        EndRoundManager endRoundManager = new EndRoundManager(userGride, userScene);
+        userGameTableDrawer.drawRoundEndButton(endRoundManager);
 
 
         Button userSceneButton = new Button("idz do planszy komputera");
-        Button endTurnButton = new Button("zakoncz runde");
         Button computerSceneButton = new Button("idz do planszy uzytkownika");
         userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
-        endTurnButton.setOnAction(e-> scoreManager.countScoreAfterRound());
         computerSceneButton.setOnAction(e-> mainStage.setScene(userScene));
         userGride.add(userSceneButton, 8, 25, 3, 1);
-        userGride.add(endTurnButton, 4, 25, 3, 1);
         computerGride.add(computerSceneButton, 14, 17);
 
         mainStage.setTitle("The Fifth Dice");

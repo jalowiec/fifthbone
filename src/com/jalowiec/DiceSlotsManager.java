@@ -2,17 +2,21 @@ package com.jalowiec;
 
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DiceSlotsManager {
 
     private GridPane grid;
+    private Scene scene;
     private List<ImageView> imageViewList = new ArrayList<>();
     private Die[] diceLists = new Die[5];
     private List<DieSlot> diceSlotsList;
@@ -20,17 +24,19 @@ public class DiceSlotsManager {
     private int[] freeSlotState = new int[4];
     private DiceGenerator diceGenerator;
     private Text scoreText;
-
     private static DiceSlotsManager instance;
 
-    private DiceSlotsManager(GridPane grid){
+
+    private DiceSlotsManager(GridPane grid, Scene scene){
 
         this.grid = grid;
-        diceGenerator = new DiceGenerator(grid);
+        this.scene = scene;
+         diceGenerator = new DiceGenerator(grid, scene);
+
     }
-    public static DiceSlotsManager getInstance(GridPane grid){
+    public static DiceSlotsManager getInstance(GridPane grid, Scene scene){
         if(instance==null){
-            instance=new DiceSlotsManager(grid);
+            instance=new DiceSlotsManager(grid, scene);
         }
         return instance;
     }
@@ -73,6 +79,7 @@ public class DiceSlotsManager {
     public void drawDieInSlot(Die die, int slotNumber) {
         EventHandler<MouseEvent> mouseHandler = e -> {
             swapDieInSlots(slotNumber);
+
         };
 
         diceLists[slotNumber] = die;
@@ -145,6 +152,7 @@ public class DiceSlotsManager {
     }
 
 
+
     public void swapDieInSlots(int slotNumber) {
         if (isSlotNumberChosen(slotNumber)) {
              openFreeSlot(slotNumber);
@@ -158,6 +166,7 @@ public class DiceSlotsManager {
             if (isFreeSlot()) {
                 int firstFreeSlot = getFirstFreeSlotIndex();
                  closeFreeSlot(firstFreeSlot, slotNumber);
+                setEndTurnButtonEnabled();
                 removeDieInSlot(slotNumber);
                 grid.add(imageViewList.get(slotNumber),
                         freeSlotsList.get(firstFreeSlot).getColumnIndex(),
@@ -167,5 +176,48 @@ public class DiceSlotsManager {
             }
         }
     }
+
+    public int getFifthDieValue(){
+
+        int[] chosenSlots = freeSlotState.clone();
+        Arrays.sort(chosenSlots);
+        int fifthDieIndex = 4;
+        for(int i=0; i<4; i++){
+            if(i!=chosenSlots[i]){
+                fifthDieIndex =  i;
+                break;
+            }
+        }
+        return diceLists[fifthDieIndex].getDiceValue();
+    }
+
+    public int getFirstPairSum(){
+        return diceLists[freeSlotState[0]].getDiceValue() + diceLists[freeSlotState[1]].getDiceValue();
+    }
+
+    public int getSecondPairSum(){
+        return diceLists[freeSlotState[2]].getDiceValue() + diceLists[freeSlotState[3]].getDiceValue();
+    }
+
+    public void setEndTurnButtonDisabled(){
+        UserGameTableDrawer.getEndTurnButton().setDisable(true);
+    }
+
+    private void setEndTurnButtonEnabled(){
+        if(!isFreeSlot() && isChosenFifthDieCorrect()){
+            UserGameTableDrawer.getEndTurnButton().setDisable(false);
+        }
+    }
+
+
+    public boolean isChosenFifthDieCorrect(){
+        for(int i=0; i < diceLists.length; i++){
+            System.out.println(diceLists[i]);
+        }
+        return true;
+    }
+
+
+
 }
 

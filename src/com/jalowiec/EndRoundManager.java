@@ -7,12 +7,10 @@ import java.util.*;
 
 import static java.util.Arrays.sort;
 
-public class ScoreManager {
+public class EndRoundManager {
 
     private GridPane gridPane;
     private Scene scene;
-    private int firstPairSum;
-    private int secondPairSum;
     private int[][] scoreSchema;
     private List<Integer> fifthDiceList = new ArrayList<>();
     private Map<Integer, Integer> scorePointerMap;
@@ -21,11 +19,13 @@ public class ScoreManager {
     private UserGameTableDrawer userGameTableDrawer;
 
 
-    public ScoreManager(GridPane gridPane, Scene scene) {
+    public EndRoundManager(GridPane gridPane, Scene scene) {
         this.gridPane = gridPane;
         this.scene = scene;
         initScoreSchema();
         initScorePointerMap();
+        diceSlotsManager = DiceSlotsManager.getInstance(gridPane, scene);
+        userGameTableDrawer = new UserGameTableDrawer(gridPane, scene);
     }
 
 
@@ -71,19 +71,7 @@ public class ScoreManager {
     }
 
 
-    public int getFifthDieValue(int[] coupleTable, Die[] diceList){
 
-        int[] chosenSlots = coupleTable.clone();
-        Arrays.sort(chosenSlots);
-        int fifthDieIndex = 4;
-        for(int i=0; i<4; i++){
-            if(i!=chosenSlots[i]){
-                fifthDieIndex =  i;
-                break;
-            }
-        }
-        return diceList[fifthDieIndex].getDiceValue();
-    }
 
     private void processFifthDie(int fifthDieValue){
         if(!fifthDiceList.contains(fifthDieValue)){
@@ -102,8 +90,6 @@ public class ScoreManager {
         if(chosenFiftDice.containsKey(fifthDieValue) && chosenFiftDice.get(fifthDieValue) == 8){
             return false;
         }
-
-
         return true;
     }
 
@@ -118,15 +104,11 @@ public class ScoreManager {
 
 
 
+    public void countScoreAfterRound(UserGameTableDrawer userGameTableDrawer){
 
-    public void countScoreAfterRound(){
-        diceSlotsManager = DiceSlotsManager.getInstance(gridPane);
-        userGameTableDrawer = new UserGameTableDrawer(gridPane, scene);
-
-        int[] coupleTable = diceSlotsManager.getFreeSlotState();
-        Die[] diceList = diceSlotsManager.getDiceLists();
-        firstPairSum = diceList[coupleTable[0]].getDiceValue() + diceList[coupleTable[1]].getDiceValue();
-        secondPairSum = diceList[coupleTable[2]].getDiceValue() + diceList[coupleTable[3]].getDiceValue();
+        int chosenFifthDieValue = diceSlotsManager.getFifthDieValue();
+        int firstPairSum = diceSlotsManager.getFirstPairSum();
+        int secondPairSum = diceSlotsManager.getSecondPairSum();
         int firstCouplePointer = scorePointerMap.get(firstPairSum);
         if(isPairSlotFree(firstPairSum)) {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
@@ -139,7 +121,6 @@ public class ScoreManager {
             userGameTableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
         }
         userGameTableDrawer.drawScore(getScoreFromSchema());
-        int chosenFifthDieValue = getFifthDieValue(coupleTable, diceList);
 
         if(isFifthSlotFree(chosenFifthDieValue)) {
             processFifthDie(chosenFifthDieValue);
@@ -147,8 +128,11 @@ public class ScoreManager {
 
         diceSlotsManager.generateSlots();
         diceSlotsManager.generateDicesInSlots();
+        diceSlotsManager.setEndTurnButtonDisabled();
 
     }
+
+
 
 
 }

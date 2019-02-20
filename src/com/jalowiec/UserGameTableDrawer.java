@@ -3,13 +3,11 @@ package com.jalowiec;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 
 public class UserGameTableDrawer {
@@ -18,11 +16,12 @@ public class UserGameTableDrawer {
     //TODO - sprawdzic czy nie usunac scene z tej klasy
     private GridPane grid;
     private DiceSlotsManager diceSlotsManager;
+    private static Button endTurnButton;
 
     public UserGameTableDrawer(GridPane grid, Scene scene) {
         this.scene = scene;
         this.grid = grid;
-        diceSlotsManager = DiceSlotsManager.getInstance(grid);
+        diceSlotsManager = DiceSlotsManager.getInstance(grid, scene);
     }
 
     public void drawTableHeader(){
@@ -145,9 +144,15 @@ public class UserGameTableDrawer {
     }
 
     public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {
-        ImageView usedSlotCross = new ImageView("file:resources/markx.png");
-        GridPane.setHalignment(usedSlotCross, HPos.CENTER);
-        grid.add(usedSlotCross, pairSum-1, rowPairPosition);
+        ImageView usedSlotCrossBlack = new ImageView("file:resources/markx_black.png");
+        ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
+        if(rowPairPosition < 10) {
+            GridPane.setHalignment(usedSlotCrossBlack, HPos.CENTER);
+            grid.add(usedSlotCrossBlack, pairSum - 1, rowPairPosition);
+        }else {
+            GridPane.setHalignment(usedSlotCrossRed, HPos.CENTER);
+            grid.add(usedSlotCrossRed, pairSum - 1, rowPairPosition);
+        }
     }
 
     public void drawChosenFifthDie(int fifthDieValue, int row) {
@@ -158,10 +163,26 @@ public class UserGameTableDrawer {
     }
 
     public void drawChosenFifthDieSlots(int fifthDiePointer, int fifthDieRow) {
-        ImageView usedSlotCross = new ImageView("file:resources/markx.png");
-        GridPane.setHalignment(usedSlotCross, HPos.CENTER);
-        grid.add(usedSlotCross, fifthDiePointer+1, fifthDieRow+12);
+        ImageView usedSlotCrossBlack = new ImageView("file:resources/markx_black.png");
+        ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
+        if(fifthDiePointer < 8) {
+            GridPane.setHalignment(usedSlotCrossBlack, HPos.CENTER);
+            grid.add(usedSlotCrossBlack, fifthDiePointer+1, fifthDieRow+12);
+        } else {
+            GridPane.setHalignment(usedSlotCrossRed, HPos.CENTER);
+            grid.add(usedSlotCrossRed, fifthDiePointer+1, fifthDieRow+12);
+        }
+    }
 
+    public static Button getEndTurnButton() {
+        return endTurnButton;
+    }
+
+    public void drawRoundEndButton(EndRoundManager endRoundManager){
+        endTurnButton = new Button("zakoncz runde");
+        endTurnButton.setOnAction(e-> endRoundManager.countScoreAfterRound(this));
+        endTurnButton.setDisable(true);
+        grid.add(endTurnButton, 5, 20, 2, 1);
     }
 
 }
