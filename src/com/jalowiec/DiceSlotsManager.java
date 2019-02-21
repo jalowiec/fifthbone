@@ -3,7 +3,6 @@ package com.jalowiec;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -12,6 +11,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class DiceSlotsManager {
 
@@ -39,10 +39,6 @@ public class DiceSlotsManager {
             instance=new DiceSlotsManager(grid, scene);
         }
         return instance;
-    }
-
-    public int[] getFreeSlotState() {
-        return freeSlotState;
     }
 
     public Text getScoreText() {
@@ -125,10 +121,6 @@ public class DiceSlotsManager {
     }
 
 
-    public Die[] getDiceLists() {
-        return diceLists;
-    }
-
     public boolean isFreeSlot(){
         for(int i=0; i<freeSlotState.length; i++){
             if(freeSlotState[i]==-1){
@@ -152,10 +144,10 @@ public class DiceSlotsManager {
     }
 
 
-
     public void swapDieInSlots(int slotNumber) {
         if (isSlotNumberChosen(slotNumber)) {
-             openFreeSlot(slotNumber);
+            setEndTurnButtonDisabled();
+            openFreeSlot(slotNumber);
             removeDieInSlot(slotNumber);
             grid.add(imageViewList.get(slotNumber),
                     diceSlotsList.get(slotNumber).getColumnIndex(),
@@ -165,7 +157,7 @@ public class DiceSlotsManager {
         } else {
             if (isFreeSlot()) {
                 int firstFreeSlot = getFirstFreeSlotIndex();
-                 closeFreeSlot(firstFreeSlot, slotNumber);
+                closeFreeSlot(firstFreeSlot, slotNumber);
                 setEndTurnButtonEnabled();
                 removeDieInSlot(slotNumber);
                 grid.add(imageViewList.get(slotNumber),
@@ -209,11 +201,22 @@ public class DiceSlotsManager {
         }
     }
 
+    private boolean isFreeRound(Set<Integer> chosenFifthDiceSet) {
+        for (int i = 0; i < diceLists.length; i++) {
+            if (chosenFifthDiceSet.contains(diceLists[i].getDiceValue())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean isChosenFifthDieCorrect(){
-        for(int i=0; i < diceLists.length; i++){
-            System.out.println(diceLists[i]);
+        int fifthDieValue = getFifthDieValue();
+        Set<Integer> chosenFifthDiceSet = EndRoundManager.getChosenFifthDiceSet();
+        if(chosenFifthDiceSet.size()==3 && !chosenFifthDiceSet.contains(fifthDieValue) && !isFreeRound(chosenFifthDiceSet) ){
+            return false;
         }
+
         return true;
     }
 

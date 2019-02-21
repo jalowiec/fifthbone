@@ -14,7 +14,7 @@ public class EndRoundManager {
     private int[][] scoreSchema;
     private List<Integer> fifthDiceList = new ArrayList<>();
     private Map<Integer, Integer> scorePointerMap;
-    private Map<Integer, Integer> chosenFiftDice = new HashMap<>();
+    private static Map<Integer, Integer> chosenFiftDice = new HashMap<>();
     private DiceSlotsManager diceSlotsManager;
     private UserGameTableDrawer userGameTableDrawer;
 
@@ -69,6 +69,10 @@ public class EndRoundManager {
         scorePointerMap.put(11, 1);
         scorePointerMap.put(12, 1);
     }
+
+    public static Set<Integer> getChosenFifthDiceSet(){
+        return  chosenFiftDice.keySet();
+            }
 
 
 

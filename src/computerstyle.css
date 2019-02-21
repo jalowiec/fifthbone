@@ -1,10 +1,9 @@
 #tableheader{
-    -fx-font-size: 25pt;
-    -fx-text-alignment: right;
+    -fx-font-size: 17pt;
 }
 
 #tablerow{
-    -fx-font-size: 15pt;
+    -fx-font-size: 17pt;
 
 }
 
@@ -18,5 +17,10 @@
 
 #score{
     -fx-font-size: 35pt;
+
+}
+#fifthdie{
+    -fx-font-size: 20pt;
+
 
 }

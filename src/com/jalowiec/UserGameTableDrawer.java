@@ -4,6 +4,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
@@ -182,8 +184,19 @@ public class UserGameTableDrawer {
         endTurnButton = new Button("zakoncz runde");
         endTurnButton.setOnAction(e-> endRoundManager.countScoreAfterRound(this));
         endTurnButton.setDisable(true);
-        grid.add(endTurnButton, 5, 20, 2, 1);
+        grid.add(endTurnButton, 5, 22, 2, 1);
     }
+
+    public void drawHelpMark() {
+        ImageView helpMark = new ImageView("file:resources/help.png");
+        GridPane.setHalignment(helpMark, HPos.CENTER);
+        Tooltip helpTooltip = new Tooltip("Warunki ukonczenia rundy:\n 1. Dwie pary musza byc wybrane\n" +
+                " 2. Piata kosc musi nalezec do wczesniej wybranych");
+
+        Tooltip.install(helpMark, helpTooltip);
+        grid.add(helpMark, 5, 20);
+    }
+
 
 }
 
