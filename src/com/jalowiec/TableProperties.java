@@ -8,8 +8,8 @@ public class TableProperties {
 
     private GridPane grid;
 
-    public TableProperties(GridPane grid) {
-        this.grid = grid;
+    public TableProperties(User user) {
+        this.grid = user.getGridPane();
     }
 
     public void setColumnProperties(int firstColumnWidth, int restColumnsWidth){

@@ -14,7 +14,6 @@ import java.util.List;
 public class FifthDie extends Application {
 
     private List<User> plaingUsers = new ArrayList<>();
-    private List<Scene> usersScenes = new ArrayList<>();
 
     public static void main(String[] args){
         launch(args);
@@ -35,54 +34,66 @@ public class FifthDie extends Application {
         gridPane.setPadding(new Insets(-10, 50, 50, 50));
         gridPane.setGridLinesVisible(false);
 
-        for(User user : plaingUsers){
+        for (User user : plaingUsers) {
+            user.setGridPane(new GridPane());
+            user.getGridPane().setPadding(new Insets(-10, 50, 50, 50));
+            user.getGridPane().setGridLinesVisible(false);
 
-          //  user.getUserScene() = new Scene(gridPane, 880, 900);
+            user.setUserScene(new Scene(user.getGridPane(), 880, 900));
+            if(!user.getPC()){
+                user.getUserScene().getStylesheets().add("userstyle.css");
+            }else{
+                user.getUserScene().getStylesheets().add("computerstyle.css");
+            }
+
+            TableProperties tableProperties = new TableProperties(user);
+            tableProperties.setColumnProperties(120, 60);
+            tableProperties.setRowsProperties(30);
+
+            TableDrawer tableDrawer = new TableDrawer(user);
+            tableDrawer.drawTableHeader();
+            tableDrawer.drawPointsRow();
+            tableDrawer.drawMinusSection();
+            tableDrawer.drawPlusSection();
+            tableDrawer.drawScoreHeader();
+            tableDrawer.drawScore(0);
+            tableDrawer.drawFifthBoneHeader();
+            tableDrawer.drawFifthBoneSection();
+            tableDrawer.drawChosenPair();
+            tableDrawer.drawHorizontalLines();
+
+            DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
+            diceSlotsOperation.generateDice();
+
+
+            RoundInit roundInit = new RoundInit(user);
+            roundInit.generateDicesInSlots();
+
+            if(!user.getPC()) {
+                RoundEnd roundEnd = new RoundEnd(user.getGridPane());
+                tableDrawer.drawRoundEndButton(roundEnd);
+                tableDrawer.drawHelpMark();
+            }
+            Button nextPlayerButton = new Button("Kolejny zawodnik");
+            nextPlayerButton.setOnAction(e-> mainStage.setScene(getNextUser(user).getUserScene()));
+            user.getGridPane().add(nextPlayerButton, 10, 20, 3, 1);
         }
 
-       Scene userScene = new Scene(gridPane, 880, 900);
-    //    Scene computerScene = new Scene(computerGride, 1000, 900);
-        userScene.getStylesheets().add("userstyle.css");
-     //   computerScene.getStylesheets().add("computerstyle.css");
-
-        TableProperties tableProperties = new TableProperties(gridPane);
-        tableProperties.setColumnProperties(120, 60);
-        tableProperties.setRowsProperties(30);
-
-        UserGameTableDrawer userGameTableDrawer = new UserGameTableDrawer(gridPane, userScene);
-        userGameTableDrawer.drawTableHeader();
-        userGameTableDrawer.drawPointsRow();
-        userGameTableDrawer.drawMinusSection();
-        userGameTableDrawer.drawPlusSection();
-        userGameTableDrawer.drawScoreHeader();
-        userGameTableDrawer.drawScore(0);
-        userGameTableDrawer.drawFifthBoneHeader();
-        userGameTableDrawer.drawFifthBoneSection();
-        userGameTableDrawer.drawChosenPair();
-        userGameTableDrawer.drawHorizontalLines();
-
-        DiceSlotsManager diceSlotsManager = DiceSlotsManager.getInstance(gridPane, userScene);
-        diceSlotsManager.generateDice();
-        diceSlotsManager.generateSlots();
-        diceSlotsManager.generateDicesInSlots();
-
-        EndRoundManager endRoundManager = new EndRoundManager(gridPane, userScene);
-        userGameTableDrawer.drawRoundEndButton(endRoundManager);
-        userGameTableDrawer.drawHelpMark();
-
-
-
-        Button userSceneButton = new Button("idz do planszy komputera");
-        Button computerSceneButton = new Button("idz do planszy uzytkownika");
-    //    userSceneButton.setOnAction(e-> mainStage.setScene(computerScene));
-        computerSceneButton.setOnAction(e-> mainStage.setScene(userScene));
-        gridPane.add(userSceneButton, 8, 25, 3, 1);
-      //  computerGride.add(computerSceneButton, 14, 17);
 
         mainStage.setTitle("The Fifth Dice");
-        mainStage.setScene(userScene);
+        mainStage.setScene(plaingUsers.get(0).getUserScene());
         mainStage.show();
     }
+
+    public User getNextUser(User user){
+        int playingUserId = plaingUsers.indexOf(user);
+        if(playingUserId == plaingUsers.size()-1){
+            return plaingUsers.get(0);
+        }
+        return plaingUsers.get(playingUserId+1);
+    }
+
+
 
     @Override
     public void stop() throws Exception {

@@ -2,28 +2,24 @@ package com.jalowiec;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 
-public class UserGameTableDrawer {
+public class TableDrawer {
 
-    private Scene scene;
-    //TODO - sprawdzic czy nie usunac scene z tej klasy
+
     private GridPane grid;
-    private DiceSlotsManager diceSlotsManager;
+    private DiceSlotsOperation diceSlotsOperation;
     private static Button endTurnButton;
 
-    public UserGameTableDrawer(GridPane grid, Scene scene) {
-        this.scene = scene;
-        this.grid = grid;
-        diceSlotsManager = DiceSlotsManager.getInstance(grid, scene);
+    public TableDrawer(User user) {
+        this.grid = user.getGridPane();
+        diceSlotsOperation = DiceSlotsOperation.getInstance();
     }
 
     public void drawTableHeader(){
@@ -137,12 +133,12 @@ public class UserGameTableDrawer {
 
 
     public void drawScore(int score) {
-        grid.getChildren().remove(diceSlotsManager.getScoreText());
-        diceSlotsManager.setScoreText(new Text(Integer.toString(score)));
-        Text cellText = diceSlotsManager.getScoreText();
-        cellText.setId("score");
-        GridPane.setHalignment(cellText, HPos.CENTER);
-        grid.add(cellText, 10, 13, 2, 2);
+   //     grid.getChildren().remove(diceSlotsOperation.getScoreText());
+   //     diceSlotsOperation.setScoreText(new Text(Integer.toString(score)));
+   //     Text cellText = diceSlotsOperation.getScoreText();
+ //       cellText.setId("score");
+   //     GridPane.setHalignment(cellText, HPos.CENTER);
+  //      grid.add(cellText, 10, 13, 2, 2);
     }
 
     public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {
@@ -180,9 +176,9 @@ public class UserGameTableDrawer {
         return endTurnButton;
     }
 
-    public void drawRoundEndButton(EndRoundManager endRoundManager){
+    public void drawRoundEndButton(RoundEnd roundEnd){
         endTurnButton = new Button("zakoncz runde");
-        endTurnButton.setOnAction(e-> endRoundManager.countScoreAfterRound(this));
+        endTurnButton.setOnAction(e-> roundEnd.countScoreAfterRound(this));
         endTurnButton.setDisable(true);
         grid.add(endTurnButton, 5, 22, 2, 1);
     }

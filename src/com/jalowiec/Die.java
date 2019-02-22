@@ -20,5 +20,7 @@ public class Die {
         return new Image(diePath);
     }
 
-
+    public String getDiePath() {
+        return diePath;
+    }
 }
