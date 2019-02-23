@@ -5,19 +5,16 @@ import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class RoundInit {
+public class RoundInitCommon {
 
     private GridPane gridPane;
-    private List<DieSlot> diceSlotsList;
-    private List<DieSlot> freeSlotsList;
     private User user;
+    private DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
 
 
-    public RoundInit(User user) {
+    public RoundInitCommon(User user) {
         this.gridPane = user.getGridPane();
         this.user = user;
     }
@@ -25,23 +22,29 @@ public class RoundInit {
 
 
     public void generateDicesInSlots() {
-        DiceGenerator diceGenerator = new DiceGenerator();
+
         removeAllDiceFromSlots();
         RandomDiceValue randomDiceValue = new RandomDiceValue();
         int[] randomValues = randomDiceValue.getRandomArray(5);
         for (int i = 0; i < randomValues.length; i++) {
-            drawDieInSlot(diceGenerator.getDieFromValue(randomValues[i]), i);
+            drawDieInSlot(diceSlotsOperation.getDieFromValue(randomValues[i]), i);
         }
     }
 
     public void drawDieInSlot(Die die, int slotNumber) {
+        RoundProccesorUser roundProccesorUser = new RoundProccesorUser(user);
         EventHandler<MouseEvent> mouseHandler = e -> {
-        //    swapDieInSlots(slotNumber);
+            roundProccesorUser.swapDieInSlots(slotNumber);
 
         };
+        Die[] diceList = user.getUserDataStructures().getDiceList();
+        List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
+        List<DieSlot> diceSlotsList = user.getUserDataStructures().getDiceSlotsList();
 
-        diceLists[slotNumber] = die;
+
+        diceList[slotNumber] = die;
         ImageView imageView = new ImageView(die.getDieImage());
+
         imageView.setOnMouseClicked(mouseHandler);
         imageView.setCursor(Cursor.CLOSED_HAND);
         imageViewList.add(imageView);
@@ -53,6 +56,7 @@ public class RoundInit {
     }
 
     public void removeAllDiceFromSlots() {
+        List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         for(ImageView element : imageViewList){
             gridPane.getChildren().remove(element);
         }

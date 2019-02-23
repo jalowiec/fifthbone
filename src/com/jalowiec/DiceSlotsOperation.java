@@ -1,22 +1,18 @@
 package com.jalowiec;
 
-import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-
 import java.util.*;
 
 public class DiceSlotsOperation {
 
     private static DiceSlotsOperation instance;
     private int[][] scoreSchema;
+    DiceGenerator diceGenerator;
 
 
     private DiceSlotsOperation(){
+
         initScoreSchema();
+        diceGenerator = new DiceGenerator();
     }
 
     public static DiceSlotsOperation getInstance(){
@@ -26,11 +22,29 @@ public class DiceSlotsOperation {
         return instance;
     }
 
-
     public void generateDice(){
-        DiceGenerator diceGenerator = new DiceGenerator();
-        diceGenerator.createDices();
+        diceGenerator.createDiceForPlaying();
     }
+
+    //TODO - czy tez robić dice generator jako singleton
+    public List<Die> getDiceForPlaying()
+    {
+        return diceGenerator.getDiceForPlaying();
+    }
+
+
+    public Die getDieFromValue(int dieValue){
+        List<Die> diceForPlaying = getDiceForPlaying();
+        Die result = null;
+        for(Die element : diceForPlaying){
+            if(element.getDiceValue()==dieValue){
+                return element;
+            }
+        }
+        return result;
+    }
+
+
 
 
     private void initScoreSchema(){
@@ -60,117 +74,5 @@ public class DiceSlotsOperation {
         return result;
     }
 
-
-
-    /*
-
-
-    public boolean isSlotNumberChosen(int slotNumber){
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i] == slotNumber){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
-    public void removeDieInSlot(int slotNumber) {
-            grid.getChildren().remove(imageViewList.get(slotNumber));
-    }
-
-
-    public int getFirstFreeSlotIndex(){
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i] == -1){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    public boolean isFreeSlot(){
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i]==-1){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void closeFreeSlot(int freeSlotPosition, int slotNumber){
-        freeSlotState[freeSlotPosition] = slotNumber;
-    }
-
-    public void openFreeSlot(int slotNumber){
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i]==slotNumber){
-                freeSlotState[i]=-1;
-            }
-        }
-    }
-
-
-    public void swapDieInSlots(int slotNumber) {
-        if (isSlotNumberChosen(slotNumber)) {
-            setEndTurnButtonDisabled();
-            openFreeSlot(slotNumber);
-            removeDieInSlot(slotNumber);
-            grid.add(imageViewList.get(slotNumber),
-                    diceSlotsList.get(slotNumber).getColumnIndex(),
-                    diceSlotsList.get(slotNumber).getRowIndex(),
-                    diceSlotsList.get(slotNumber).getColumnSpan(),
-                    diceSlotsList.get(slotNumber).getRowSpan());
-        } else {
-            if (isFreeSlot()) {
-                int firstFreeSlot = getFirstFreeSlotIndex();
-                closeFreeSlot(firstFreeSlot, slotNumber);
-                setEndTurnButtonEnabled();
-                removeDieInSlot(slotNumber);
-                grid.add(imageViewList.get(slotNumber),
-                        freeSlotsList.get(firstFreeSlot).getColumnIndex(),
-                        freeSlotsList.get(firstFreeSlot).getRowIndex(),
-                        freeSlotsList.get(firstFreeSlot).getColumnSpan(),
-                        freeSlotsList.get(firstFreeSlot).getRowSpan());
-            }
-        }
-    }
-
-
-
-    public void setEndTurnButtonDisabled(){
-        TableDrawer.getEndTurnButton().setDisable(true);
-    }
-
-    private void setEndTurnButtonEnabled(){
-        if(!isFreeSlot() && isChosenFifthDieCorrect()){
-            TableDrawer.getEndTurnButton().setDisable(false);
-        }
-    }
-
-    private boolean isFreeRound(Set<Integer> chosenFifthDiceSet) {
-        for (int i = 0; i < diceLists.length; i++) {
-            if (chosenFifthDiceSet.contains(diceLists[i].getDiceValue())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isChosenFifthDieCorrect(){
-        int fifthDieValue = getFifthDieValue();
-        Set<Integer> chosenFifthDiceSet = RoundEnd.getChosenFifthDiceSet();
-        if(chosenFifthDiceSet.size()==3 && !chosenFifthDiceSet.contains(fifthDieValue) && !isFreeRound(chosenFifthDiceSet) ){
-            return false;
-        }
-
-        return true;
-    }
-
-
-*/
 }
 

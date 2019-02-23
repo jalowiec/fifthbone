@@ -1,6 +1,7 @@
 package com.jalowiec;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +16,44 @@ public class UserDataStructures {
     private List<DieSlot> diceSlotsList;
     private List<DieSlot> freeSlotsList;
     private Map<Integer, Integer> scorePointerMap;
+    private Text scoreText;
 
 
     public UserDataStructures() {
         generateSlots();
         initScorePointerMap();
+    }
+
+    public List<ImageView> getImageViewList() {
+        return imageViewList;
+    }
+
+    public Die[] getDiceList() {
+        return diceList;
+    }
+
+    public Map<Integer, Integer> getScorePointerMap() {
+        return scorePointerMap;
+    }
+
+    public int[] getFreeSlotState() {
+        return freeSlotState;
+    }
+
+    public List<DieSlot> getDiceSlotsList() {
+        return diceSlotsList;
+    }
+
+    public List<DieSlot> getFreeSlotsList() {
+        return freeSlotsList;
+    }
+
+    public Text getScoreText() {
+        return scoreText;
+    }
+
+    public void setScoreText(Text scoreText) {
+        this.scoreText = scoreText;
     }
 
     public void generateSlots(){

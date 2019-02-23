@@ -28,15 +28,13 @@ public class FifthDie extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         plaingUsers.add(new User("Lukasz", false));
+        plaingUsers.add(new User("Pawel", false));
         plaingUsers.add(new User("PC", true));
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(-10, 50, 50, 50));
-        gridPane.setGridLinesVisible(false);
 
         for (User user : plaingUsers) {
             user.setGridPane(new GridPane());
-            user.getGridPane().setPadding(new Insets(-10, 50, 50, 50));
+            user.getGridPane().setPadding(new Insets(50, 50, 50, 50));
             user.getGridPane().setGridLinesVisible(false);
 
             user.setUserScene(new Scene(user.getGridPane(), 880, 900));
@@ -55,6 +53,7 @@ public class FifthDie extends Application {
             tableDrawer.drawPointsRow();
             tableDrawer.drawMinusSection();
             tableDrawer.drawPlusSection();
+            tableDrawer.drawUserName();
             tableDrawer.drawScoreHeader();
             tableDrawer.drawScore(0);
             tableDrawer.drawFifthBoneHeader();
@@ -65,13 +64,14 @@ public class FifthDie extends Application {
             DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
             diceSlotsOperation.generateDice();
 
+            user.setRoundInitCommon(new RoundInitCommon(user));
+            user.getRoundInitCommon().generateDicesInSlots();
 
-            RoundInit roundInit = new RoundInit(user);
-            roundInit.generateDicesInSlots();
 
             if(!user.getPC()) {
-                RoundEnd roundEnd = new RoundEnd(user.getGridPane());
-                tableDrawer.drawRoundEndButton(roundEnd);
+                user.setRoundProccesorUser(new RoundProccesorUser(user));
+                user.setRoundEnd(new RoundEnd(user));
+                tableDrawer.drawRoundEndButton(user.getRoundEnd());
                 tableDrawer.drawHelpMark();
             }
             Button nextPlayerButton = new Button("Kolejny zawodnik");

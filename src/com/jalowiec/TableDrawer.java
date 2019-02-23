@@ -16,8 +16,10 @@ public class TableDrawer {
     private GridPane grid;
     private DiceSlotsOperation diceSlotsOperation;
     private static Button endTurnButton;
+    private User user;
 
     public TableDrawer(User user) {
+        this.user = user;
         this.grid = user.getGridPane();
         diceSlotsOperation = DiceSlotsOperation.getInstance();
     }
@@ -123,6 +125,13 @@ public class TableDrawer {
         grid.add(vLine, 10, 13);
     }
 
+    public void drawUserName() {
+        Text cellText = new Text(user.getUserName());
+        cellText.setId("tableheader");
+        GridPane.setHalignment(cellText, HPos.CENTER);
+        grid.add(cellText, 10, 11, 2, 1);
+    }
+
 
     public void drawScoreHeader() {
         Text cellText = new Text("WYNIK");
@@ -133,12 +142,13 @@ public class TableDrawer {
 
 
     public void drawScore(int score) {
-   //     grid.getChildren().remove(diceSlotsOperation.getScoreText());
-   //     diceSlotsOperation.setScoreText(new Text(Integer.toString(score)));
-   //     Text cellText = diceSlotsOperation.getScoreText();
- //       cellText.setId("score");
-   //     GridPane.setHalignment(cellText, HPos.CENTER);
-  //      grid.add(cellText, 10, 13, 2, 2);
+        //TODO - sprawdzic czy trzeba kasowac
+        grid.getChildren().remove(user.getUserDataStructures().getScoreText());
+        user.getUserDataStructures().setScoreText(new Text(Integer.toString(score)));
+        Text cellText = user.getUserDataStructures().getScoreText();
+        cellText.setId("score");
+        GridPane.setHalignment(cellText, HPos.CENTER);
+        grid.add(cellText, 10, 13, 2, 2);
     }
 
     public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {

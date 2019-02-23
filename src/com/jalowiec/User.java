@@ -11,12 +11,18 @@ public class User {
     private GridPane gridPane;
     private String styleCssFile;
     private UserDataStructures userDataStructures;
-
+    private RoundInitCommon roundInitCommon;
+    private RoundProccesorUser roundProccesorUser;
+    private RoundEnd roundEnd;
 
     public User(String userName, Boolean isPC) {
         this.userName = userName;
         this.isPC = isPC;
         userDataStructures = new UserDataStructures();
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public Boolean getPC() {
@@ -37,6 +43,34 @@ public class User {
 
     public void setGridPane(GridPane gridPane) {
         this.gridPane = gridPane;
+    }
+
+    public void setRoundInitCommon(RoundInitCommon roundInitCommon) {
+        this.roundInitCommon = roundInitCommon;
+    }
+
+    public RoundInitCommon getRoundInitCommon() {
+        return roundInitCommon;
+    }
+
+    public RoundProccesorUser getRoundProccesorUser() {
+        return roundProccesorUser;
+    }
+
+    public void setRoundProccesorUser(RoundProccesorUser roundProccesorUser) {
+        this.roundProccesorUser = roundProccesorUser;
+    }
+
+    public RoundEnd getRoundEnd() {
+        return roundEnd;
+    }
+
+    public void setRoundEnd(RoundEnd roundEnd) {
+        this.roundEnd = roundEnd;
+    }
+
+    public UserDataStructures getUserDataStructures() {
+        return userDataStructures;
     }
 
     public String getStyleCssFile() {

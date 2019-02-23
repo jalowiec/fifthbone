@@ -13,12 +13,14 @@ public class RoundEnd {
     private DiceSlotsOperation diceSlotsOperation;
     private TableDrawer tableDrawer;
     private Text scoreText;
+    private User user;
 
 
-    public RoundEnd(GridPane gridPane) {
-        this.gridPane = gridPane;
+    public RoundEnd(User user) {
+        this.gridPane = user.getGridPane();
         diceSlotsOperation = DiceSlotsOperation.getInstance();
-        tableDrawer = new TableDrawer(gridPane);
+        tableDrawer = new TableDrawer(user);
+        this.user = user;
     }
 
 
@@ -51,6 +53,7 @@ public class RoundEnd {
 
 
     public boolean isPairSlotFree(int pairSum){
+        Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
 
         if(scorePointerMap.get(pairSum)>9){
             return false;
@@ -61,11 +64,11 @@ public class RoundEnd {
 
 
     public void countScoreAfterRound(TableDrawer tableDrawer){
-        RoundInit roundInit = new RoundInit(gridPane);
 
-        int chosenFifthDieValue = diceSlotsOperation.getFifthDieValue();
-        int firstPairSum = diceSlotsOperation.getFirstPairSum();
-        int secondPairSum = diceSlotsOperation.getSecondPairSum();
+        Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
+        int chosenFifthDieValue = getFifthDieValue();
+        int firstPairSum = getFirstPairSum();
+        int secondPairSum = getSecondPairSum();
         int firstCouplePointer = scorePointerMap.get(firstPairSum);
         if(isPairSlotFree(firstPairSum)) {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
@@ -77,21 +80,22 @@ public class RoundEnd {
             scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
             tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
         }
-        tableDrawer.drawScore(getScoreFromSchema());
+        tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
 
         if(isFifthSlotFree(chosenFifthDieValue)) {
             processFifthDie(chosenFifthDieValue);
         }
-
-        roundInit.generateSlots();
-        roundInit.generateDicesInSlots();
+//TODO - gdzie to dac
+//        roundInit.generateSlots();
+  //      roundInit.generateDicesInSlots();
    //     roundInit.setEndTurnButtonDisabled();
+//TODO - table drawer
 
     }
 
     public int getFifthDieValue(){
 
-        int[] chosenSlots = freeSlotState.clone();
+        int[] chosenSlots = user.getUserDataStructures().getFreeSlotState().clone();
         Arrays.sort(chosenSlots);
         int fifthDieIndex = 4;
         for(int i=0; i<4; i++){
@@ -100,24 +104,23 @@ public class RoundEnd {
                 break;
             }
         }
-        return diceLists[fifthDieIndex].getDiceValue();
+        Die[] diceList = user.getUserDataStructures().getDiceList();
+        return diceList[fifthDieIndex].getDiceValue();
     }
 
     public int getFirstPairSum(){
-        return diceLists[freeSlotState[0]].getDiceValue() + diceLists[freeSlotState[1]].getDiceValue();
+        Die[] diceList = user.getUserDataStructures().getDiceList();
+        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
+        return diceList[freeSlotState[0]].getDiceValue() + diceList[freeSlotState[1]].getDiceValue();
     }
 
     public int getSecondPairSum(){
-        return diceLists[freeSlotState[2]].getDiceValue() + diceLists[freeSlotState[3]].getDiceValue();
+        Die[] diceList = user.getUserDataStructures().getDiceList();
+        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
+        return diceList[freeSlotState[2]].getDiceValue() + diceList[freeSlotState[3]].getDiceValue();
     }
 
-    public Text getScoreText() {
-        return scoreText;
-    }
 
-    public void setScoreText(Text scoreText) {
-        this.scoreText = scoreText;
-    }
 
 
 
