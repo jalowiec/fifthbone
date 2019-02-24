@@ -1,7 +1,9 @@
 package com.jalowiec;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -13,7 +15,7 @@ import java.util.List;
 
 public class FifthDie extends Application {
 
-    private List<User> plaingUsers = new ArrayList<>();
+
 
     public static void main(String[] args){
         launch(args);
@@ -27,12 +29,12 @@ public class FifthDie extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
-        plaingUsers.add(new User("Lukasz", false));
-        plaingUsers.add(new User("Pawel", false));
-        plaingUsers.add(new User("PC", true));
+
+        PlayingUsers plaingUsers = new PlayingUsers();
+        plaingUsers.addUsers();
 
 
-        for (User user : plaingUsers) {
+        for (User user : plaingUsers.getPlaingUsersList()) {
             user.setGridPane(new GridPane());
             user.getGridPane().setPadding(new Insets(50, 50, 50, 50));
             user.getGridPane().setGridLinesVisible(false);
@@ -48,50 +50,47 @@ public class FifthDie extends Application {
             tableProperties.setColumnProperties(120, 60);
             tableProperties.setRowsProperties(30);
 
-            TableDrawer tableDrawer = new TableDrawer(user);
+            DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
+            diceSlotsOperation.generateDice();
+            user.setRoundEnd(new RoundEnd(user));
+            user.getRoundEnd().setRoundEnd(false);
+
+            user.setTableDrawer(new TableDrawer(user));
+            TableDrawer tableDrawer = user.getTableDrawer();
             tableDrawer.drawTableHeader();
             tableDrawer.drawPointsRow();
             tableDrawer.drawMinusSection();
             tableDrawer.drawPlusSection();
             tableDrawer.drawUserName();
-            tableDrawer.drawScoreHeader();
+            //tableDrawer.drawScoreHeader();
             tableDrawer.drawScore(0);
             tableDrawer.drawFifthBoneHeader();
             tableDrawer.drawFifthBoneSection();
             tableDrawer.drawChosenPair();
             tableDrawer.drawHorizontalLines();
 
-            DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
-            diceSlotsOperation.generateDice();
+
+
+            tableDrawer.drawRoundEndButton(user.getRoundEnd());
+            tableDrawer.drawNextPlayerButton(mainStage, plaingUsers);
 
             user.setRoundInitCommon(new RoundInitCommon(user));
-            user.getRoundInitCommon().generateDicesInSlots();
-
+            user.setRoundProccesorUser(new RoundProccesorUser(user));
 
             if(!user.getPC()) {
-                user.setRoundProccesorUser(new RoundProccesorUser(user));
-                user.setRoundEnd(new RoundEnd(user));
-                tableDrawer.drawRoundEndButton(user.getRoundEnd());
                 tableDrawer.drawHelpMark();
             }
-            Button nextPlayerButton = new Button("Kolejny zawodnik");
-            nextPlayerButton.setOnAction(e-> mainStage.setScene(getNextUser(user).getUserScene()));
-            user.getGridPane().add(nextPlayerButton, 10, 20, 3, 1);
+
         }
 
-
+        User firstUser = plaingUsers.getPlaingUsersList().get(0);
+        firstUser.getRoundInitCommon().generateDicesInSlots();
         mainStage.setTitle("The Fifth Dice");
-        mainStage.setScene(plaingUsers.get(0).getUserScene());
+        mainStage.setScene(firstUser.getUserScene());
         mainStage.show();
     }
 
-    public User getNextUser(User user){
-        int playingUserId = plaingUsers.indexOf(user);
-        if(playingUserId == plaingUsers.size()-1){
-            return plaingUsers.get(0);
-        }
-        return plaingUsers.get(playingUserId+1);
-    }
+
 
 
 

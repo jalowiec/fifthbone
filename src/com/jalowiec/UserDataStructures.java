@@ -57,7 +57,6 @@ public class UserDataStructures {
     }
 
     public void generateSlots(){
-//TODO - sprawdzić czy nie wystarczy raz wygenerowac
         DieSlotsGenerator dieSlotsGenerator = new DieSlotsGenerator();
         dieSlotsGenerator.generateSlots();
         diceSlotsList = dieSlotsGenerator.getSlotsList();
@@ -66,6 +65,7 @@ public class UserDataStructures {
             freeSlotState[i] = -1;
         }
     }
+
 
     public void initScorePointerMap(){
         scorePointerMap = new HashMap<>();

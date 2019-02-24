@@ -14,15 +14,15 @@ public class RoundInitCommon {
     private DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
 
 
+
     public RoundInitCommon(User user) {
         this.gridPane = user.getGridPane();
         this.user = user;
-    }
+     }
 
 
 
     public void generateDicesInSlots() {
-
         removeAllDiceFromSlots();
         RandomDiceValue randomDiceValue = new RandomDiceValue();
         int[] randomValues = randomDiceValue.getRandomArray(5);
@@ -31,22 +31,32 @@ public class RoundInitCommon {
         }
     }
 
+    public void clearFreeSlotState(){
+        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
+        for(int i=0; i<freeSlotState.length; i++){
+            freeSlotState[i]=-1;
+        }
+    }
+
+
     public void drawDieInSlot(Die die, int slotNumber) {
-        RoundProccesorUser roundProccesorUser = new RoundProccesorUser(user);
+
         EventHandler<MouseEvent> mouseHandler = e -> {
-            roundProccesorUser.swapDieInSlots(slotNumber);
+
+            user.getRoundProccesorUser().swapDieInSlots(slotNumber);
 
         };
         Die[] diceList = user.getUserDataStructures().getDiceList();
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         List<DieSlot> diceSlotsList = user.getUserDataStructures().getDiceSlotsList();
 
-
         diceList[slotNumber] = die;
         ImageView imageView = new ImageView(die.getDieImage());
 
-        imageView.setOnMouseClicked(mouseHandler);
-        imageView.setCursor(Cursor.CLOSED_HAND);
+        if(!user.getPC()) {
+            imageView.setOnMouseClicked(mouseHandler);
+            imageView.setCursor(Cursor.CLOSED_HAND);
+        }
         imageViewList.add(imageView);
 
         gridPane.add(imageView, diceSlotsList.get(slotNumber).getColumnIndex(),

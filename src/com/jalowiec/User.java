@@ -9,6 +9,7 @@ public class User {
     private Boolean isPC;
     private Scene userScene;
     private GridPane gridPane;
+    private TableDrawer tableDrawer;
     private String styleCssFile;
     private UserDataStructures userDataStructures;
     private RoundInitCommon roundInitCommon;
@@ -43,6 +44,14 @@ public class User {
 
     public void setGridPane(GridPane gridPane) {
         this.gridPane = gridPane;
+    }
+
+    public TableDrawer getTableDrawer() {
+        return tableDrawer;
+    }
+
+    public void setTableDrawer(TableDrawer tableDrawer) {
+        this.tableDrawer = tableDrawer;
     }
 
     public void setRoundInitCommon(RoundInitCommon roundInitCommon) {

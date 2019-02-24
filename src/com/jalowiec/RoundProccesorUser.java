@@ -10,7 +10,9 @@ public class RoundProccesorUser {
 
     private GridPane gridPane;
     private User user;
-    private DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
+
+
+
 
 
     public RoundProccesorUser(User user) {
@@ -18,31 +20,38 @@ public class RoundProccesorUser {
         this.user = user;
     }
 
+
+
     public void swapDieInSlots(int slotNumber) {
-        List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
-        List<DieSlot> diceSlotsList = user.getUserDataStructures().getDiceSlotsList();
-        List<DieSlot> freeSlotsList = user.getUserDataStructures().getFreeSlotsList();
-        if (isSlotNumberChosen(slotNumber)) {
-            setEndTurnButtonDisabled();
-            openFreeSlot(slotNumber);
-            removeDieInSlot(slotNumber);
-            gridPane.add(imageViewList.get(slotNumber),
-                    diceSlotsList.get(slotNumber).getColumnIndex(),
-                    diceSlotsList.get(slotNumber).getRowIndex(),
-                    diceSlotsList.get(slotNumber).getColumnSpan(),
-                    diceSlotsList.get(slotNumber).getRowSpan());
-        } else {
-            if (isFreeSlot()) {
-                int firstFreeSlot = getFirstFreeSlotIndex();
-                closeFreeSlot(firstFreeSlot, slotNumber);
-                setEndTurnButtonEnabled();
+
+
+        if (!user.getRoundEnd().isRoundEnd()) {
+            List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
+            List<DieSlot> diceSlotsList = user.getUserDataStructures().getDiceSlotsList();
+            List<DieSlot> freeSlotsList = user.getUserDataStructures().getFreeSlotsList();
+            if (isSlotNumberChosen(slotNumber)) {
+                setEndTurnButtonDisabled();
+                openFreeSlot(slotNumber);
                 removeDieInSlot(slotNumber);
                 gridPane.add(imageViewList.get(slotNumber),
-                        freeSlotsList.get(firstFreeSlot).getColumnIndex(),
-                        freeSlotsList.get(firstFreeSlot).getRowIndex(),
-                        freeSlotsList.get(firstFreeSlot).getColumnSpan(),
-                        freeSlotsList.get(firstFreeSlot).getRowSpan());
+                        diceSlotsList.get(slotNumber).getColumnIndex(),
+                        diceSlotsList.get(slotNumber).getRowIndex(),
+                        diceSlotsList.get(slotNumber).getColumnSpan(),
+                        diceSlotsList.get(slotNumber).getRowSpan());
+            } else {
+                if (isFreeSlot()) {
+                    int firstFreeSlot = getFirstFreeSlotIndex();
+                    closeFreeSlot(firstFreeSlot, slotNumber);
+                    setEndTurnButtonEnabled();
+                    removeDieInSlot(slotNumber);
+                    gridPane.add(imageViewList.get(slotNumber),
+                            freeSlotsList.get(firstFreeSlot).getColumnIndex(),
+                            freeSlotsList.get(firstFreeSlot).getRowIndex(),
+                            freeSlotsList.get(firstFreeSlot).getColumnSpan(),
+                            freeSlotsList.get(firstFreeSlot).getRowSpan());
+                }
             }
+
         }
     }
 
@@ -101,12 +110,12 @@ public class RoundProccesorUser {
 
 
     public void setEndTurnButtonDisabled(){
-        TableDrawer.getEndTurnButton().setDisable(true);
+        user.getTableDrawer().getEndTurnButton().setDisable(true);
     }
 
     private void setEndTurnButtonEnabled(){
         if(!isFreeSlot() && isChosenFifthDieCorrect()){
-            TableDrawer.getEndTurnButton().setDisable(false);
+            user.getTableDrawer().getEndTurnButton().setDisable(false);
         }
     }
 
@@ -120,12 +129,10 @@ public class RoundProccesorUser {
         return true;
     }
 
-  //TODO - zmodyfikować
-
 
     public boolean isChosenFifthDieCorrect(){
         int fifthDieValue = user.getRoundEnd().getFifthDieValue();
-        Set<Integer> chosenFifthDiceSet = RoundEnd.getChosenFifthDiceSet();
+        Set<Integer> chosenFifthDiceSet = user.getRoundEnd().getChosenFifthDiceSet();
         if(chosenFifthDiceSet.size()==3 && !chosenFifthDiceSet.contains(fifthDieValue) && !isFreeRound(chosenFifthDiceSet) ){
             return false;
         }

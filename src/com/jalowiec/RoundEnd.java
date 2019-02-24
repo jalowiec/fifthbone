@@ -9,11 +9,13 @@ public class RoundEnd {
 
     private GridPane gridPane;
     private List<Integer> fifthDiceList = new ArrayList<>();
-    private static Map<Integer, Integer> chosenFiftDice = new HashMap<>();
+    private Map<Integer, Integer> chosenFiftDice = new HashMap<>();
     private DiceSlotsOperation diceSlotsOperation;
     private TableDrawer tableDrawer;
-    private Text scoreText;
     private User user;
+    private boolean isRoundEnd;
+    private boolean isGameEnd;
+
 
 
     public RoundEnd(User user) {
@@ -23,8 +25,23 @@ public class RoundEnd {
         this.user = user;
     }
 
+    public boolean isRoundEnd() {
+        return isRoundEnd;
+    }
 
-    public static Set<Integer> getChosenFifthDiceSet(){
+    public void setRoundEnd(boolean roundEnd) {
+        isRoundEnd = roundEnd;
+    }
+
+    public boolean isGameEnd() {
+        return isGameEnd;
+    }
+
+    public void setGameEnd(boolean gameEnd) {
+        isGameEnd = gameEnd;
+    }
+
+    public Set<Integer> getChosenFifthDiceSet(){
         return  chosenFiftDice.keySet();
             }
 
@@ -62,36 +79,49 @@ public class RoundEnd {
     }
 
 
+    public void countScoreAfterRound(TableDrawer tableDrawer) {
+        //TODO - usunac
+        if (!user.getPC()) {
+            Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
+            int chosenFifthDieValue = getFifthDieValue();
+            int firstPairSum = getFirstPairSum();
+            int secondPairSum = getSecondPairSum();
+            int firstCouplePointer = scorePointerMap.get(firstPairSum);
+            int secondCouplePointer;
 
-    public void countScoreAfterRound(TableDrawer tableDrawer){
+            if(!isFifthSlotFree(chosenFifthDieValue) || !isPairSlotFree(firstPairSum) ){
+                endGameForUser();
+            } else {
+                scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
+                tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+                processFifthDie(chosenFifthDieValue);
 
-        Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
-        int chosenFifthDieValue = getFifthDieValue();
-        int firstPairSum = getFirstPairSum();
-        int secondPairSum = getSecondPairSum();
-        int firstCouplePointer = scorePointerMap.get(firstPairSum);
-        if(isPairSlotFree(firstPairSum)) {
-            scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
-            tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+                if(!isPairSlotFree(secondPairSum)){
+                    endGameForUser();
+                } else {
+                    secondCouplePointer = scorePointerMap.get(secondPairSum);
+                    scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
+                    tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
+                    //TODO - czy ma sie wyliczyc raz jeszcze?
+                    tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
+                }
+            }
+        } else {
+            System.out.println("ruch komputera");
+            user.getTableDrawer().getEndTurnButton().setDisable(false);
+
         }
+        user.getRoundProccesorUser().setEndTurnButtonDisabled();
+        setRoundEnd(true);
+        user.getTableDrawer().getNextPlayerButton().setDisable(false);
 
-        int secondCouplePointer = scorePointerMap.get(secondPairSum);
-        if(isPairSlotFree(secondPairSum)) {
-            scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
-            tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
-        }
-        tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
-
-        if(isFifthSlotFree(chosenFifthDieValue)) {
-            processFifthDie(chosenFifthDieValue);
-        }
-//TODO - gdzie to dac
-//        roundInit.generateSlots();
-  //      roundInit.generateDicesInSlots();
-   //     roundInit.setEndTurnButtonDisabled();
-//TODO - table drawer
 
     }
+
+    private void endGameForUser(){
+        setGameEnd(true);
+    }
+
 
     public int getFifthDieValue(){
 

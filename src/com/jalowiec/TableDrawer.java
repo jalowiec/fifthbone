@@ -6,16 +6,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 
 public class TableDrawer {
 
 
     private GridPane grid;
     private DiceSlotsOperation diceSlotsOperation;
-    private static Button endTurnButton;
+    private Button endTurnButton;
+    private Button nextPlayerButton;
     private User user;
 
     public TableDrawer(User user) {
@@ -129,7 +132,7 @@ public class TableDrawer {
         Text cellText = new Text(user.getUserName());
         cellText.setId("tableheader");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        grid.add(cellText, 10, 11, 2, 1);
+        grid.add(cellText, 10, 12, 2, 1);
     }
 
 
@@ -148,6 +151,9 @@ public class TableDrawer {
         Text cellText = user.getUserDataStructures().getScoreText();
         cellText.setId("score");
         GridPane.setHalignment(cellText, HPos.CENTER);
+        if(user.getRoundEnd().isGameEnd()){
+            cellText.setFill(Color.RED);
+        }
         grid.add(cellText, 10, 13, 2, 2);
     }
 
@@ -182,15 +188,52 @@ public class TableDrawer {
         }
     }
 
-    public static Button getEndTurnButton() {
+    public Button getEndTurnButton() {
         return endTurnButton;
+    }
+
+    public Button getNextPlayerButton() {
+        return nextPlayerButton;
     }
 
     public void drawRoundEndButton(RoundEnd roundEnd){
         endTurnButton = new Button("zakoncz runde");
         endTurnButton.setOnAction(e-> roundEnd.countScoreAfterRound(this));
-        endTurnButton.setDisable(true);
-        grid.add(endTurnButton, 5, 22, 2, 1);
+        if(!user.getPC()) {
+            endTurnButton.setDisable(true);
+        }
+        GridPane.setHalignment(endTurnButton, HPos.CENTER);
+        grid.add(endTurnButton, 4, 22, 3, 1);
+    }
+
+    public void drawNextPlayerButton(Stage mainStage, PlayingUsers playingUsers) {
+
+        nextPlayerButton = new Button("Kolejny zawodnik");
+        nextPlayerButton.setOnAction(e -> {
+            mainStage.setScene(playingUsers.getNextUser(user).getUserScene());
+
+            if(!playingUsers.getNextUser(user).getRoundEnd().isGameEnd()) {
+
+                playingUsers.getNextUser(user).getRoundInitCommon().generateDicesInSlots();
+                playingUsers.getNextUser(user).getRoundInitCommon().clearFreeSlotState();
+            } else{
+                playingUsers.getNextUser(user).getRoundInitCommon().removeAllDiceFromSlots();
+            }
+            if(!user.getRoundEnd().isGameEnd()){
+                user.getTableDrawer().getNextPlayerButton().setDisable(true);
+            }
+
+
+            user.getRoundEnd().setRoundEnd(false);
+            if(playingUsers.getNextUser(user).getPC()){
+                playingUsers.getNextUser(user).getTableDrawer().getEndTurnButton().setDisable(false);
+            }
+
+        });
+        nextPlayerButton.setDisable(true);
+        GridPane.setHalignment(nextPlayerButton, HPos.CENTER);
+        user.getGridPane().add(nextPlayerButton, 4, 24, 3, 1);
+
     }
 
     public void drawHelpMark() {
