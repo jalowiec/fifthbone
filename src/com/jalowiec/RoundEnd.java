@@ -1,5 +1,6 @@
 package com.jalowiec;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -78,38 +79,72 @@ public class RoundEnd {
         return true;
     }
 
+    private void processComputerRound(){
+        System.out.println("ruch komputera");
+        Die[] diceList = user.getUserDataStructures().getDiceList();
+        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
+        for(int i=0; i<freeSlotState.length; i++){
+            freeSlotState[i]=3-i;
+        }
+        user.getUserDataStructures().setFreeSlotState(freeSlotState);
+        drawComputerChoice(user.getUserDataStructures().getFreeSlotState());
+    }
+
+    private void drawComputerChoice(int[] freeSlotState){
+        System.out.println(freeSlotState[0]);
+        System.out.println(freeSlotState[1]);
+        System.out.println(freeSlotState[2]);
+        System.out.println(freeSlotState[3]);
+        List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
+        List<DieSlot> freeSlotsList = user.getUserDataStructures().getFreeSlotsList();
+        for(int i=0; i<freeSlotState.length; i++){
+
+
+            gridPane.getChildren().remove(imageViewList.get(freeSlotState[i]));
+            gridPane.add(imageViewList.get(freeSlotState[i]),
+                    freeSlotsList.get(i).getColumnIndex(),
+                    freeSlotsList.get(i).getRowIndex(),
+                    freeSlotsList.get(i).getColumnSpan(),
+                    freeSlotsList.get(i).getRowSpan());
+        }
+    }
+
+
+
+
+
 
     public void countScoreAfterRound(TableDrawer tableDrawer) {
-        //TODO - usunac
-        if (!user.getPC()) {
-            Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
-            int chosenFifthDieValue = getFifthDieValue();
-            int firstPairSum = getFirstPairSum();
-            int secondPairSum = getSecondPairSum();
-            int firstCouplePointer = scorePointerMap.get(firstPairSum);
-            int secondCouplePointer;
 
-            if(!isFifthSlotFree(chosenFifthDieValue) || !isPairSlotFree(firstPairSum) ){
+
+        if (user.getPC()) {
+            processComputerRound();
+            user.getTableDrawer().getEndTurnButton().setDisable(false);
+        }
+
+        Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
+        int chosenFifthDieValue = getFifthDieValue();
+        int firstPairSum = getFirstPairSum();
+        int secondPairSum = getSecondPairSum();
+        int firstCouplePointer = scorePointerMap.get(firstPairSum);
+        int secondCouplePointer;
+
+        if (!isFifthSlotFree(chosenFifthDieValue) || !isPairSlotFree(firstPairSum)) {
+            endGameForUser();
+        } else {
+            scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
+            tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+            processFifthDie(chosenFifthDieValue);
+
+            if (!isPairSlotFree(secondPairSum)) {
                 endGameForUser();
             } else {
-                scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
-                tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
-                processFifthDie(chosenFifthDieValue);
-
-                if(!isPairSlotFree(secondPairSum)){
-                    endGameForUser();
-                } else {
-                    secondCouplePointer = scorePointerMap.get(secondPairSum);
-                    scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
-                    tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
-                    //TODO - czy ma sie wyliczyc raz jeszcze?
-                    tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
-                }
+                secondCouplePointer = scorePointerMap.get(secondPairSum);
+                scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
+                tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
+                //TODO - czy ma sie wyliczyc raz jeszcze?
+                tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
             }
-        } else {
-            System.out.println("ruch komputera");
-            user.getTableDrawer().getEndTurnButton().setDisable(false);
-
         }
         user.getRoundProccesorUser().setEndTurnButtonDisabled();
         setRoundEnd(true);

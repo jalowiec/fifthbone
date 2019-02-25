@@ -40,6 +40,10 @@ public class UserDataStructures {
         return freeSlotState;
     }
 
+    public void setFreeSlotState(int[] freeSlotState) {
+        this.freeSlotState = freeSlotState;
+    }
+
     public List<DieSlot> getDiceSlotsList() {
         return diceSlotsList;
     }
