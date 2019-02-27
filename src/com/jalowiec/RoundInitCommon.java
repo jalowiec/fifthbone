@@ -46,7 +46,7 @@ public class RoundInitCommon {
             user.getRoundProccesorUser().swapDieInSlots(slotNumber);
 
         };
-        Die[] diceList = user.getUserDataStructures().getDiceList();
+        Die[] diceList = user.getUserDataStructures().getDiceArray();
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         List<DieSlot> diceSlotsList = user.getUserDataStructures().getDiceSlotsList();
 

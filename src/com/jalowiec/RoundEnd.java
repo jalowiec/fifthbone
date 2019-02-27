@@ -2,7 +2,6 @@ package com.jalowiec;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
 import java.util.*;
 
@@ -10,7 +9,7 @@ public class RoundEnd {
 
     private GridPane gridPane;
     private List<Integer> fifthDiceList = new ArrayList<>();
-    private Map<Integer, Integer> chosenFiftDice = new HashMap<>();
+    private Map<Integer, Integer> chosenFifthDice = new HashMap<>();
     private DiceSlotsOperation diceSlotsOperation;
     private TableDrawer tableDrawer;
     private User user;
@@ -43,7 +42,7 @@ public class RoundEnd {
     }
 
     public Set<Integer> getChosenFifthDiceSet(){
-        return  chosenFiftDice.keySet();
+        return  chosenFifthDice.keySet();
             }
 
 
@@ -53,17 +52,17 @@ public class RoundEnd {
         if(!fifthDiceList.contains(fifthDieValue)){
             if(fifthDiceList.size()<3){
                 fifthDiceList.add(fifthDieValue);
-                tableDrawer.drawChosenFifthDie(fifthDieValue, chosenFiftDice.size());
-                chosenFiftDice.put(fifthDieValue, 0);
+                tableDrawer.drawChosenFifthDie(fifthDieValue, chosenFifthDice.size());
+                chosenFifthDice.put(fifthDieValue, 0);
             }
         } else{
-            chosenFiftDice.put(fifthDieValue, chosenFiftDice.get(fifthDieValue)+1);
-            tableDrawer.drawChosenFifthDieSlots(chosenFiftDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
+            chosenFifthDice.put(fifthDieValue, chosenFifthDice.get(fifthDieValue)+1);
+            tableDrawer.drawChosenFifthDieSlots(chosenFifthDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
         }
     }
 
     public boolean isFifthSlotFree(int fifthDieValue){
-        if(chosenFiftDice.containsKey(fifthDieValue) && chosenFiftDice.get(fifthDieValue) == 8){
+        if(chosenFifthDice.containsKey(fifthDieValue) && chosenFifthDice.get(fifthDieValue) == 8){
             return false;
         }
         return true;
@@ -80,21 +79,86 @@ public class RoundEnd {
     }
 
     private void processComputerRound(){
-        System.out.println("ruch komputera");
-        Die[] diceList = user.getUserDataStructures().getDiceList();
+        Die[] diceList = user.getUserDataStructures().getDiceArray();
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        for(int i=0; i<freeSlotState.length; i++){
-            freeSlotState[i]=3-i;
+        if(false){
+            System.out.println("wolny los");
+        } else {
+            for (int i = 0, j = 0; i < diceList.length; i++) {
+                if (i != getFifthDieIndex()) {
+                    freeSlotState[j] = i;
+                    j++;
+                }
+            }
         }
+
+
         user.getUserDataStructures().setFreeSlotState(freeSlotState);
         drawComputerChoice(user.getUserDataStructures().getFreeSlotState());
     }
 
+    private int getFifthDieIndex(){
+        Set<Integer> fifthDieSet = getChosenFifthDiceSet();
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
+        int result = 0;
+        if(fifthDieSet.size()<3){
+            for(int i = 0; i<diceArray.length-1; i++) {
+                if (fifthDieSet.contains(diceArray[i].getDiceValue())) {
+                    result++;
+                }
+                else {
+                    return i;
+                }
+            }
+        }else{
+            int lowerUsedFifthDiceNumber = getLowestUsedFifthDiceNumber();
+            System.out.println(lowerUsedFifthDiceNumber);
+            for(int i=0; i<diceArray.length;  i++){
+                if(diceArray[i].getDiceValue()==lowerUsedFifthDiceNumber){
+                    return i;
+                }
+            }
+        }
+
+        return result;
+
+    }
+
+    private boolean isFifthDieOnDiceArray(int fifthDieValue){
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
+        for(int i=0; i<diceArray.length; i++){
+            if(fifthDieValue == diceArray[i].getDiceValue()){
+                return  true;
+            }
+        }
+
+        return false;
+    }
+
+    private int getLowestUsedFifthDiceNumber(){
+        int resultKey = 0;
+        int resultValue = 9;
+        Set<Integer> chosenFifthDiceSet = getChosenFifthDiceSet();
+        for(Integer key : chosenFifthDiceSet){
+            if(chosenFifthDice.get(key)<resultValue && isFifthDieOnDiceArray(key)){
+                resultKey = key;
+                resultValue = chosenFifthDice.get(key);
+
+            }
+        }
+
+
+        return resultKey;
+
+    }
+
     private void drawComputerChoice(int[] freeSlotState){
+        /*
         System.out.println(freeSlotState[0]);
         System.out.println(freeSlotState[1]);
         System.out.println(freeSlotState[2]);
         System.out.println(freeSlotState[3]);
+        */
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         List<DieSlot> freeSlotsList = user.getUserDataStructures().getFreeSlotsList();
         for(int i=0; i<freeSlotState.length; i++){
@@ -169,18 +233,18 @@ public class RoundEnd {
                 break;
             }
         }
-        Die[] diceList = user.getUserDataStructures().getDiceList();
+        Die[] diceList = user.getUserDataStructures().getDiceArray();
         return diceList[fifthDieIndex].getDiceValue();
     }
 
     public int getFirstPairSum(){
-        Die[] diceList = user.getUserDataStructures().getDiceList();
+        Die[] diceList = user.getUserDataStructures().getDiceArray();
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
         return diceList[freeSlotState[0]].getDiceValue() + diceList[freeSlotState[1]].getDiceValue();
     }
 
     public int getSecondPairSum(){
-        Die[] diceList = user.getUserDataStructures().getDiceList();
+        Die[] diceList = user.getUserDataStructures().getDiceArray();
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
         return diceList[freeSlotState[2]].getDiceValue() + diceList[freeSlotState[3]].getDiceValue();
     }

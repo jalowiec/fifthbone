@@ -120,8 +120,8 @@ public class RoundProccesorUser {
         }
     }
 
-    private boolean isFreeRound(Set<Integer> chosenFifthDiceSet) {
-        Die[] diceList = user.getUserDataStructures().getDiceList();
+    public boolean isFreeRound(Set<Integer> chosenFifthDiceSet) {
+        Die[] diceList = user.getUserDataStructures().getDiceArray();
         for (int i = 0; i < diceList.length; i++) {
             if (chosenFifthDiceSet.contains(diceList[i].getDiceValue())) {
                 return false;

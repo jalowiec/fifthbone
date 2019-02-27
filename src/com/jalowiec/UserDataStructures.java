@@ -12,7 +12,7 @@ public class UserDataStructures {
 
     private int[] freeSlotState = new int[4];
     private List<ImageView> imageViewList = new ArrayList<>();
-    private Die[] diceList = new Die[5];
+    private Die[] diceArray = new Die[5];
     private List<DieSlot> diceSlotsList;
     private List<DieSlot> freeSlotsList;
     private Map<Integer, Integer> scorePointerMap;
@@ -28,8 +28,8 @@ public class UserDataStructures {
         return imageViewList;
     }
 
-    public Die[] getDiceList() {
-        return diceList;
+    public Die[] getDiceArray() {
+        return diceArray;
     }
 
     public Map<Integer, Integer> getScorePointerMap() {
