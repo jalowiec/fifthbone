@@ -79,25 +79,81 @@ public class RoundEnd {
     }
 
     private void processComputerRound(){
-        Die[] diceList = user.getUserDataStructures().getDiceArray();
-        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        if(false){
-            System.out.println("wolny los");
-        } else {
-            for (int i = 0, j = 0; i < diceList.length; i++) {
-                if (i != getFifthDieIndex()) {
-                    freeSlotState[j] = i;
-                    j++;
-                }
-            }
-        }
-
-
+        int[] freeSlotState = orderComputerChoice();
         user.getUserDataStructures().setFreeSlotState(freeSlotState);
+
+        freeSlotState = calculateOptimumFourDice();
+        user.getUserDataStructures().setFreeSlotState(freeSlotState);
+
         drawComputerChoice(user.getUserDataStructures().getFreeSlotState());
     }
 
-    private int getFifthDieIndex(){
+    private int[] orderComputerChoice(){
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
+        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
+
+        for (int i = 0, j = 0; i < diceArray.length; i++) {
+            if (i != getComputerFifthDieIndex()) {
+                freeSlotState[j] = i;
+                j++;
+            }
+        }
+        return freeSlotState;
+    }
+
+    private int[] calculateOptimumFourDice(){
+
+        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
+        int[] freeSlotStateFilter;
+        int[] newFreeSlotState = new int[4];
+        int[] firstSetDice =  {0, 1, 2, 3};
+        int[] secondSetDice = {0, 2, 1, 3};
+        int[] thirdSetDice = {0, 3, 1, 2};
+        int predictFirstSetDice = predictScoreFourDice(firstSetDice);
+        int predictSecondSetDice = predictScoreFourDice(secondSetDice);
+        int predictThirdSetDice = predictScoreFourDice(thirdSetDice);
+
+        System.out.println(predictFirstSetDice + " " + predictSecondSetDice + " " + predictThirdSetDice);
+
+        freeSlotStateFilter = firstSetDice;
+        if(predictSecondSetDice > predictFirstSetDice){
+            freeSlotStateFilter = secondSetDice;
+        }
+        if(predictThirdSetDice > predictSecondSetDice){
+            freeSlotStateFilter = thirdSetDice;
+        }
+
+        for(int i=0; i<newFreeSlotState.length; i++){
+            newFreeSlotState[i]=freeSlotState[freeSlotStateFilter[i]];
+        }
+
+
+
+
+        return newFreeSlotState;
+    }
+
+    private int predictScoreFourDice(int[] chosenElementsSetDice){
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
+        int[] predictFreeSlotState = user.getUserDataStructures().getFreeSlotState().clone();
+        Map<Integer, Integer> predictScorePointerMap = new HashMap<>(user.getUserDataStructures().getScorePointerMap());
+        int predictResult = 0;
+        int predictFirstPairSum = diceArray[predictFreeSlotState[chosenElementsSetDice[0]]].getDiceValue() + diceArray[predictFreeSlotState[chosenElementsSetDice[1]]].getDiceValue();
+        int firstCouplePointer = predictScorePointerMap.get(predictFirstPairSum);
+        predictScorePointerMap.replace(predictFirstPairSum, ++firstCouplePointer);
+
+        int predictSecondPairSum = diceArray[predictFreeSlotState[chosenElementsSetDice[2]]].getDiceValue() + diceArray[predictFreeSlotState[chosenElementsSetDice[3]]].getDiceValue();
+        int secondCouplePointer = predictScorePointerMap.get(predictSecondPairSum);
+        predictScorePointerMap.replace(predictSecondPairSum, ++secondCouplePointer);
+
+
+        predictResult = diceSlotsOperation.getScoreFromSchema(predictScorePointerMap);
+
+        return  predictResult;
+    }
+
+
+    private int getComputerFifthDieIndex(){
         Set<Integer> fifthDieSet = getChosenFifthDiceSet();
         Die[] diceArray = user.getUserDataStructures().getDiceArray();
         int result = 0;
@@ -112,7 +168,6 @@ public class RoundEnd {
             }
         }else{
             int lowerUsedFifthDiceNumber = getLowestUsedFifthDiceNumber();
-            System.out.println(lowerUsedFifthDiceNumber);
             for(int i=0; i<diceArray.length;  i++){
                 if(diceArray[i].getDiceValue()==lowerUsedFifthDiceNumber){
                     return i;
@@ -153,12 +208,7 @@ public class RoundEnd {
     }
 
     private void drawComputerChoice(int[] freeSlotState){
-        /*
-        System.out.println(freeSlotState[0]);
-        System.out.println(freeSlotState[1]);
-        System.out.println(freeSlotState[2]);
-        System.out.println(freeSlotState[3]);
-        */
+
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         List<DieSlot> freeSlotsList = user.getUserDataStructures().getFreeSlotsList();
         for(int i=0; i<freeSlotState.length; i++){
@@ -199,6 +249,7 @@ public class RoundEnd {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
             tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
             processFifthDie(chosenFifthDieValue);
+            tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
 
             if (!isPairSlotFree(secondPairSum)) {
                 endGameForUser();
@@ -233,20 +284,20 @@ public class RoundEnd {
                 break;
             }
         }
-        Die[] diceList = user.getUserDataStructures().getDiceArray();
-        return diceList[fifthDieIndex].getDiceValue();
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
+        return diceArray[fifthDieIndex].getDiceValue();
     }
 
     public int getFirstPairSum(){
-        Die[] diceList = user.getUserDataStructures().getDiceArray();
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        return diceList[freeSlotState[0]].getDiceValue() + diceList[freeSlotState[1]].getDiceValue();
+        return diceArray[freeSlotState[0]].getDiceValue() + diceArray[freeSlotState[1]].getDiceValue();
     }
 
     public int getSecondPairSum(){
-        Die[] diceList = user.getUserDataStructures().getDiceArray();
+        Die[] diceArray = user.getUserDataStructures().getDiceArray();
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        return diceList[freeSlotState[2]].getDiceValue() + diceList[freeSlotState[3]].getDiceValue();
+        return diceArray[freeSlotState[2]].getDiceValue() + diceArray[freeSlotState[3]].getDiceValue();
     }
 
 
