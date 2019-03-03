@@ -1,16 +1,10 @@
 package com.jalowiec;
 
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class FifthDie extends Application {
@@ -33,27 +27,31 @@ public class FifthDie extends Application {
         PlayingUsers plaingUsers = new PlayingUsers();
         plaingUsers.addUsers();
 
+        CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
-        for (User user : plaingUsers.getPlaingUsersList()) {
+
+
+        for (User user : commonDataStructure.getPlayingUsersList()) {
             user.setGridPane(new GridPane());
-            user.getGridPane().setPadding(new Insets(50, 50, 50, 50));
+            user.getGridPane().setPadding(new Insets(30, 20, 30, 20));
             user.getGridPane().setGridLinesVisible(false);
 
-            user.setUserScene(new Scene(user.getGridPane(), 880, 900));
-            if(!user.getPC()){
-                user.getUserScene().getStylesheets().add("userstyle.css");
-            }else{
-                user.getUserScene().getStylesheets().add("computerstyle.css");
-            }
+            user.setUserScene(new Scene(user.getGridPane(), 1200, 900));
+            user.getUserScene().getStylesheets().add("userstyle.css");
+
+
+
 
             TableProperties tableProperties = new TableProperties(user);
-            tableProperties.setColumnProperties(120, 60);
+            tableProperties.setLeftPanelProperties(20, 240, 40);
+            tableProperties.setColumnProperties(120,  60);
             tableProperties.setRowsProperties(30);
 
-            DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
-            diceSlotsOperation.generateDice();
+
+            commonDataStructure.generateDice();
             user.setRoundEnd(new RoundEnd(user));
             user.getRoundEnd().setRoundEnd(false);
+
 
             user.setTableDrawer(new TableDrawer(user));
             TableDrawer tableDrawer = user.getTableDrawer();
@@ -83,8 +81,18 @@ public class FifthDie extends Application {
 
         }
 
-        User firstUser = plaingUsers.getPlaingUsersList().get(0);
+
+        LeftPanelDrawer leftPanelDrawer = new LeftPanelDrawer();
+        commonDataStructure.setLeftPanelDrawer(leftPanelDrawer);
+        leftPanelDrawer.drawLeftPanelFrame();
+        leftPanelDrawer.drawRankingRecordInPanel();
+        leftPanelDrawer.drawPlayingUsersInPanel();
+
+
+        User firstUser = commonDataStructure.getPlayingUsersList().get(0);
         firstUser.getRoundInitCommon().generateDicesInSlots();
+
+
         mainStage.setTitle("The Fifth Dice");
         mainStage.setScene(firstUser.getUserScene());
         mainStage.show();

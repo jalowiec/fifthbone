@@ -2,14 +2,13 @@ package com.jalowiec;
 
 public class DieSlot {
 
-    private String name;
     private int columnIndex;
     private int rowIndex;
     private int columnSpan;
     private int rowSpan;
 
-    public DieSlot(String name, int columnIndex, int rowIndex, int columnSpan, int rowSpan) {
-        this.name = name;
+    public DieSlot( int columnIndex, int rowIndex, int columnSpan, int rowSpan) {
+
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
         this.columnSpan = columnSpan;

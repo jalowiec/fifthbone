@@ -10,7 +10,7 @@ public class RoundEnd {
     private GridPane gridPane;
     private List<Integer> fifthDiceList = new ArrayList<>();
     private Map<Integer, Integer> chosenFifthDice = new HashMap<>();
-    private DiceSlotsOperation diceSlotsOperation;
+    private CommonDataStructure commonDataStructure;
     private TableDrawer tableDrawer;
     private User user;
     private boolean isRoundEnd;
@@ -20,7 +20,7 @@ public class RoundEnd {
 
     public RoundEnd(User user) {
         this.gridPane = user.getGridPane();
-        diceSlotsOperation = DiceSlotsOperation.getInstance();
+        commonDataStructure = CommonDataStructure.getInstance();
         tableDrawer = new TableDrawer(user);
         this.user = user;
     }
@@ -147,7 +147,7 @@ public class RoundEnd {
         predictScorePointerMap.replace(predictSecondPairSum, ++secondCouplePointer);
 
 
-        predictResult = diceSlotsOperation.getScoreFromSchema(predictScorePointerMap);
+        predictResult = commonDataStructure.getScoreFromSchema(predictScorePointerMap);
 
         return  predictResult;
     }
@@ -249,7 +249,7 @@ public class RoundEnd {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
             tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
             processFifthDie(chosenFifthDieValue);
-            tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
+            tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
 
             if (!isPairSlotFree(secondPairSum)) {
                 endGameForUser();
@@ -258,12 +258,13 @@ public class RoundEnd {
                 scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
                 tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
                 //TODO - czy ma sie wyliczyc raz jeszcze?
-                tableDrawer.drawScore(diceSlotsOperation.getScoreFromSchema(scorePointerMap));
+                tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
             }
         }
         user.getRoundProccesorUser().setEndTurnButtonDisabled();
         setRoundEnd(true);
         user.getTableDrawer().getNextPlayerButton().setDisable(false);
+        commonDataStructure.getLeftPanelDrawer().drawPlayingUsersInPanel();
 
 
     }

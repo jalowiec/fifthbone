@@ -12,7 +12,17 @@ public class TableProperties {
         this.grid = user.getGridPane();
     }
 
-    public void setColumnProperties(int firstColumnWidth, int restColumnsWidth){
+    public void setLeftPanelProperties(int paddingColumnWidth, int longColumnWidth, int shortColumnWidth){
+
+
+        grid.getColumnConstraints().add(new ColumnConstraints(paddingColumnWidth));
+        grid.getColumnConstraints().add(new ColumnConstraints(longColumnWidth));
+        grid.getColumnConstraints().add(new ColumnConstraints(shortColumnWidth));
+        grid.getColumnConstraints().add(new ColumnConstraints(shortColumnWidth));
+        grid.getColumnConstraints().add(new ColumnConstraints(paddingColumnWidth));
+    }
+
+    public void setColumnProperties(int firstColumnWidth,  int restColumnsWidth){
 
         grid.getColumnConstraints().add(new ColumnConstraints(firstColumnWidth));
 

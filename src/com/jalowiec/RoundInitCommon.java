@@ -11,7 +11,7 @@ public class RoundInitCommon {
 
     private GridPane gridPane;
     private User user;
-    private DiceSlotsOperation diceSlotsOperation = DiceSlotsOperation.getInstance();
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
 
 
@@ -27,7 +27,7 @@ public class RoundInitCommon {
         RandomDiceValue randomDiceValue = new RandomDiceValue();
         int[] randomValues = randomDiceValue.getRandomArray(5);
         for (int i = 0; i < randomValues.length; i++) {
-            drawDieInSlot(diceSlotsOperation.getDieFromValue(randomValues[i]), i);
+            drawDieInSlot(commonDataStructure.getDieFromValue(randomValues[i]), i);
         }
     }
 

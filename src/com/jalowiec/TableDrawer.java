@@ -16,7 +16,6 @@ public class TableDrawer {
 
 
     private GridPane grid;
-    private DiceSlotsOperation diceSlotsOperation;
     private Button endTurnButton;
     private Button nextPlayerButton;
     private User user;
@@ -24,7 +23,6 @@ public class TableDrawer {
     public TableDrawer(User user) {
         this.user = user;
         this.grid = user.getGridPane();
-        diceSlotsOperation = DiceSlotsOperation.getInstance();
     }
 
     public void drawTableHeader(){
@@ -35,7 +33,7 @@ public class TableDrawer {
             cellText = new Text(rowValues[i]);
             GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tableheader");
-            grid.add(cellText,  i, 0);
+            grid.add(cellText,  i+5, 0);
         }
     }
 
@@ -47,14 +45,14 @@ public class TableDrawer {
             cellText = new Text(rowValues[i]);
             GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tablerow");
-            grid.add(cellText,  i, 1);
+            grid.add(cellText,  i+5, 1);
         }
     }
     public void drawMinusSection() {
         Text cellText = new Text("-");
         cellText.setId("cellminus");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        GridPane.setConstraints(cellText, 0, 2, 1,4);
+        GridPane.setConstraints(cellText, 5, 2, 1,4);
         grid.getChildren().add(cellText);
     }
 
@@ -63,7 +61,7 @@ public class TableDrawer {
         Text cellText = new Text("+");
         cellText.setId("cellplus");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        GridPane.setConstraints(cellText,0, 6, 1,5);
+        GridPane.setConstraints(cellText,5, 6, 1,5);
         grid.getChildren().add(cellText);
     }
 
@@ -72,7 +70,7 @@ public class TableDrawer {
         cellText.setId("tableheader");
         cellText.getTransforms().add(new Rotate(-90));
         GridPane.setHalignment(cellText, HPos.RIGHT);
-        grid.add(cellText,  1, 15);
+        grid.add(cellText,  6, 15);
     }
 
     public void drawFifthBoneSection() {
@@ -81,7 +79,7 @@ public class TableDrawer {
             cellText = new Text("*");
             GridPane.setHalignment(cellText, HPos.RIGHT);
             cellText.setId("tableheader");
-            grid.add(cellText,  0, 12+i);
+            grid.add(cellText,  5, 12+i);
         }
     }
 
@@ -92,8 +90,8 @@ public class TableDrawer {
         cellSecondText.setId("tablerow");
         GridPane.setHalignment(cellFirstText, HPos.CENTER);
         GridPane.setHalignment(cellSecondText, HPos.CENTER);
-        grid.add(cellFirstText,  2, 20);
-        grid.add(cellSecondText,  8, 20);
+        grid.add(cellFirstText,  7, 20);
+        grid.add(cellSecondText,  13, 20);
 
 
 
@@ -106,42 +104,36 @@ public class TableDrawer {
             line.setStrokeWidth(1);
             switch(i){
                 case 0 :
-                    grid.add(line, 0, 0);
+                    grid.add(line, 5, 0);
                     break;
                 case 1:
-                    grid.add(line, 0, 1);
+                    grid.add(line, 5, 1);
                     break;
                 case 2:
-                    grid.add(line, 0, 5);
+                    grid.add(line, 5, 5);
                     break;
                 case 3:
-                    grid.add(line, 0, 10);
+                    grid.add(line, 5, 10);
                     break;
                 case 4:
-                    grid.add(line, 0, 15);
+                    grid.add(line, 5, 15);
                     break;
             }
 
         }
-        Line vLine = new Line(0,0,0,90);
+        Line vLine = new Line(1,0,1,90);
         vLine.setStrokeWidth(1);
-        grid.add(vLine, 10, 13);
+        grid.add(vLine, 15, 13);
     }
 
     public void drawUserName() {
         Text cellText = new Text(user.getUserName());
         cellText.setId("tableheader");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        grid.add(cellText, 10, 12, 2, 1);
+        grid.add(cellText, 15, 12, 2, 1);
     }
 
 
-    public void drawScoreHeader() {
-        Text cellText = new Text("WYNIK");
-        cellText.setId("tableheader");
-        GridPane.setHalignment(cellText, HPos.CENTER);
-        grid.add(cellText, 10, 12, 2, 1);
-    }
 
 
     public void drawScore(int score) {
@@ -154,7 +146,7 @@ public class TableDrawer {
         if(user.getRoundEnd().isGameEnd()){
             cellText.setFill(Color.RED);
         }
-        grid.add(cellText, 10, 13, 2, 2);
+        grid.add(cellText, 15, 13, 2, 2);
     }
 
     public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {
@@ -162,10 +154,10 @@ public class TableDrawer {
         ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
         if(rowPairPosition < 10) {
             GridPane.setHalignment(usedSlotCrossBlack, HPos.CENTER);
-            grid.add(usedSlotCrossBlack, pairSum - 1, rowPairPosition);
+            grid.add(usedSlotCrossBlack, pairSum+4, rowPairPosition);
         }else {
             GridPane.setHalignment(usedSlotCrossRed, HPos.CENTER);
-            grid.add(usedSlotCrossRed, pairSum - 1, rowPairPosition);
+            grid.add(usedSlotCrossRed, pairSum+4, rowPairPosition);
         }
     }
 
@@ -173,7 +165,7 @@ public class TableDrawer {
         Text cellText = new Text(Integer.toString(fifthDieValue));
         GridPane.setHalignment(cellText, HPos.CENTER);
         cellText.setId("fifthdie");
-        grid.add(cellText, 1, 12+row);
+        grid.add(cellText, 6, 12+row);
     }
 
     public void drawChosenFifthDieSlots(int fifthDiePointer, int fifthDieRow) {
@@ -181,10 +173,10 @@ public class TableDrawer {
         ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
         if(fifthDiePointer < 8) {
             GridPane.setHalignment(usedSlotCrossBlack, HPos.CENTER);
-            grid.add(usedSlotCrossBlack, fifthDiePointer+1, fifthDieRow+12);
+            grid.add(usedSlotCrossBlack, fifthDiePointer+6, fifthDieRow+12);
         } else {
             GridPane.setHalignment(usedSlotCrossRed, HPos.CENTER);
-            grid.add(usedSlotCrossRed, fifthDiePointer+1, fifthDieRow+12);
+            grid.add(usedSlotCrossRed, fifthDiePointer+6, fifthDieRow+12);
         }
     }
 
@@ -203,7 +195,7 @@ public class TableDrawer {
             endTurnButton.setDisable(true);
         }
         GridPane.setHalignment(endTurnButton, HPos.CENTER);
-        grid.add(endTurnButton, 4, 22, 3, 1);
+        grid.add(endTurnButton, 9, 22, 3, 1);
     }
 
     public void drawNextPlayerButton(Stage mainStage, PlayingUsers playingUsers) {
@@ -232,7 +224,7 @@ public class TableDrawer {
         });
         nextPlayerButton.setDisable(true);
         GridPane.setHalignment(nextPlayerButton, HPos.CENTER);
-        user.getGridPane().add(nextPlayerButton, 4, 24, 3, 1);
+        user.getGridPane().add(nextPlayerButton, 9, 24, 3, 1);
 
     }
 
@@ -243,7 +235,7 @@ public class TableDrawer {
                 " 2. Piata kosc musi nalezec do wczesniej wybranych");
 
         Tooltip.install(helpMark, helpTooltip);
-        grid.add(helpMark, 5, 20);
+        grid.add(helpMark, 10, 20);
     }
 
 

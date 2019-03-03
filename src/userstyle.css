@@ -19,8 +19,10 @@
     -fx-font-size: 35pt;
 
 }
-#fifthdie{
+#fifthdie {
     -fx-font-size: 20pt;
-
-
 }
+#leftpanelplayingplayers{
+    -fx-font-size: 13pt;
+}
+

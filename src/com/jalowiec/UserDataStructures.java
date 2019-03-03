@@ -56,6 +56,10 @@ public class UserDataStructures {
         return scoreText;
     }
 
+    public String getScoreValue(){
+        return scoreText.getText();
+    }
+
     public void setScoreText(Text scoreText) {
         this.scoreText = scoreText;
     }

@@ -2,24 +2,38 @@ package com.jalowiec;
 
 import java.util.*;
 
-public class DiceSlotsOperation {
+public class CommonDataStructure {
 
-    private static DiceSlotsOperation instance;
+    private static CommonDataStructure instance;
     private int[][] scoreSchema;
     DiceGenerator diceGenerator;
+    private List<User> playingUsersList = new ArrayList<>();
+    LeftPanelDrawer leftPanelDrawer;
 
 
-    private DiceSlotsOperation(){
+    private CommonDataStructure(){
 
         initScoreSchema();
         diceGenerator = new DiceGenerator();
     }
 
-    public static DiceSlotsOperation getInstance(){
+    public static CommonDataStructure getInstance(){
         if(instance==null){
-            instance=new DiceSlotsOperation();
+            instance=new CommonDataStructure();
         }
         return instance;
+    }
+
+    public List<User> getPlayingUsersList() {
+        return playingUsersList;
+    }
+
+    public LeftPanelDrawer getLeftPanelDrawer() {
+        return leftPanelDrawer;
+    }
+
+    public void setLeftPanelDrawer(LeftPanelDrawer leftPanelDrawer) {
+        this.leftPanelDrawer = leftPanelDrawer;
     }
 
     public void generateDice(){

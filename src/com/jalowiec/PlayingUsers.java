@@ -1,33 +1,31 @@
 package com.jalowiec;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayingUsers {
 
-    private List<User> plaingUsersList = new ArrayList<>();
+    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
-
-    public List<User> getPlaingUsersList() {
-        return plaingUsersList;
-    }
 
     public void addUsers() {
 
+        List<User> playingUsersList = commonDataStructure.getPlayingUsersList();
+
    //     plaingUsersList.add(new User("Michal", false));
-        plaingUsersList.add(new User("Lukasz", false));
-        plaingUsersList.add(new User("PC", true));
+        playingUsersList.add(new User("Lukasz", false));
+        playingUsersList.add(new User("Lukasz1", false));
+        playingUsersList.add(new User("Lukasz2", false));
+        playingUsersList.add(new User("PC", true));
 
     }
 
     public User getNextUser(User user){
-        int playingUserId = plaingUsersList.indexOf(user);
-        if(playingUserId == plaingUsersList.size()-1){
-            return plaingUsersList.get(0);
+        List<User> playingUsersList = commonDataStructure.getPlayingUsersList();
+        int playingUserId = playingUsersList.indexOf(user);
+        if(playingUserId == playingUsersList.size()-1){
+            return playingUsersList.get(0);
         }
-        return plaingUsersList.get(playingUserId+1);
+        return playingUsersList.get(playingUserId+1);
     }
-
-    //public void
 
 }
