@@ -16,6 +16,7 @@ public class User {
     private RoundProccesorUser roundProccesorUser;
     private RoundEnd roundEnd;
 
+
     public User(String userName, Boolean isPC) {
         this.userName = userName;
         this.isPC = isPC;

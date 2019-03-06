@@ -10,17 +10,20 @@ import javafx.scene.text.Font;
 
 public class LeftPanelDrawer {
 
-    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
-    int refRowIndex = 13;
-    RankingRecordDrawer rankingRecordDrawer;
-    PlayingUsersDrawer playingUsersDrawer;
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+    private int refRowIndex = 13;
+    private RankingRecordDrawer rankingRecordDrawer;
+    private PlayingUsersDrawer playingUsersDrawer;
 
 
     public LeftPanelDrawer() {
-        rankingRecordDrawer = new RankingRecordDrawer(new RankingFileReader());
+        rankingRecordDrawer = new RankingRecordDrawer();
         playingUsersDrawer = new PlayingUsersDrawer();
     }
 
+    public RankingRecordDrawer getRankingRecordDrawer() {
+        return rankingRecordDrawer;
+    }
 
     public void drawLeftPanelFrame(){
 
@@ -28,7 +31,7 @@ public class LeftPanelDrawer {
         int strokeBoldWidth = 30;
         Color strokeColor = Color.rgb(221, 221, 221);
 
-        for(User user : commonDataStructure.getPlayingUsersList()) {
+        for(User user : commonDataStructure.getPlayersInTheGame()) {
             Line hLeftLine = new Line(0, 0, 0, 805);
             GridPane.setHalignment(hLeftLine, HPos.LEFT);
             hLeftLine.setStrokeWidth(strokeWidth);
@@ -41,19 +44,19 @@ public class LeftPanelDrawer {
             hRightLine.setStroke(strokeColor);
             user.getGridPane().add(hRightLine, 3, 13);
 
-            Line vTopLine = new Line(0, 0, 310, 0);
+            Line vTopLine = new Line(0, 0, 270, 0);
             GridPane.setValignment(vTopLine, VPos.CENTER);
             vTopLine.setStrokeWidth(strokeBoldWidth);
             vTopLine.setStroke(strokeColor);
             user.getGridPane().add(vTopLine, 0, 0);
 
-            Line vMiddleLine = new Line(0, 0, 310, 0);
+            Line vMiddleLine = new Line(0, 0, 270, 0);
             GridPane.setValignment(vMiddleLine, VPos.CENTER);
             vMiddleLine.setStrokeWidth(strokeBoldWidth);
             vMiddleLine.setStroke(strokeColor);
             user.getGridPane().add(vMiddleLine, 0, refRowIndex);
 
-            Line vBottomLine = new Line(0, 0, 335, 0);
+            Line vBottomLine = new Line(0, 0, 295, 0);
             GridPane.setValignment(vBottomLine, VPos.TOP);
             vBottomLine.setStrokeWidth(strokeWidth);
             vBottomLine.setStroke(strokeColor);
@@ -64,7 +67,7 @@ public class LeftPanelDrawer {
             GridPane.setHalignment(playersLabel,HPos.CENTER);
             playersLabel.setFont(new Font(20));
 
-            Label recordsLabel = new Label("REKORDY");
+            Label recordsLabel = new Label("TOP TEN");
             GridPane.setHalignment(recordsLabel,HPos.CENTER);
             recordsLabel.setFont(new Font( 20));
 
@@ -76,12 +79,18 @@ public class LeftPanelDrawer {
 
     }
 
-    public void drawRankingRecordInPanel(){
-        rankingRecordDrawer.drawRankingRecord();
+
+
+    public void drawInitPlayingUsersInPanel(){
+        playingUsersDrawer.drawPlayingUsersInit();
     }
 
-    public void drawPlayingUsersInPanel(){
-        playingUsersDrawer.drawPlayingUsers();
+    public void drawPlayingUsersScoreInPanel(){
+        playingUsersDrawer.drawPlayingUsersScores();
+    }
+
+    public void drawRankingRecordInPanel(){
+        rankingRecordDrawer.drawRankingRecord();
     }
 
 

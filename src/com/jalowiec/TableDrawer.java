@@ -202,8 +202,13 @@ public class TableDrawer {
 
         nextPlayerButton = new Button("Kolejny zawodnik");
         nextPlayerButton.setOnAction(e -> {
-            mainStage.setScene(playingUsers.getNextUser(user).getUserScene());
-
+         //   mainStage.setScene(playingUsers.getNextUser(user).getUserScene());
+            User nextPlayingUser = playingUsers.getNextUserWhoNotFinished(user);
+            mainStage.setScene(nextPlayingUser.getUserScene());
+            nextPlayingUser.getRoundInitCommon().generateDicesInSlots();
+            nextPlayingUser.getRoundInitCommon().clearFreeSlotState();
+            user.getTableDrawer().getNextPlayerButton().setDisable(true);
+/*
             if(!playingUsers.getNextUser(user).getRoundEnd().isGameEnd()) {
 
                 playingUsers.getNextUser(user).getRoundInitCommon().generateDicesInSlots();
@@ -214,11 +219,11 @@ public class TableDrawer {
             if(!user.getRoundEnd().isGameEnd()){
                 user.getTableDrawer().getNextPlayerButton().setDisable(true);
             }
-
+*/
 
             user.getRoundEnd().setRoundEnd(false);
-            if(playingUsers.getNextUser(user).getPC()){
-                playingUsers.getNextUser(user).getTableDrawer().getEndTurnButton().setDisable(false);
+            if(nextPlayingUser.getPC()){
+                nextPlayingUser.getTableDrawer().getEndTurnButton().setDisable(false);
             }
 
         });

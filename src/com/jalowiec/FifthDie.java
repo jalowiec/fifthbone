@@ -31,27 +31,22 @@ public class FifthDie extends Application {
 
 
 
-        for (User user : commonDataStructure.getPlayingUsersList()) {
+        for (User user : commonDataStructure.getPlayersInTheGame()) {
             user.setGridPane(new GridPane());
             user.getGridPane().setPadding(new Insets(30, 20, 30, 20));
             user.getGridPane().setGridLinesVisible(false);
 
-            user.setUserScene(new Scene(user.getGridPane(), 1200, 900));
+            user.setUserScene(new Scene(user.getGridPane(), 1160, 900));
             user.getUserScene().getStylesheets().add("userstyle.css");
 
-
-
-
             TableProperties tableProperties = new TableProperties(user);
-            tableProperties.setLeftPanelProperties(20, 240, 40);
+            tableProperties.setLeftPanelProperties(20, 200, 40);
             tableProperties.setColumnProperties(120,  60);
             tableProperties.setRowsProperties(30);
-
 
             commonDataStructure.generateDice();
             user.setRoundEnd(new RoundEnd(user));
             user.getRoundEnd().setRoundEnd(false);
-
 
             user.setTableDrawer(new TableDrawer(user));
             TableDrawer tableDrawer = user.getTableDrawer();
@@ -60,14 +55,11 @@ public class FifthDie extends Application {
             tableDrawer.drawMinusSection();
             tableDrawer.drawPlusSection();
             tableDrawer.drawUserName();
-            //tableDrawer.drawScoreHeader();
             tableDrawer.drawScore(0);
             tableDrawer.drawFifthBoneHeader();
             tableDrawer.drawFifthBoneSection();
             tableDrawer.drawChosenPair();
             tableDrawer.drawHorizontalLines();
-
-
 
             tableDrawer.drawRoundEndButton(user.getRoundEnd());
             tableDrawer.drawNextPlayerButton(mainStage, plaingUsers);
@@ -85,11 +77,14 @@ public class FifthDie extends Application {
         LeftPanelDrawer leftPanelDrawer = new LeftPanelDrawer();
         commonDataStructure.setLeftPanelDrawer(leftPanelDrawer);
         leftPanelDrawer.drawLeftPanelFrame();
+
+        commonDataStructure.getRankingFromTheFile();
+
         leftPanelDrawer.drawRankingRecordInPanel();
-        leftPanelDrawer.drawPlayingUsersInPanel();
+        leftPanelDrawer.drawInitPlayingUsersInPanel();
 
 
-        User firstUser = commonDataStructure.getPlayingUsersList().get(0);
+        User firstUser = commonDataStructure.getPlayersInTheGame().get(0);
         firstUser.getRoundInitCommon().generateDicesInSlots();
 
 

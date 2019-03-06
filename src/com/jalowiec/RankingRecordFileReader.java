@@ -12,15 +12,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
-public class RankingFileReader {
+public class RankingRecordFileReader {
 
-    List<RankingRecord> rankingList = new ArrayList<>();
-
-    public RankingFileReader() {
-        readRankingListFromFile();
-    }
 
     public List<RankingRecord> readRankingListFromFile() {
+
+        List<RankingRecord> rankingList = new ArrayList<>();
 
         File file = new File("c://Dice/diceranking.txt");
 
@@ -41,7 +38,5 @@ public class RankingFileReader {
         return rankingList;
     }
 
-    public List<RankingRecord> getRankingList() {
-        return rankingList;
-    }
+
 }

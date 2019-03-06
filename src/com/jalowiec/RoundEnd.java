@@ -62,7 +62,7 @@ public class RoundEnd {
     }
 
     public boolean isFifthSlotFree(int fifthDieValue){
-        if(chosenFifthDice.containsKey(fifthDieValue) && chosenFifthDice.get(fifthDieValue) == 8){
+        if(chosenFifthDice.containsKey(fifthDieValue) && chosenFifthDice.get(fifthDieValue) == 1){
             return false;
         }
         return true;
@@ -244,7 +244,7 @@ public class RoundEnd {
         int secondCouplePointer;
 
         if (!isFifthSlotFree(chosenFifthDieValue) || !isPairSlotFree(firstPairSum)) {
-            endGameForUser();
+            endGameForUser(user);
         } else {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
             tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
@@ -252,7 +252,7 @@ public class RoundEnd {
             tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
 
             if (!isPairSlotFree(secondPairSum)) {
-                endGameForUser();
+                endGameForUser(user);
             } else {
                 secondCouplePointer = scorePointerMap.get(secondPairSum);
                 scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
@@ -261,16 +261,25 @@ public class RoundEnd {
                 tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
             }
         }
+
         user.getRoundProccesorUser().setEndTurnButtonDisabled();
         setRoundEnd(true);
         user.getTableDrawer().getNextPlayerButton().setDisable(false);
-        commonDataStructure.getLeftPanelDrawer().drawPlayingUsersInPanel();
+        commonDataStructure.getLeftPanelDrawer().drawPlayingUsersScoreInPanel();
 
 
     }
 
-    private void endGameForUser(){
+    private void endGameForUser(User user){
+        System.out.println("KONIEC GRY DLA UZYTKOWNIKA: " + user.getUserName());
+        RankingRecordDrawer rankingRecordDrawer = commonDataStructure.getLeftPanelDrawer().getRankingRecordDrawer();
+        RankingRecord rankingRecordAfterEndGame = new RankingRecord(user.getUserName(), Integer.parseInt(user.getUserDataStructures().getScoreValue()), new Date());
+        if(rankingRecordDrawer.isShouldBeAddedToRanking(rankingRecordAfterEndGame)){
+            rankingRecordDrawer.addToRanking(rankingRecordAfterEndGame);
+        }
         setGameEnd(true);
+        commonDataStructure.getPlayersWhoNotFinished().remove(user);
+
     }
 
 

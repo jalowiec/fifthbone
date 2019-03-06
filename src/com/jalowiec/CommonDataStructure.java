@@ -6,15 +6,22 @@ public class CommonDataStructure {
 
     private static CommonDataStructure instance;
     private int[][] scoreSchema;
-    DiceGenerator diceGenerator;
-    private List<User> playingUsersList = new ArrayList<>();
-    LeftPanelDrawer leftPanelDrawer;
+    private List<User> playersInTheGame = new ArrayList<>();
+    private List<User> playersWhoNotFinished;
+    private List<RankingRecord> rankingList;
+    private DiceGenerator diceGenerator;
+    private LeftPanelDrawer leftPanelDrawer;
+    private RankingRecordFileReader rankingRecordFileReader;
+    private RankingRecordFileWriter rankingRecordFileWriter;
 
 
     private CommonDataStructure(){
 
         initScoreSchema();
         diceGenerator = new DiceGenerator();
+        rankingRecordFileReader = new RankingRecordFileReader();
+        rankingRecordFileWriter = new RankingRecordFileWriter();
+
     }
 
     public static CommonDataStructure getInstance(){
@@ -24,8 +31,16 @@ public class CommonDataStructure {
         return instance;
     }
 
-    public List<User> getPlayingUsersList() {
-        return playingUsersList;
+    public List<User> getPlayersInTheGame() {
+        return playersInTheGame;
+    }
+
+    public List<User> getPlayersWhoNotFinished() {
+        return playersWhoNotFinished;
+    }
+
+    public void createPlayersWhoNotFinished() {
+        playersWhoNotFinished = new ArrayList<>(playersInTheGame);
     }
 
     public LeftPanelDrawer getLeftPanelDrawer() {
@@ -34,6 +49,23 @@ public class CommonDataStructure {
 
     public void setLeftPanelDrawer(LeftPanelDrawer leftPanelDrawer) {
         this.leftPanelDrawer = leftPanelDrawer;
+    }
+
+
+    public List<RankingRecord> getRankingList() {
+        return rankingList;
+    }
+
+    public void setRankingList(List<RankingRecord> rankingList) {
+        this.rankingList = rankingList;
+    }
+
+    public void getRankingFromTheFile(){
+        this.rankingList = rankingRecordFileReader.readRankingListFromFile();
+    }
+
+    public RankingRecordFileWriter getRankingRecordFileWriter() {
+        return rankingRecordFileWriter;
     }
 
     public void generateDice(){
