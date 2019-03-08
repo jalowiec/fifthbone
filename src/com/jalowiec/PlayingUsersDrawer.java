@@ -20,17 +20,17 @@ public class PlayingUsersDrawer {
 
     public void drawPlayingUsersInit() {
         List<User> playingUsersList = commonDataStructure.getPlayersInTheGame();
-        int j = 2;
+        int j = 4;
         for (User user : playingUsersList) {
-            int i = 2;
+            int i = 4;
             for (User element : playingUsersList) {
                 Text cellUserNameText = new Text(element.getUserName());
                 Text cellUserScoreText = new Text(element.getUserDataStructures().getScoreValue());
                 cellUserNameText.setId("leftpanelplayingplayers");
-                cellUserScoreText.setId("leftpanelplayingplayers");
+                cellUserScoreText.setId("leftpanelscore");
                 GridPane.setHalignment(cellUserScoreText, HPos.CENTER);
                 user.getGridPane().add(cellUserNameText, 1, i);
-                user.getGridPane().add(cellUserScoreText, 2, i);
+                user.getGridPane().add(cellUserScoreText, 3, i);
                 playingUsersNameList.add(cellUserNameText);
                 playingUsersScoreList.add(cellUserScoreText);
 
@@ -46,8 +46,8 @@ public class PlayingUsersDrawer {
 
             }
             ImageView diceUserMove = new ImageView("file:resources/dice_user_move.png");
-            GridPane.setHalignment(diceUserMove, HPos.LEFT);
-            user.getGridPane().add(diceUserMove, 3, j);
+            GridPane.setHalignment(diceUserMove, HPos.CENTER);
+            user.getGridPane().add(diceUserMove, 2, j);
             j++;
 
         }
@@ -60,15 +60,15 @@ public class PlayingUsersDrawer {
         List<User> playingUsersList = commonDataStructure.getPlayersInTheGame();
         int j = 2;
         for (User user : playingUsersList) {
-            int i = 2;
+            int i = 4;
             for (User element : playingUsersList) {
                 Text cellUserScoreText = new Text(element.getUserDataStructures().getScoreValue());
-                cellUserScoreText.setId("leftpanelplayingplayers");
+                cellUserScoreText.setId("leftpanelscore");
                 GridPane.setHalignment(cellUserScoreText, HPos.CENTER);
                 if(element.getRoundEnd().isGameEnd()){
                     cellUserScoreText.setFill(Color.RED);
                 }
-                user.getGridPane().add(cellUserScoreText, 2, i);
+                user.getGridPane().add(cellUserScoreText, 3, i);
                 playingUsersScoreList.add(cellUserScoreText);
                 i++;
 

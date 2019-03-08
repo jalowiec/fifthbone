@@ -14,7 +14,7 @@ public class RankingRecordFileWriter {
         try (BufferedWriter writer = Files.newBufferedWriter(path))
         {
             for(RankingRecord element : rankingRecordList){
-                writer.write("Janek|100|1998-02-02\n");
+                writer.write(element.getUserName() + "|" + element.getPointsToString() + "|"  + element.getDateOfResult() + "\n");
             }
         } catch (IOException e) {
             System.out.println("wystąpił błąd: " + e);

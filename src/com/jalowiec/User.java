@@ -83,11 +83,5 @@ public class User {
         return userDataStructures;
     }
 
-    public String getStyleCssFile() {
-        return styleCssFile;
-    }
 
-    public void setStyleCssFile(String styleCssFile) {
-        this.styleCssFile = styleCssFile;
-    }
 }

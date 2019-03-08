@@ -4,21 +4,19 @@ import java.util.List;
 
 public class PlayingUsers {
 
-    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+    CommonDataStructure commonDataStructure;
 
+    public PlayingUsers(CommonDataStructure commonDataStructure) {
+        this.commonDataStructure = commonDataStructure;
+    }
 
-    public void addUsers() {
+    public void addPCUsers() {
 
         List<User> playingUsersList = commonDataStructure.getPlayersInTheGame();
-        //     plaingUsersList.add(new User("Michal", false));
-        playingUsersList.add(new User("Lukasz", false));
 
+        playingUsersList.add(new UserPC("PC Begginer", true, UserLevel.BEGGINER));
+        playingUsersList.add(new UserPC("PC Medium", true, UserLevel.MEDIUM));
 
-        //  playingUsersList.add(new User("Lukasz2", false));
-        playingUsersList.add(new User("PC", true));
-        playingUsersList.add(new User("Lukasz1", false));
-
-        commonDataStructure.createPlayersWhoNotFinished();
     }
 
     public User getNextUser(User user) {
@@ -38,36 +36,5 @@ public class PlayingUsers {
         }
         return playersWhoNotFinished.get(playingUserId + 1);
     }
-
-/*
-    public User getNextPlayingUser(User user) {
-        List<User> playingUsersList = commonDataStructure.getPlayersInTheGame();
-        int playingUserId = playingUsersList.indexOf(user);
-        int nextUserId = playingUserId;
-        if(playingUserId == playingUsersList.size()-1){
-            nextUserId=0;
-        }
-        else{
-            nextUserId++;
-        }
-
-        User result = null;
-        while (!playingUsersList.get(playingUserId).equals(playingUsersList.get(nextUserId))) {
-            System.out.println("next user id: " +  nextUserId);
-            if (!playingUsersList.get(nextUserId).getRoundEnd().isGameEnd()) {
-                return playingUsersList.get(nextUserId);
-            }
-            if (nextUserId == playingUsersList.size()) {
-                nextUserId = 0;
-            } else {
-                nextUserId++;
-            }
-
-        }
-
-        return result;
-    }
-
-*/
 
 }

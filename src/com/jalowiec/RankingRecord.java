@@ -5,9 +5,9 @@ import java.util.Date;
 public class RankingRecord implements Comparable<RankingRecord> {
     private String userName;
     private int points;
-    private Date dateOfResult;
+    private String dateOfResult;
 
-    public RankingRecord(String userName, int points, Date dateOfResult) {
+    public RankingRecord(String userName, int points, String dateOfResult) {
         this.userName = userName;
         this.points = points;
         this.dateOfResult = dateOfResult;
@@ -22,7 +22,7 @@ public class RankingRecord implements Comparable<RankingRecord> {
         return Integer.toString(points);
     }
 
-    public Date getDateOfResult() {
+    public String getDateOfResult() {
         return dateOfResult;
     }
 

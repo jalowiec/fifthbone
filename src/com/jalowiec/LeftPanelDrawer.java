@@ -32,31 +32,31 @@ public class LeftPanelDrawer {
         Color strokeColor = Color.rgb(221, 221, 221);
 
         for(User user : commonDataStructure.getPlayersInTheGame()) {
-            Line hLeftLine = new Line(0, 0, 0, 805);
+            Line hLeftLine = new Line(0, 0, 0, 750);
             GridPane.setHalignment(hLeftLine, HPos.LEFT);
             hLeftLine.setStrokeWidth(strokeWidth);
             hLeftLine.setStroke(strokeColor);
-            user.getGridPane().add(hLeftLine, 0, 13);
+            user.getGridPane().add(hLeftLine, 0, 14);
 
-            Line hRightLine = new Line(0, 0, 0, 805);
+            Line hRightLine = new Line(0, 0, 0, 750);
             GridPane.setHalignment(hRightLine, HPos.RIGHT);
             hRightLine.setStrokeWidth(strokeWidth);
             hRightLine.setStroke(strokeColor);
-            user.getGridPane().add(hRightLine, 3, 13);
+            user.getGridPane().add(hRightLine, 3, 14);
 
-            Line vTopLine = new Line(0, 0, 270, 0);
+            Line vTopLine = new Line(0, 0, 280, 0);
             GridPane.setValignment(vTopLine, VPos.CENTER);
             vTopLine.setStrokeWidth(strokeBoldWidth);
             vTopLine.setStroke(strokeColor);
-            user.getGridPane().add(vTopLine, 0, 0);
+            user.getGridPane().add(vTopLine, 0, 2);
 
-            Line vMiddleLine = new Line(0, 0, 270, 0);
+            Line vMiddleLine = new Line(0, 0, 280, 0);
             GridPane.setValignment(vMiddleLine, VPos.CENTER);
             vMiddleLine.setStrokeWidth(strokeBoldWidth);
             vMiddleLine.setStroke(strokeColor);
             user.getGridPane().add(vMiddleLine, 0, refRowIndex);
 
-            Line vBottomLine = new Line(0, 0, 295, 0);
+            Line vBottomLine = new Line(0, 0, 305, 0);
             GridPane.setValignment(vBottomLine, VPos.TOP);
             vBottomLine.setStrokeWidth(strokeWidth);
             vBottomLine.setStroke(strokeColor);
@@ -67,12 +67,12 @@ public class LeftPanelDrawer {
             GridPane.setHalignment(playersLabel,HPos.CENTER);
             playersLabel.setFont(new Font(20));
 
-            Label recordsLabel = new Label("TOP TEN");
+            Label recordsLabel = new Label("RANKING");
             GridPane.setHalignment(recordsLabel,HPos.CENTER);
             recordsLabel.setFont(new Font( 20));
 
-            user.getGridPane().add(playersLabel, 0, 0, 3, 1);
-            user.getGridPane().add(recordsLabel, 0, 13, 3, 1);
+            user.getGridPane().add(playersLabel, 0, 2, 4, 1);
+            user.getGridPane().add(recordsLabel, 0, 13, 4, 1);
 
 
         }

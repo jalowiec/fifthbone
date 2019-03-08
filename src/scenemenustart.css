@@ -1,45 +1,8 @@
-#tableheader{
-    -fx-font-size: 17pt;
+.root {
+    -fx-background-image: url("../resources/diceback.jpg");
 }
 
-#tablerow{
-    -fx-font-size: 17pt;
-
-}
-
-#cellminus{
-    -fx-font-size: 25pt;
-}
-
-#cellplus{
-    -fx-font-size: 25pt;
-}
-
-#score{
-    -fx-font-size: 35pt;
-
-}
-#scorename{
-    -fx-font-size: 15pt;
-
-}
-#fifthdie {
-    -fx-font-size: 20pt;
-}
-#leftpanelplayingplayers{
-    -fx-font-size: 13pt;
-}
-
-#leftpanelscore{
-    -fx-font-size: 13pt;
-    -fx-font-weight: bolder;
-}
-
-#leftpanelrecords{
-    -fx-font-size: 13pt;
-}
-
-#button{
+#menustartbutton{
     -fx-background-color:
             linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
             linear-gradient(#020b02, #3a3a3a),
@@ -54,5 +17,3 @@
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
 }
-
-

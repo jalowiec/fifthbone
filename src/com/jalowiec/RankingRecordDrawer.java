@@ -1,6 +1,8 @@
 package com.jalowiec;
 
+import javafx.geometry.HPos;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -23,10 +25,21 @@ public class RankingRecordDrawer {
 
                 Text cellTextName = new Text(rankingRecord.getUserName());
                 Text cellTextScore = new Text(rankingRecord.getPointsToString());
-                user.getGridPane().add(cellTextName, 1, 14 + i);
+                Text cellTextDate = new Text(rankingRecord.getDateOfResult());
+
+                cellTextName.setId("leftpanelrecords");
+                user.getGridPane().add(cellTextName, 1, 15 + i);
                 rankingRecordNodesList.add(cellTextName);
-                user.getGridPane().add(cellTextScore, 2, 14 + i);
+
+                cellTextScore.setId("leftpanelrecords");
+                GridPane.setHalignment(cellTextScore, HPos.CENTER);
+                user.getGridPane().add(cellTextScore, 3, 15 + i);
                 rankingRecordNodesList.add(cellTextScore);
+
+                cellTextDate.setId("leftpanelrecords");
+                GridPane.setHalignment(cellTextDate, HPos.CENTER);
+                user.getGridPane().add(cellTextDate, 2, 15 + i);
+                rankingRecordNodesList.add(cellTextDate);
                 i++;
             }
         }
@@ -43,8 +56,12 @@ public class RankingRecordDrawer {
 
     public void addToRanking(RankingRecord rankingRecord) {
         List<RankingRecord> rankingList = commonDataStructure.getRankingList();
-        rankingList.set(9, rankingRecord);
-        Collections.sort(rankingList);
+        if(rankingList.size()<10){
+            rankingList.add(rankingRecord);
+        }else {
+            rankingList.set(rankingList.size()-1, rankingRecord);
+        }
+        Collections.sort(rankingList, Collections.reverseOrder());
         commonDataStructure.getRankingRecordFileWriter().writeRankingListToFile(rankingList);
         drawRankingRecord();
 

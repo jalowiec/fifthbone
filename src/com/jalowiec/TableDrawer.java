@@ -3,6 +3,8 @@ package com.jalowiec;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -35,6 +37,11 @@ public class TableDrawer {
             cellText.setId("tableheader");
             grid.add(cellText,  i+5, 0);
         }
+
+        MenuItem menuItem1 = new MenuItem("Option 1");
+        MenuItem menuItem2 = new MenuItem("Option 2");
+        MenuButton menuButton = new MenuButton("Options", null, menuItem1, menuItem2);
+        grid.add(menuButton, 0 , 0, 3, 1);
     }
 
     public void drawPointsRow(){
@@ -128,7 +135,7 @@ public class TableDrawer {
 
     public void drawUserName() {
         Text cellText = new Text(user.getUserName());
-        cellText.setId("tableheader");
+        cellText.setId("scorename");
         GridPane.setHalignment(cellText, HPos.CENTER);
         grid.add(cellText, 15, 12, 2, 1);
     }
@@ -189,37 +196,28 @@ public class TableDrawer {
     }
 
     public void drawRoundEndButton(RoundEnd roundEnd){
-        endTurnButton = new Button("zakoncz runde");
+        endTurnButton = new Button("Zakoncz runde");
         endTurnButton.setOnAction(e-> roundEnd.countScoreAfterRound(this));
         if(!user.getPC()) {
             endTurnButton.setDisable(true);
         }
+        endTurnButton.setId("button");
+        endTurnButton.setMinWidth(150);
         GridPane.setHalignment(endTurnButton, HPos.CENTER);
-        grid.add(endTurnButton, 9, 22, 3, 1);
+        grid.add(endTurnButton, 9, 25, 3, 1);
     }
 
     public void drawNextPlayerButton(Stage mainStage, PlayingUsers playingUsers) {
 
-        nextPlayerButton = new Button("Kolejny zawodnik");
+        nextPlayerButton = new Button("Kolejny zawodnik >>");
         nextPlayerButton.setOnAction(e -> {
-         //   mainStage.setScene(playingUsers.getNextUser(user).getUserScene());
+
             User nextPlayingUser = playingUsers.getNextUserWhoNotFinished(user);
             mainStage.setScene(nextPlayingUser.getUserScene());
             nextPlayingUser.getRoundInitCommon().generateDicesInSlots();
             nextPlayingUser.getRoundInitCommon().clearFreeSlotState();
             user.getTableDrawer().getNextPlayerButton().setDisable(true);
-/*
-            if(!playingUsers.getNextUser(user).getRoundEnd().isGameEnd()) {
 
-                playingUsers.getNextUser(user).getRoundInitCommon().generateDicesInSlots();
-                playingUsers.getNextUser(user).getRoundInitCommon().clearFreeSlotState();
-            } else{
-                playingUsers.getNextUser(user).getRoundInitCommon().removeAllDiceFromSlots();
-            }
-            if(!user.getRoundEnd().isGameEnd()){
-                user.getTableDrawer().getNextPlayerButton().setDisable(true);
-            }
-*/
 
             user.getRoundEnd().setRoundEnd(false);
             if(nextPlayingUser.getPC()){
@@ -227,9 +225,11 @@ public class TableDrawer {
             }
 
         });
+        nextPlayerButton.setId("button");
+        nextPlayerButton.setMinWidth(150);
         nextPlayerButton.setDisable(true);
         GridPane.setHalignment(nextPlayerButton, HPos.CENTER);
-        user.getGridPane().add(nextPlayerButton, 9, 24, 3, 1);
+        user.getGridPane().add(nextPlayerButton, 12, 25, 3, 1);
 
     }
 
@@ -240,7 +240,7 @@ public class TableDrawer {
                 " 2. Piata kosc musi nalezec do wczesniej wybranych");
 
         Tooltip.install(helpMark, helpTooltip);
-        grid.add(helpMark, 10, 20);
+        grid.add(helpMark, 10, 22, 1, 2);
     }
 
 

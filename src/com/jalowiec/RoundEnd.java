@@ -3,6 +3,7 @@ package com.jalowiec;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class RoundEnd {
@@ -62,7 +63,7 @@ public class RoundEnd {
     }
 
     public boolean isFifthSlotFree(int fifthDieValue){
-        if(chosenFifthDice.containsKey(fifthDieValue) && chosenFifthDice.get(fifthDieValue) == 1){
+        if(chosenFifthDice.containsKey(fifthDieValue) && chosenFifthDice.get(fifthDieValue) == 8){
             return false;
         }
         return true;
@@ -245,6 +246,7 @@ public class RoundEnd {
 
         if (!isFifthSlotFree(chosenFifthDieValue) || !isPairSlotFree(firstPairSum)) {
             endGameForUser(user);
+            tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
         } else {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
             tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
@@ -253,6 +255,7 @@ public class RoundEnd {
 
             if (!isPairSlotFree(secondPairSum)) {
                 endGameForUser(user);
+                tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
             } else {
                 secondCouplePointer = scorePointerMap.get(secondPairSum);
                 scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
@@ -273,7 +276,8 @@ public class RoundEnd {
     private void endGameForUser(User user){
         System.out.println("KONIEC GRY DLA UZYTKOWNIKA: " + user.getUserName());
         RankingRecordDrawer rankingRecordDrawer = commonDataStructure.getLeftPanelDrawer().getRankingRecordDrawer();
-        RankingRecord rankingRecordAfterEndGame = new RankingRecord(user.getUserName(), Integer.parseInt(user.getUserDataStructures().getScoreValue()), new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        RankingRecord rankingRecordAfterEndGame = new RankingRecord(user.getUserName(), Integer.parseInt(user.getUserDataStructures().getScoreValue()), simpleDateFormat.format(new Date()));
         if(rankingRecordDrawer.isShouldBeAddedToRanking(rankingRecordAfterEndGame)){
             rankingRecordDrawer.addToRanking(rankingRecordAfterEndGame);
         }

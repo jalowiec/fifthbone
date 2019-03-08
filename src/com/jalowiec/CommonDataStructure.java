@@ -13,6 +13,7 @@ public class CommonDataStructure {
     private LeftPanelDrawer leftPanelDrawer;
     private RankingRecordFileReader rankingRecordFileReader;
     private RankingRecordFileWriter rankingRecordFileWriter;
+    private PlayingUsers playingUsers;
 
 
     private CommonDataStructure(){
@@ -21,6 +22,7 @@ public class CommonDataStructure {
         diceGenerator = new DiceGenerator();
         rankingRecordFileReader = new RankingRecordFileReader();
         rankingRecordFileWriter = new RankingRecordFileWriter();
+        playingUsers = new PlayingUsers(this);
 
     }
 
@@ -29,6 +31,15 @@ public class CommonDataStructure {
             instance=new CommonDataStructure();
         }
         return instance;
+    }
+
+
+    public PlayingUsers getPlayingUsers() {
+        return playingUsers;
+    }
+
+    public void setPlayersInTheGame(List<User> playersInTheGame) {
+        this.playersInTheGame = playersInTheGame;
     }
 
     public List<User> getPlayersInTheGame() {
@@ -72,12 +83,10 @@ public class CommonDataStructure {
         diceGenerator.createDiceForPlaying();
     }
 
-    //TODO - czy tez robić dice generator jako singleton
     public List<Die> getDiceForPlaying()
     {
         return diceGenerator.getDiceForPlaying();
     }
-
 
     public Die getDieFromValue(int dieValue){
         List<Die> diceForPlaying = getDiceForPlaying();
