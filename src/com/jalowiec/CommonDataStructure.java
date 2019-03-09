@@ -14,6 +14,7 @@ public class CommonDataStructure {
     private RankingRecordFileReader rankingRecordFileReader;
     private RankingRecordFileWriter rankingRecordFileWriter;
     private PlayingUsers playingUsers;
+    private SceneMenuStart sceneMenuStart;
 
 
     private CommonDataStructure(){
@@ -46,6 +47,7 @@ public class CommonDataStructure {
         return playersInTheGame;
     }
 
+
     public List<User> getPlayersWhoNotFinished() {
         return playersWhoNotFinished;
     }
@@ -62,6 +64,13 @@ public class CommonDataStructure {
         this.leftPanelDrawer = leftPanelDrawer;
     }
 
+    public SceneMenuStart getSceneMenuStart() {
+        return sceneMenuStart;
+    }
+
+    public void setSceneMenuStart(SceneMenuStart sceneMenuStart) {
+        this.sceneMenuStart = sceneMenuStart;
+    }
 
     public List<RankingRecord> getRankingList() {
         return rankingList;

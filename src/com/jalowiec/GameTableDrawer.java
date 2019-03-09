@@ -14,7 +14,7 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-public class TableDrawer {
+public class GameTableDrawer {
 
 
     private GridPane grid;
@@ -22,7 +22,7 @@ public class TableDrawer {
     private Button nextPlayerButton;
     private User user;
 
-    public TableDrawer(User user) {
+    public GameTableDrawer(User user) {
         this.user = user;
         this.grid = user.getGridPane();
     }
@@ -216,12 +216,12 @@ public class TableDrawer {
             mainStage.setScene(nextPlayingUser.getUserScene());
             nextPlayingUser.getRoundInitCommon().generateDicesInSlots();
             nextPlayingUser.getRoundInitCommon().clearFreeSlotState();
-            user.getTableDrawer().getNextPlayerButton().setDisable(true);
+            user.getGameTableDrawer().getNextPlayerButton().setDisable(true);
 
 
             user.getRoundEnd().setRoundEnd(false);
             if(nextPlayingUser.getPC()){
-                nextPlayingUser.getTableDrawer().getEndTurnButton().setDisable(false);
+                nextPlayingUser.getGameTableDrawer().getEndTurnButton().setDisable(false);
             }
 
         });

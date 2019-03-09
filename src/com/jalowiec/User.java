@@ -9,7 +9,7 @@ public class User {
     private Boolean isPC;
     private Scene userScene;
     private GridPane gridPane;
-    private TableDrawer tableDrawer;
+    private GameTableDrawer gameTableDrawer;
     private String styleCssFile;
     private UserDataStructures userDataStructures;
     private RoundInitCommon roundInitCommon;
@@ -47,12 +47,12 @@ public class User {
         this.gridPane = gridPane;
     }
 
-    public TableDrawer getTableDrawer() {
-        return tableDrawer;
+    public GameTableDrawer getGameTableDrawer() {
+        return gameTableDrawer;
     }
 
-    public void setTableDrawer(TableDrawer tableDrawer) {
-        this.tableDrawer = tableDrawer;
+    public void setGameTableDrawer(GameTableDrawer gameTableDrawer) {
+        this.gameTableDrawer = gameTableDrawer;
     }
 
     public void setRoundInitCommon(RoundInitCommon roundInitCommon) {

@@ -11,10 +11,15 @@ public class SceneMenuStart {
 
 
     private Stage mainStage;
+    private SceneUsersInGame sceneUsersInGame;
+    private SceneUsersManager sceneUsersManager;
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
     public SceneMenuStart(Stage mainStage) {
         this.mainStage = mainStage;
+        sceneUsersInGame = new SceneUsersInGame(mainStage);
+        sceneUsersManager = new SceneUsersManager(mainStage);
+        commonDataStructure.setSceneMenuStart(this);
         showScene();
     }
 
@@ -24,25 +29,24 @@ public class SceneMenuStart {
         Button newGameButton = new Button("Nowa gra");
         newGameButton.setMinWidth(150);
         newGameButton.setId("menustartbutton");
-        newGameButton.setCursor(Cursor.CLOSED_HAND);
-        newGameButton.setOnAction(e-> new SceneUsersInGame(mainStage));
+        newGameButton.setCursor(Cursor.HAND);
+        newGameButton.setOnAction(e-> sceneUsersInGame.showScene());
 
         Button usersGameButton = new Button("Uzytkownicy");
         usersGameButton.setMinWidth(150);
         usersGameButton.setId("menustartbutton");
         usersGameButton.setCursor(Cursor.HAND);
-        usersGameButton.setOnAction(e-> System.exit(0));
-
+        usersGameButton.setOnAction(e-> sceneUsersManager.showScene());
 
         Button loadGameButton = new Button("Wczytaj gre");
         loadGameButton.setMinWidth(150);
         loadGameButton.setId("menustartbutton");
-        loadGameButton.setCursor(Cursor.CLOSED_HAND);
+        loadGameButton.setCursor(Cursor.HAND);
 
         Button endGameButton = new Button("Zakoncz");
         endGameButton.setMinWidth(150);
         endGameButton.setId("menustartbutton");
-        endGameButton.setCursor(Cursor.CLOSED_HAND);
+        endGameButton.setCursor(Cursor.HAND);
         endGameButton.setOnAction(e->System.exit(0));
 
 

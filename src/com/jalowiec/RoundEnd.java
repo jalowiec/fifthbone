@@ -12,7 +12,7 @@ public class RoundEnd {
     private List<Integer> fifthDiceList = new ArrayList<>();
     private Map<Integer, Integer> chosenFifthDice = new HashMap<>();
     private CommonDataStructure commonDataStructure;
-    private TableDrawer tableDrawer;
+    private GameTableDrawer gameTableDrawer;
     private User user;
     private boolean isRoundEnd;
     private boolean isGameEnd;
@@ -22,7 +22,7 @@ public class RoundEnd {
     public RoundEnd(User user) {
         this.gridPane = user.getGridPane();
         commonDataStructure = CommonDataStructure.getInstance();
-        tableDrawer = new TableDrawer(user);
+        gameTableDrawer = new GameTableDrawer(user);
         this.user = user;
     }
 
@@ -53,12 +53,12 @@ public class RoundEnd {
         if(!fifthDiceList.contains(fifthDieValue)){
             if(fifthDiceList.size()<3){
                 fifthDiceList.add(fifthDieValue);
-                tableDrawer.drawChosenFifthDie(fifthDieValue, chosenFifthDice.size());
+                gameTableDrawer.drawChosenFifthDie(fifthDieValue, chosenFifthDice.size());
                 chosenFifthDice.put(fifthDieValue, 0);
             }
         } else{
             chosenFifthDice.put(fifthDieValue, chosenFifthDice.get(fifthDieValue)+1);
-            tableDrawer.drawChosenFifthDieSlots(chosenFifthDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
+            gameTableDrawer.drawChosenFifthDieSlots(chosenFifthDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
         }
     }
 
@@ -229,12 +229,12 @@ public class RoundEnd {
 
 
 
-    public void countScoreAfterRound(TableDrawer tableDrawer) {
+    public void countScoreAfterRound(GameTableDrawer gameTableDrawer) {
 
 
         if (user.getPC()) {
             processComputerRound();
-            user.getTableDrawer().getEndTurnButton().setDisable(false);
+            user.getGameTableDrawer().getEndTurnButton().setDisable(false);
         }
 
         Map<Integer, Integer> scorePointerMap = user.getUserDataStructures().getScorePointerMap();
@@ -246,28 +246,28 @@ public class RoundEnd {
 
         if (!isFifthSlotFree(chosenFifthDieValue) || !isPairSlotFree(firstPairSum)) {
             endGameForUser(user);
-            tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
+            gameTableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
         } else {
             scorePointerMap.replace(firstPairSum, ++firstCouplePointer);
-            tableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
+            gameTableDrawer.drawUsedSlotsAfterRound(firstPairSum, firstCouplePointer);
             processFifthDie(chosenFifthDieValue);
-            tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
+            gameTableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
 
             if (!isPairSlotFree(secondPairSum)) {
                 endGameForUser(user);
-                tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
+                gameTableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
             } else {
                 secondCouplePointer = scorePointerMap.get(secondPairSum);
                 scorePointerMap.replace(secondPairSum, ++secondCouplePointer);
-                tableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
+                gameTableDrawer.drawUsedSlotsAfterRound(secondPairSum, secondCouplePointer);
                 //TODO - czy ma sie wyliczyc raz jeszcze?
-                tableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
+                gameTableDrawer.drawScore(commonDataStructure.getScoreFromSchema(scorePointerMap));
             }
         }
 
         user.getRoundProccesorUser().setEndTurnButtonDisabled();
         setRoundEnd(true);
-        user.getTableDrawer().getNextPlayerButton().setDisable(false);
+        user.getGameTableDrawer().getNextPlayerButton().setDisable(false);
         commonDataStructure.getLeftPanelDrawer().drawPlayingUsersScoreInPanel();
 
 

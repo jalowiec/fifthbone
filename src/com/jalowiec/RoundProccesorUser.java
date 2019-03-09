@@ -111,12 +111,12 @@ public class RoundProccesorUser {
 
 
     public void setEndTurnButtonDisabled(){
-        user.getTableDrawer().getEndTurnButton().setDisable(true);
+        user.getGameTableDrawer().getEndTurnButton().setDisable(true);
     }
 
     private void setEndTurnButtonEnabled(){
         if(!isFreeSlot() && isChosenFifthDieCorrect()){
-            user.getTableDrawer().getEndTurnButton().setDisable(false);
+            user.getGameTableDrawer().getEndTurnButton().setDisable(false);
         }
     }
 

@@ -7,13 +7,13 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class SceneUser {
+public class SceneUserGameTable {
 
     Stage mainStage;
     CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
     List<User> usersInTheGame = commonDataStructure.getPlayersInTheGame();
 
-    public SceneUser(Stage mainStage) {
+    public SceneUserGameTable(Stage mainStage) {
         this.mainStage = mainStage;
         generateScenesForUsers();
         showSceneForFirstUser();
@@ -34,36 +34,36 @@ public class SceneUser {
             user.setUserScene(new Scene(user.getGridPane(), 1180, 900));
             user.getUserScene().getStylesheets().add("userstyle.css");
 
-            TableProperties tableProperties = new TableProperties(user);
-            tableProperties.setLeftPanelProperties(30, 100, 90, 90);
-            tableProperties.setColumnProperties(120, 60);
-            tableProperties.setRowsProperties(30);
+            GameTableProperties gameTableProperties = new GameTableProperties(user);
+            gameTableProperties.setLeftPanelProperties(30, 100, 90, 90);
+            gameTableProperties.setColumnProperties(120, 60);
+            gameTableProperties.setRowsProperties(30);
 
             commonDataStructure.generateDice();
             user.setRoundEnd(new RoundEnd(user));
             user.getRoundEnd().setRoundEnd(false);
 
-            user.setTableDrawer(new TableDrawer(user));
-            TableDrawer tableDrawer = user.getTableDrawer();
-            tableDrawer.drawTableHeader();
-            tableDrawer.drawPointsRow();
-            tableDrawer.drawMinusSection();
-            tableDrawer.drawPlusSection();
-            tableDrawer.drawUserName();
-            tableDrawer.drawScore(0);
-            tableDrawer.drawFifthBoneHeader();
-            tableDrawer.drawFifthBoneSection();
-            tableDrawer.drawChosenPair();
-            tableDrawer.drawHorizontalLines();
+            user.setGameTableDrawer(new GameTableDrawer(user));
+            GameTableDrawer gameTableDrawer = user.getGameTableDrawer();
+            gameTableDrawer.drawTableHeader();
+            gameTableDrawer.drawPointsRow();
+            gameTableDrawer.drawMinusSection();
+            gameTableDrawer.drawPlusSection();
+            gameTableDrawer.drawUserName();
+            gameTableDrawer.drawScore(0);
+            gameTableDrawer.drawFifthBoneHeader();
+            gameTableDrawer.drawFifthBoneSection();
+            gameTableDrawer.drawChosenPair();
+            gameTableDrawer.drawHorizontalLines();
 
-            tableDrawer.drawRoundEndButton(user.getRoundEnd());
-            tableDrawer.drawNextPlayerButton(mainStage, commonDataStructure.getPlayingUsers());
+            gameTableDrawer.drawRoundEndButton(user.getRoundEnd());
+            gameTableDrawer.drawNextPlayerButton(mainStage, commonDataStructure.getPlayingUsers());
 
             user.setRoundInitCommon(new RoundInitCommon(user));
             user.setRoundProccesorUser(new RoundProccesorUser(user));
 
             if (!user.getPC()) {
-                tableDrawer.drawHelpMark();
+                gameTableDrawer.drawHelpMark();
             }
 
         }

@@ -4,11 +4,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class TableProperties {
+public class GameTableProperties {
 
     private GridPane grid;
 
-    public TableProperties(User user) {
+    public GameTableProperties(User user) {
         this.grid = user.getGridPane();
     }
 
