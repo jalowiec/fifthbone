@@ -2,12 +2,35 @@
     -fx-background-image: url("../resources/diceback.jpg");
 }
 
-
-#checkbox > .box > .mark{
-    -fx-padding: 10px;
-    -fx-font-size: 20px;
-    -fx-underline: true;
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 2px;
 }
+.radio-button .radio:selected {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:armed {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:determinate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:indeterminate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 10px;
+}
+
 
 #label{
     -fx-font-size: 13pt;
@@ -15,11 +38,6 @@
 
 }
 
-#labelerror{
-    -fx-font-size: 9pt;
-    -fx-font-weight: bold;
-
-}
 
 
 

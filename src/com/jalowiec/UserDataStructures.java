@@ -11,12 +11,15 @@ import java.util.Map;
 public class UserDataStructures {
 
     private int[] freeSlotState = new int[4];
+    private int[] alternativeSlotState = new int[4];
     private List<ImageView> imageViewList = new ArrayList<>();
     private Die[] diceArray = new Die[5];
     private List<DieSlot> diceSlotsList;
     private List<DieSlot> freeSlotsList;
     private Map<Integer, Integer> scorePointerMap;
+    private Map<Integer, Integer> alternativeScorePointerMap;
     private Text scoreText;
+    private Text alternativeScoreText;
 
 
     public UserDataStructures() {
@@ -36,12 +39,24 @@ public class UserDataStructures {
         return scorePointerMap;
     }
 
+    public Map<Integer, Integer> getAlternativeScorePointerMap() {
+        return alternativeScorePointerMap;
+    }
+
     public int[] getFreeSlotState() {
         return freeSlotState;
     }
 
     public void setFreeSlotState(int[] freeSlotState) {
         this.freeSlotState = freeSlotState;
+    }
+
+    public int[] getAlternativeSlotState() {
+        return alternativeSlotState;
+    }
+
+    public void setAlternativeSlotState(int[] alternativeSlotState) {
+        this.alternativeSlotState = alternativeSlotState;
     }
 
     public List<DieSlot> getDiceSlotsList() {
@@ -64,6 +79,20 @@ public class UserDataStructures {
         this.scoreText = scoreText;
     }
 
+
+    public Text getAlternativeScoreText() {
+        return alternativeScoreText;
+    }
+
+    public String getAlternativeScoreValue(){
+        return alternativeScoreText.getText();
+    }
+
+    public void setAlternativeScoreText(Text alternativeScoreText) {
+        this.alternativeScoreText = alternativeScoreText;
+    }
+
+
     public void generateSlots(){
         DieSlotsGenerator dieSlotsGenerator = new DieSlotsGenerator();
         dieSlotsGenerator.generateSlots();
@@ -77,17 +106,12 @@ public class UserDataStructures {
 
     public void initScorePointerMap(){
         scorePointerMap = new HashMap<>();
-        scorePointerMap.put(2, 1);
-        scorePointerMap.put(3, 1);
-        scorePointerMap.put(4, 1);
-        scorePointerMap.put(5, 1);
-        scorePointerMap.put(6, 1);
-        scorePointerMap.put(7, 1);
-        scorePointerMap.put(8, 1);
-        scorePointerMap.put(9, 1);
-        scorePointerMap.put(10, 1);
-        scorePointerMap.put(11, 1);
-        scorePointerMap.put(12, 1);
+        alternativeScorePointerMap = new HashMap<>();
+        for(int i=2; i<13; i++){
+            scorePointerMap.put(i, 1);
+            alternativeScorePointerMap.put(i, 1);
+        }
+
     }
 
 }

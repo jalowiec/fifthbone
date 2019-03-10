@@ -132,7 +132,7 @@ public class RoundProccesorUser {
 
 
     public boolean isChosenFifthDieCorrect(){
-        int fifthDieValue = user.getRoundEnd().getFifthDieValue();
+        int fifthDieValue = user.getRoundEnd().getFifthDieValue(user.getUserDataStructures().getFreeSlotState().clone());
         Set<Integer> chosenFifthDiceSet = user.getRoundEnd().getChosenFifthDiceSet();
         if(chosenFifthDiceSet.size()==3 && !chosenFifthDiceSet.contains(fifthDieValue) && !isFreeRound(chosenFifthDiceSet) ){
             return false;

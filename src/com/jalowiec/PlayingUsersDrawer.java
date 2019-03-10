@@ -69,6 +69,14 @@ public class PlayingUsersDrawer {
                     cellUserScoreText.setFill(Color.RED);
                 }
                 user.getGridPane().add(cellUserScoreText, 3, i);
+                if(!user.getPC()){
+                    Text cellAlternativeScoreText = new Text("(" + element.getUserDataStructures().getAlternativeScoreValue() + ")");
+                    cellAlternativeScoreText.setId("leftpanelalternaivescore");
+                    GridPane.setHalignment(cellAlternativeScoreText, HPos.CENTER);
+                    user.getGridPane().add(cellAlternativeScoreText, 4, i);
+                    playingUsersScoreList.add(cellAlternativeScoreText);
+
+                }
                 playingUsersScoreList.add(cellUserScoreText);
                 i++;
 

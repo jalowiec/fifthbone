@@ -35,6 +35,10 @@
     -fx-font-weight: bolder;
 }
 
+#leftpanelalternaivescore{
+    -fx-font-size: 13pt;
+ }
+
 #leftpanelrecords{
     -fx-font-size: 13pt;
 }

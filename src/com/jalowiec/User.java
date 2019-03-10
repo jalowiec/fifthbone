@@ -10,11 +10,11 @@ public class User {
     private Scene userScene;
     private GridPane gridPane;
     private GameTableDrawer gameTableDrawer;
-    private String styleCssFile;
     private UserDataStructures userDataStructures;
     private RoundInitCommon roundInitCommon;
     private RoundProccesorUser roundProccesorUser;
     private RoundEnd roundEnd;
+    private RoundEnd alternativeRoundEnd;
 
 
     public User(String userName, Boolean isPC) {
@@ -77,6 +77,15 @@ public class User {
 
     public void setRoundEnd(RoundEnd roundEnd) {
         this.roundEnd = roundEnd;
+    }
+
+
+    public RoundEnd getAlternativeRoundEnd() {
+        return alternativeRoundEnd;
+    }
+
+    public void setAlternativeRoundEnd(RoundEnd alternativeRoundEnd) {
+        this.alternativeRoundEnd = alternativeRoundEnd;
     }
 
     public UserDataStructures getUserDataStructures() {

@@ -144,13 +144,13 @@ public class GameTableDrawer {
 
 
     public void drawScore(int score) {
-        //TODO - sprawdzic czy trzeba kasowac
+
         grid.getChildren().remove(user.getUserDataStructures().getScoreText());
         user.getUserDataStructures().setScoreText(new Text(Integer.toString(score)));
         Text cellText = user.getUserDataStructures().getScoreText();
         cellText.setId("score");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        if(user.getRoundEnd().isGameEnd()){
+        if (user.getRoundEnd().isGameEnd()) {
             cellText.setFill(Color.RED);
         }
         grid.add(cellText, 15, 13, 2, 2);

@@ -36,6 +36,13 @@ public class SceneUsersManager {
         Scene sceneUsersManager = new Scene(vBox, 400, 600);
         sceneUsersManager.getStylesheets().add("sceneusersmanager.css");
 
+        EventHandler<MouseEvent> mouseHandler = e -> {
+            commonDataStructure.getSceneMenuStart().showScene();
+
+        };
+        ImageView homeToMenuStartImage = new ImageView("file:resources/home.png");
+        homeToMenuStartImage.setOnMouseClicked(mouseHandler);
+        vBox.getChildren().add(homeToMenuStartImage);
 
 
         Label addUserLabel = new Label("Dodaj uzytkownika: ");
@@ -87,10 +94,7 @@ public class SceneUsersManager {
             vBox.getChildren().add(radioButton);
             nodeList.add(radioButton);
         }
-        EventHandler<MouseEvent> mouseHandler = e -> {
-            commonDataStructure.getSceneMenuStart().showScene();
 
-        };
 
         Button removeUserButton = new Button("Usun");
         removeUserButton.setId("button");
@@ -106,11 +110,6 @@ public class SceneUsersManager {
         vBox.getChildren().addAll(removeUserButton);
         nodeList.add(removeUserButton);
 
-
-        ImageView backToMenuStartImage = new ImageView("file:resources/back.png");
-        backToMenuStartImage.setOnMouseClicked(mouseHandler);
-        vBox.getChildren().add(backToMenuStartImage);
-        nodeList.add(backToMenuStartImage);
 
     }
 

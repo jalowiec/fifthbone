@@ -8,4 +8,8 @@ public class UserPC extends  User {
         super(userName, isPC);
         this.userLevel = userLevel;
     }
+
+    public UserLevel getUserLevel() {
+        return userLevel;
+    }
 }

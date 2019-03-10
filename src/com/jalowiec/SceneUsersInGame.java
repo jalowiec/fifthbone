@@ -41,14 +41,14 @@ public class SceneUsersInGame {
 
         };
 
-        ImageView backToMenuStartImage = new ImageView("file:resources/back.png");
-        backToMenuStartImage.setOnMouseClicked(mouseHandler);
+        ImageView homeToMenuStartImage = new ImageView("file:resources/home.png");
+        homeToMenuStartImage.setOnMouseClicked(mouseHandler);
 
 
         Label label = new Label( "Wybierz użytkowników: ");
         label.setMinSize(50, 10);
         label.setId("label");
-        vBox.getChildren().add(label);
+        vBox.getChildren().addAll(homeToMenuStartImage, label);
 
 
         List<CheckBox> checkBoxes = new ArrayList<>();
@@ -73,7 +73,7 @@ public class SceneUsersInGame {
             }
         });
         startGameButton.setId("button");
-        vBox.getChildren().addAll(startGameButton, backToMenuStartImage);
+        vBox.getChildren().add(startGameButton);
 
         Scene sceneUsersInGame = new Scene(vBox, 400, 600);
         sceneUsersInGame.getStylesheets().add("sceneusersingame.css");
