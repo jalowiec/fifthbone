@@ -141,9 +141,8 @@ public class GameTableDrawer {
     }
 
 
-
-
     public void drawScore(int score) {
+        System.out.println("wywolanie draw score");
 
         grid.getChildren().remove(user.getUserDataStructures().getScoreText());
         user.getUserDataStructures().setScoreText(new Text(Integer.toString(score)));
@@ -155,6 +154,14 @@ public class GameTableDrawer {
         }
         grid.add(cellText, 15, 13, 2, 2);
     }
+
+    public void setAlternativeScore(int score) {
+        System.out.println("wywolanie alternative draw score");
+        user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(score)));
+    }
+
+
+
 
     public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {
         ImageView usedSlotCrossBlack = new ImageView("file:resources/markx_black.png");

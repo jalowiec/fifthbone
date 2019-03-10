@@ -65,11 +65,12 @@ public class PlayingUsersDrawer {
                 Text cellUserScoreText = new Text(element.getUserDataStructures().getScoreValue());
                 cellUserScoreText.setId("leftpanelscore");
                 GridPane.setHalignment(cellUserScoreText, HPos.CENTER);
-                if(element.getRoundEnd().isGameEnd()){
+                if (element.getRoundEnd().isGameEnd()) {
                     cellUserScoreText.setFill(Color.RED);
                 }
                 user.getGridPane().add(cellUserScoreText, 3, i);
-                if(!user.getPC()){
+
+                if (!user.getPC()) {
                     Text cellAlternativeScoreText = new Text("(" + element.getUserDataStructures().getAlternativeScoreValue() + ")");
                     cellAlternativeScoreText.setId("leftpanelalternaivescore");
                     GridPane.setHalignment(cellAlternativeScoreText, HPos.CENTER);
@@ -77,6 +78,7 @@ public class PlayingUsersDrawer {
                     playingUsersScoreList.add(cellAlternativeScoreText);
 
                 }
+
                 playingUsersScoreList.add(cellUserScoreText);
                 i++;
 

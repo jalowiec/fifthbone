@@ -51,6 +51,7 @@ public class SceneUserGameTable {
             gameTableDrawer.drawPlusSection();
             gameTableDrawer.drawUserName();
             gameTableDrawer.drawScore(0);
+            gameTableDrawer.setAlternativeScore(0);
             gameTableDrawer.drawFifthBoneHeader();
             gameTableDrawer.drawFifthBoneSection();
             gameTableDrawer.drawChosenPair();

@@ -12,8 +12,8 @@ public class RoundEnd {
     private GridPane gridPane;
     private List<Integer> fifthDiceList = new ArrayList<>();
     private List<Integer> alternativeFifthDiceList = new ArrayList<>();
-    private Map<Integer, Integer> chosenFifthDice = new HashMap<>();
-    private Map<Integer, Integer> alternativeChosenFifthDice = new HashMap<>();
+    private Map<Integer, Integer> chosenFifthDiceMap = new HashMap<>();
+    private Map<Integer, Integer> alternativeChosenFifthDiceMap = new HashMap<>();
     private CommonDataStructure commonDataStructure;
     private GameTableDrawer gameTableDrawer;
     private User user;
@@ -45,23 +45,31 @@ public class RoundEnd {
     }
 
     public Set<Integer> getChosenFifthDiceSet() {
-        return chosenFifthDice.keySet();
+        return chosenFifthDiceMap.keySet();
     }
 
-    public Set<Integer> getAlternativeChosenFifthDice() {
-        return alternativeChosenFifthDice.keySet();
+    public Set<Integer> getAlternativeChosenFifthDiceSet() {
+        return alternativeChosenFifthDiceMap.keySet();
+    }
+
+    public Map<Integer, Integer> getChosenFifthDiceMap() {
+        return chosenFifthDiceMap;
+    }
+
+    public Map<Integer, Integer> getAlternativeChosenFifthDiceMap() {
+        return alternativeChosenFifthDiceMap;
     }
 
     private void processFifthDie(int fifthDieValue) {
         if (!fifthDiceList.contains(fifthDieValue)) {
             if (fifthDiceList.size() < 3) {
                 fifthDiceList.add(fifthDieValue);
-                gameTableDrawer.drawChosenFifthDie(fifthDieValue, chosenFifthDice.size());
-                chosenFifthDice.put(fifthDieValue, 0);
+                gameTableDrawer.drawChosenFifthDie(fifthDieValue, chosenFifthDiceMap.size());
+                chosenFifthDiceMap.put(fifthDieValue, 0);
             }
         } else {
-            chosenFifthDice.put(fifthDieValue, chosenFifthDice.get(fifthDieValue) + 1);
-            gameTableDrawer.drawChosenFifthDieSlots(chosenFifthDice.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
+            chosenFifthDiceMap.put(fifthDieValue, chosenFifthDiceMap.get(fifthDieValue) + 1);
+            gameTableDrawer.drawChosenFifthDieSlots(chosenFifthDiceMap.get(fifthDieValue), fifthDiceList.indexOf(fifthDieValue));
         }
     }
 
@@ -69,15 +77,15 @@ public class RoundEnd {
         if (!alternativeFifthDiceList.contains(alternativeFifthDieValue)) {
             if (alternativeFifthDiceList.size() < 3) {
                 alternativeFifthDiceList.add(alternativeFifthDieValue);
-                chosenFifthDice.put(alternativeFifthDieValue, 0);
+                alternativeChosenFifthDiceMap.put(alternativeFifthDieValue, 0);
             }
         } else {
-            chosenFifthDice.put(alternativeFifthDieValue, chosenFifthDice.get(alternativeFifthDieValue) + 1);
+            alternativeChosenFifthDiceMap.put(alternativeFifthDieValue, alternativeChosenFifthDiceMap.get(alternativeFifthDieValue) + 1);
         }
     }
 
     public boolean isFifthSlotFree(int fifthDieValue) {
-        if (chosenFifthDice.containsKey(fifthDieValue) && chosenFifthDice.get(fifthDieValue) == 8) {
+        if (chosenFifthDiceMap.containsKey(fifthDieValue) && chosenFifthDiceMap.get(fifthDieValue) == 8) {
             return false;
         }
         return true;
@@ -187,7 +195,7 @@ public class RoundEnd {
         if(user.getPC()){
             fifthDieSet = getChosenFifthDiceSet();
         } else {
-            fifthDieSet = getAlternativeChosenFifthDice();
+            fifthDieSet = getAlternativeChosenFifthDiceSet();
         }
 
         Die[] diceArray = user.getUserDataStructures().getDiceArray();
@@ -228,15 +236,18 @@ public class RoundEnd {
         int resultKey = 0;
         int resultValue = 9;
         Set<Integer> chosenFifthDiceSet;
+        Map<Integer, Integer> chosenFifthDiceMap;
         if (user.getPC()) {
             chosenFifthDiceSet = getChosenFifthDiceSet();
+            chosenFifthDiceMap = getChosenFifthDiceMap();
         }else{
-            chosenFifthDiceSet = getAlternativeChosenFifthDice();
+            chosenFifthDiceSet = getAlternativeChosenFifthDiceSet();
+            chosenFifthDiceMap = getAlternativeChosenFifthDiceMap();
         }
         for (Integer key : chosenFifthDiceSet) {
-            if (chosenFifthDice.get(key) < resultValue && isFifthDieOnDiceArray(key)) {
+            if (chosenFifthDiceMap.get(key) < resultValue && isFifthDieOnDiceArray(key)) {
                 resultKey = key;
-                resultValue = chosenFifthDice.get(key);
+                resultValue = chosenFifthDiceMap.get(key);
 
             }
         }
@@ -309,19 +320,19 @@ public class RoundEnd {
 
             if (!isFifthSlotFree(alternativeChosenFifthDieValue) || !isPairSlotFree(alternativeFirstPairSum)) {
                 //endGameForUser(user);
-                user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap))));
+                gameTableDrawer.setAlternativeScore(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap));
             } else {
                 alternativeScorePointerMap.replace(alternativeFirstPairSum, ++alternativeFirstCouplePointer);
                 processAlternativeFifthDie(alternativeChosenFifthDieValue);
-                user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap))));
+                gameTableDrawer.setAlternativeScore(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap));
 
                 if (!isPairSlotFree(alternativeSecondPairSum)) {
                     //endGameForUser(user);
-                    user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap))));
+                    gameTableDrawer.setAlternativeScore(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap));
                 } else {
                     alternativeSecondCouplePointer = alternativeScorePointerMap.get(alternativeSecondPairSum);
                     alternativeScorePointerMap.replace(alternativeSecondPairSum, ++alternativeSecondCouplePointer);
-                    user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap))));
+                    gameTableDrawer.setAlternativeScore(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap));
                 }
             }
 
