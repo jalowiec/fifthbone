@@ -85,8 +85,6 @@ public class UserDataStructures {
     }
 
     public String getAlternativeScoreValue(){
-        System.out.println("fasfa");
-        System.out.println(alternativeScoreText.getText());
         return alternativeScoreText.getText();
     }
 

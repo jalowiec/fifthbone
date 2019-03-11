@@ -110,7 +110,7 @@ public class RoundEnd {
         if (user instanceof UserPC) {
             UserPC userPC = (UserPC) user;
             if (userPC.getUserLevel() == UserLevel.MEDIUM) {
-                freeSlotState = calculateOptimumFourDice();
+                freeSlotState = calculateOptimumFourDice(user.getUserDataStructures().getFreeSlotState());
                 user.getUserDataStructures().setFreeSlotState(freeSlotState);
             }
         }
@@ -120,6 +120,8 @@ public class RoundEnd {
     private void processAlternativeUserChoice() {
 
         int[] alternativeFreeSlotState = orderComputerChoice();
+        user.getUserDataStructures().setAlternativeSlotState(alternativeFreeSlotState);
+        alternativeFreeSlotState = calculateOptimumFourDice(user.getUserDataStructures().getAlternativeSlotState());
         user.getUserDataStructures().setAlternativeSlotState(alternativeFreeSlotState);
 
     }
@@ -142,9 +144,8 @@ public class RoundEnd {
         return freeSlotState;
     }
 
-    private int[] calculateOptimumFourDice() {
+    private int[] calculateOptimumFourDice(int[] freeSlotState) {
 
-        int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
         int[] freeSlotStateFilter;
         int[] newFreeSlotState = new int[4];
         int[] firstSetDice = {0, 1, 2, 3};
@@ -335,15 +336,15 @@ public class RoundEnd {
                     gameTableDrawer.setAlternativeScore(commonDataStructure.getScoreFromSchema(alternativeScorePointerMap));
                 }
             }
-
-            System.out.println(user.getUserDataStructures().getAlternativeScorePointerMap());
         }
 
 
 
         user.getRoundProccesorUser().setEndTurnButtonDisabled();
         setRoundEnd(true);
-        user.getGameTableDrawer().getNextPlayerButton().setDisable(false);
+        if(commonDataStructure.getPlayersWhoNotFinished().size()>0) {
+            user.getGameTableDrawer().getNextPlayerButton().setDisable(false);
+        }
         commonDataStructure.getLeftPanelDrawer().drawPlayingUsersScoreInPanel();
 
 

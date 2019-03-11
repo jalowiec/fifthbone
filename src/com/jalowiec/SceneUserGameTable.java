@@ -31,11 +31,11 @@ public class SceneUserGameTable {
             user.getGridPane().setPadding(new Insets(30, 20, 30, 20));
             user.getGridPane().setGridLinesVisible(false);
 
-            user.setUserScene(new Scene(user.getGridPane(), 1180, 900));
+            user.setUserScene(new Scene(user.getGridPane(), 1210, 900));
             user.getUserScene().getStylesheets().add("userstyle.css");
 
             GameTableProperties gameTableProperties = new GameTableProperties(user);
-            gameTableProperties.setLeftPanelProperties(30, 100, 90, 90);
+            gameTableProperties.setLeftPanelProperties(30, 110, 120, 80);
             gameTableProperties.setColumnProperties(120, 60);
             gameTableProperties.setRowsProperties(30);
 

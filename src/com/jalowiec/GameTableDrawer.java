@@ -2,6 +2,7 @@ package com.jalowiec;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -38,10 +39,25 @@ public class GameTableDrawer {
             grid.add(cellText,  i+5, 0);
         }
 
-        MenuItem menuItem1 = new MenuItem("Option 1");
-        MenuItem menuItem2 = new MenuItem("Option 2");
-        MenuButton menuButton = new MenuButton("Options", null, menuItem1, menuItem2);
-        grid.add(menuButton, 0 , 0, 3, 1);
+
+
+        ImageView homeToMenuStartImage = new ImageView("file:resources/home.png");
+        homeToMenuStartImage.setCursor(Cursor.HAND);
+        //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
+        grid.add(homeToMenuStartImage, 0 , 0);
+
+        ImageView saveGameImage = new ImageView("file:resources/save.png");
+        saveGameImage.setCursor(Cursor.HAND);
+        GridPane.setHalignment(saveGameImage, HPos.CENTER);
+        //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
+        grid.add(saveGameImage, 1 , 0);
+
+
+        ImageView endGameImage = new ImageView("file:resources/end.png");
+        endGameImage.setCursor(Cursor.HAND);
+        //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
+        grid.add(endGameImage, 2 , 0);
+
     }
 
     public void drawPointsRow(){
@@ -142,7 +158,6 @@ public class GameTableDrawer {
 
 
     public void drawScore(int score) {
-        System.out.println("wywolanie draw score");
 
         grid.getChildren().remove(user.getUserDataStructures().getScoreText());
         user.getUserDataStructures().setScoreText(new Text(Integer.toString(score)));
@@ -156,7 +171,7 @@ public class GameTableDrawer {
     }
 
     public void setAlternativeScore(int score) {
-        System.out.println("wywolanie alternative draw score");
+
         user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(score)));
     }
 

@@ -19,14 +19,6 @@ public class PlayingUsers {
 
     }
 
-    public User getNextUser(User user) {
-        List<User> playingUsersList = commonDataStructure.getPlayersInTheGame();
-        int playingUserId = playingUsersList.indexOf(user);
-        if (playingUserId == playingUsersList.size() - 1) {
-            return playingUsersList.get(0);
-        }
-        return playingUsersList.get(playingUserId + 1);
-    }
 
     public User getNextUserWhoNotFinished(User user) {
         List<User> playersWhoNotFinished = commonDataStructure.getPlayersWhoNotFinished();
@@ -35,6 +27,8 @@ public class PlayingUsers {
             return playersWhoNotFinished.get(0);
         }
         return playersWhoNotFinished.get(playingUserId + 1);
+
+
     }
 
 }
