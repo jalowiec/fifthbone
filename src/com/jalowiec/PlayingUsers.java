@@ -10,6 +10,10 @@ public class PlayingUsers {
         this.commonDataStructure = commonDataStructure;
     }
 
+    public void clearPlayingUsers(){
+        commonDataStructure.getPlayersInTheGame().clear();
+    }
+
     public void addPCUsers() {
 
         List<User> playingUsersList = commonDataStructure.getPlayersInTheGame();

@@ -23,8 +23,6 @@ public class FifthDie extends Application {
 
 
         CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
-        PlayingUsers plaingUsers = new PlayingUsers(commonDataStructure);
-        plaingUsers.addPCUsers();
         SceneMenuStart sceneMenuStart = new SceneMenuStart(mainStage);
     }
 

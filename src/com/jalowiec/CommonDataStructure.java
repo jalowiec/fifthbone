@@ -15,6 +15,8 @@ public class CommonDataStructure {
     private RankingRecordFileWriter rankingRecordFileWriter;
     private PlayingUsers playingUsers;
     private SceneMenuStart sceneMenuStart;
+    private StateOfGame stateOfGame;
+    private User currentUser;
 
 
     private CommonDataStructure(){
@@ -24,6 +26,7 @@ public class CommonDataStructure {
         rankingRecordFileReader = new RankingRecordFileReader();
         rankingRecordFileWriter = new RankingRecordFileWriter();
         playingUsers = new PlayingUsers(this);
+        stateOfGame = new StateOfGame(this);
 
     }
 
@@ -64,6 +67,14 @@ public class CommonDataStructure {
         this.leftPanelDrawer = leftPanelDrawer;
     }
 
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
+    }
+
+    public void setStateOfGame(StateOfGame stateOfGame) {
+        this.stateOfGame = stateOfGame;
+    }
+
     public SceneMenuStart getSceneMenuStart() {
         return sceneMenuStart;
     }
@@ -76,9 +87,15 @@ public class CommonDataStructure {
         return rankingList;
     }
 
-    public void setRankingList(List<RankingRecord> rankingList) {
-        this.rankingList = rankingList;
+    public int getIndexOfCurentUser() {
+        return indexOfCurentUser;
     }
+
+    public void setIndexOfCurentUser(int indexOfCurentUser) {
+        this.indexOfCurentUser = indexOfCurentUser;
+    }
+
+
 
     public void getRankingFromTheFile(){
         this.rankingList = rankingRecordFileReader.readRankingListFromFile();

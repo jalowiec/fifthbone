@@ -42,6 +42,9 @@ public class SceneMenuStart {
         loadGameButton.setMinWidth(150);
         loadGameButton.setId("menustartbutton");
         loadGameButton.setCursor(Cursor.HAND);
+        loadGameButton.setOnAction(e-> {
+            commonDataStructure.getStateOfGame().readGame(commonDataStructure);
+        });
 
         Button endGameButton = new Button("Zakoncz");
         endGameButton.setMinWidth(150);

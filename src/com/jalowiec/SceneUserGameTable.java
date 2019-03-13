@@ -25,10 +25,11 @@ public class SceneUserGameTable {
 
     public void generateScenesForUsers() {
 
+
         for (User user : usersInTheGame) {
 
             user.setGridPane(new GridPane());
-            user.getGridPane().setPadding(new Insets(30, 20, 30, 20));
+            user.getGridPane().setPadding(new Insets(-20, 20, 30, 20));
             user.getGridPane().setGridLinesVisible(false);
 
             user.setUserScene(new Scene(user.getGridPane(), 1210, 900));

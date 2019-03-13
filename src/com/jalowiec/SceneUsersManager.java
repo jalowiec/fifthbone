@@ -10,10 +10,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneUsersManager {
+public class SceneUsersManager implements Serializable {
 
     Stage mainStage;
     UsersFileWriter usersFileWriter;

@@ -1,19 +1,23 @@
 package com.jalowiec;
 
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class GameTableDrawer {
 
@@ -22,6 +26,7 @@ public class GameTableDrawer {
     private Button endTurnButton;
     private Button nextPlayerButton;
     private User user;
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
     public GameTableDrawer(User user) {
         this.user = user;
@@ -40,24 +45,51 @@ public class GameTableDrawer {
         }
 
 
+        EventHandler<MouseEvent> mouseHomeHandler = e -> {
+
+            Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+            dialog.setTitle("Ostrzeżenie");
+            dialog.setContentText("Czy chcesz wrocid do glownego menu? Niesapisana gra zostanie utracona!!!");
+            Optional<ButtonType> result = dialog.showAndWait();
+            if(result.get() == ButtonType.OK) {
+                commonDataStructure.getSceneMenuStart().showScene();
+            }
+        };
 
         ImageView homeToMenuStartImage = new ImageView("file:resources/home.png");
         homeToMenuStartImage.setCursor(Cursor.HAND);
-        //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
+        homeToMenuStartImage.setOnMouseClicked(mouseHomeHandler);
         grid.add(homeToMenuStartImage, 0 , 0);
 
+
+        EventHandler<MouseEvent> mouseSaveHandler = e -> {
+
+            commonDataStructure.getStateOfGame().saveGame(commonDataStructure);
+            commonDataStructure.getStateOfGame().readGame(commonDataStructure);
+
+        };
         ImageView saveGameImage = new ImageView("file:resources/save.png");
         saveGameImage.setCursor(Cursor.HAND);
         GridPane.setHalignment(saveGameImage, HPos.CENTER);
-        //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
+        saveGameImage.setOnMouseClicked(mouseSaveHandler);
         grid.add(saveGameImage, 1 , 0);
 
+  /*      EventHandler<MouseEvent> mouseEndGameHandler = e -> {
 
+            Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+            dialog.setTitle("Ostrzeżenie");
+            dialog.setContentText("Czy chcesz zakonczyc gre? Niesapisana gra zostanie utracona!!!");
+            Optional<ButtonType> result = dialog.showAndWait();
+            if(result.get() == ButtonType.OK) {
+                commonDataStructure.getSceneMenuStart().showScene();
+            }
+
+        };
         ImageView endGameImage = new ImageView("file:resources/end.png");
         endGameImage.setCursor(Cursor.HAND);
         //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
         grid.add(endGameImage, 2 , 0);
-
+*/
     }
 
     public void drawPointsRow(){
@@ -226,7 +258,7 @@ public class GameTableDrawer {
         endTurnButton.setId("button");
         endTurnButton.setMinWidth(150);
         GridPane.setHalignment(endTurnButton, HPos.CENTER);
-        grid.add(endTurnButton, 9, 25, 3, 1);
+        grid.add(endTurnButton, 9, 20, 3, 1);
     }
 
     public void drawNextPlayerButton(Stage mainStage, PlayingUsers playingUsers) {
@@ -251,7 +283,7 @@ public class GameTableDrawer {
         nextPlayerButton.setMinWidth(150);
         nextPlayerButton.setDisable(true);
         GridPane.setHalignment(nextPlayerButton, HPos.CENTER);
-        user.getGridPane().add(nextPlayerButton, 12, 25, 3, 1);
+        user.getGridPane().add(nextPlayerButton, 12, 20, 3, 1);
 
     }
 

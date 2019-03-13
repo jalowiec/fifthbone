@@ -33,12 +33,14 @@ public class SceneUsersInGame {
         vBox.setPadding(new Insets(10, 10, 10, 10));
 
         List<User> userNameList = usersFileReader.readUsersListFromFile();
+        PlayingUsers plaingUsers = new PlayingUsers(commonDataStructure);
+        plaingUsers.clearPlayingUsers();
+        plaingUsers.addPCUsers();
         userNameList.addAll(commonDataStructure.getPlayersInTheGame());
 
 
         EventHandler<MouseEvent> mouseHandler = e -> {
             commonDataStructure.getSceneMenuStart().showScene();
-
         };
 
         ImageView homeToMenuStartImage = new ImageView("file:resources/home.png");
