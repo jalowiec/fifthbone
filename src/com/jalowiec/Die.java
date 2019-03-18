@@ -2,7 +2,9 @@ package com.jalowiec;
 
 import javafx.scene.image.Image;
 
-public class Die {
+import java.io.Serializable;
+
+public class Die implements Serializable {
 
     private String diePath;
     private int dieValue;
@@ -20,7 +22,4 @@ public class Die {
         return new Image(diePath);
     }
 
-    public String getDiePath() {
-        return diePath;
-    }
 }

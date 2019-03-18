@@ -12,14 +12,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneUsersInGame {
+public class SceneUsersInGame implements Serializable {
 
-    Stage mainStage;
-    UsersFileReader usersFileReader;
-    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+    transient private Stage mainStage;
+    private UsersFileReader usersFileReader;
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
 
     public SceneUsersInGame(Stage mainStage) {
@@ -66,7 +67,7 @@ public class SceneUsersInGame {
         Button startGameButton = new Button("Rozpocznij gre");
         startGameButton.setOnAction(e -> {
             if(isUsersSelected(checkBoxes, userNameList)) {
-                new SceneUserGameTable(mainStage);
+                new SceneUserGameTable(mainStage, 0);
             } else {
                 Alert dialog = new Alert(Alert.AlertType.ERROR);
                 dialog.setTitle("Ostrzeżenie");

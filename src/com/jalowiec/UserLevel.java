@@ -1,5 +1,7 @@
 package com.jalowiec;
 
-public enum UserLevel {
+import java.io.Serializable;
+
+public enum UserLevel implements Serializable {
     BEGGINER, MEDIUM, EXPERT
 }

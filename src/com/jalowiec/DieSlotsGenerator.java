@@ -1,9 +1,10 @@
 package com.jalowiec;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DieSlotsGenerator {
+public class DieSlotsGenerator implements Serializable {
 
     private List<DieSlot> slotsList = new ArrayList<>();
     private List<DieSlot> freeSlotsList = new ArrayList<>();

@@ -3,23 +3,26 @@ package com.jalowiec;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserDataStructures {
+public class UserDataStructures implements Serializable {
 
     private int[] freeSlotState = new int[4];
     private int[] alternativeSlotState = new int[4];
-    private List<ImageView> imageViewList = new ArrayList<>();
+    private transient List<ImageView> imageViewList = new ArrayList<>();
     private Die[] diceArray = new Die[5];
     private List<DieSlot> diceSlotsList;
     private List<DieSlot> freeSlotsList;
     private Map<Integer, Integer> scorePointerMap;
     private Map<Integer, Integer> alternativeScorePointerMap;
-    private Text scoreText;
-    private Text alternativeScoreText;
+    private transient Text scoreText;
+    private transient Text alternativeScoreText;
+    private int scoreValue;
+    private int alternativeScoreValue;
 
 
     public UserDataStructures() {
@@ -27,8 +30,13 @@ public class UserDataStructures {
         initScorePointerMap();
     }
 
+
     public List<ImageView> getImageViewList() {
         return imageViewList;
+    }
+
+    public void setImageViewList(List<ImageView> imageViewList) {
+        this.imageViewList = imageViewList;
     }
 
     public Die[] getDiceArray() {
@@ -71,7 +79,7 @@ public class UserDataStructures {
         return scoreText;
     }
 
-    public String getScoreValue(){
+    public String getStringScoreValue(){
         return scoreText.getText();
     }
 
@@ -79,12 +87,7 @@ public class UserDataStructures {
         this.scoreText = scoreText;
     }
 
-
-    public Text getAlternativeScoreText() {
-        return alternativeScoreText;
-    }
-
-    public String getAlternativeScoreValue(){
+    public String getStringAlternativeScoreValue(){
         return alternativeScoreText.getText();
     }
 
@@ -92,6 +95,21 @@ public class UserDataStructures {
         this.alternativeScoreText = alternativeScoreText;
     }
 
+    public int getScoreValue() {
+        return scoreValue;
+    }
+
+    public void setScoreValue(int scoreValue) {
+        this.scoreValue = scoreValue;
+    }
+
+    public int getAlternativeScoreValue() {
+        return alternativeScoreValue;
+    }
+
+    public void setAlternativeScoreValue(int alternativeScoreValue) {
+        this.alternativeScoreValue = alternativeScoreValue;
+    }
 
     public void generateSlots(){
         DieSlotsGenerator dieSlotsGenerator = new DieSlotsGenerator();

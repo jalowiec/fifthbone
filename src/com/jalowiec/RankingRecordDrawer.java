@@ -5,15 +5,16 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RankingRecordDrawer {
+public class RankingRecordDrawer implements Serializable {
 
 
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
-    private List<Node> rankingRecordNodesList = new ArrayList<>();
+    transient private List<Node> rankingRecordNodesList = new ArrayList<>();
 
     public void drawRankingRecord() {
         removeRanking();

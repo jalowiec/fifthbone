@@ -2,12 +2,13 @@ package com.jalowiec;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class RankingRecordFileWriter {
+public class RankingRecordFileWriter implements Serializable {
 
     public void writeRankingListToFile(List<RankingRecord> rankingRecordList) {
         Path path = Paths.get("c://Dice/diceranking.txt");

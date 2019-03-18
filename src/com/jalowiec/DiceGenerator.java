@@ -1,10 +1,11 @@
 package com.jalowiec;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiceGenerator {
+public class DiceGenerator implements Serializable {
 
     private List<Die> diceForPlaying = new ArrayList<>();
 

@@ -4,9 +4,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class GameTableProperties {
+import java.io.Serializable;
 
-    private GridPane grid;
+public class GameTableProperties implements Serializable {
+
+    transient private GridPane grid;
 
     public GameTableProperties(User user) {
         this.grid = user.getGridPane();

@@ -1,13 +1,18 @@
 package com.jalowiec;
 
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class CommonDataStructure {
+public class CommonDataStructure implements Serializable {
 
     private static CommonDataStructure instance;
     private int[][] scoreSchema;
     private List<User> playersInTheGame = new ArrayList<>();
     private List<User> playersWhoNotFinished;
+    transient private List<Scene> sceneList = new ArrayList<>();
     private List<RankingRecord> rankingList;
     private DiceGenerator diceGenerator;
     private LeftPanelDrawer leftPanelDrawer;
@@ -16,7 +21,8 @@ public class CommonDataStructure {
     private PlayingUsers playingUsers;
     private SceneMenuStart sceneMenuStart;
     private StateOfGame stateOfGame;
-    private User currentUser;
+    private int currentUserIndex;
+    transient private Stage mainStage;
 
 
     private CommonDataStructure(){
@@ -26,7 +32,7 @@ public class CommonDataStructure {
         rankingRecordFileReader = new RankingRecordFileReader();
         rankingRecordFileWriter = new RankingRecordFileWriter();
         playingUsers = new PlayingUsers(this);
-        stateOfGame = new StateOfGame(this);
+        stateOfGame = new StateOfGame();
 
     }
 
@@ -50,7 +56,6 @@ public class CommonDataStructure {
         return playersInTheGame;
     }
 
-
     public List<User> getPlayersWhoNotFinished() {
         return playersWhoNotFinished;
     }
@@ -67,12 +72,32 @@ public class CommonDataStructure {
         this.leftPanelDrawer = leftPanelDrawer;
     }
 
-    public StateOfGame getStateOfGame() {
-        return stateOfGame;
+    public List<Scene> getSceneList() {
+        return sceneList;
     }
 
-    public void setStateOfGame(StateOfGame stateOfGame) {
-        this.stateOfGame = stateOfGame;
+    public void setSceneList(List<Scene> sceneList) {
+        this.sceneList = sceneList;
+    }
+
+    public int getCurrentUserIndex() {
+        return currentUserIndex;
+    }
+
+    public void setCurrentUserIndex(int currentUserIndex) {
+        this.currentUserIndex = currentUserIndex;
+    }
+
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
     }
 
     public SceneMenuStart getSceneMenuStart() {
@@ -86,16 +111,6 @@ public class CommonDataStructure {
     public List<RankingRecord> getRankingList() {
         return rankingList;
     }
-
-    public int getIndexOfCurentUser() {
-        return indexOfCurentUser;
-    }
-
-    public void setIndexOfCurentUser(int indexOfCurentUser) {
-        this.indexOfCurentUser = indexOfCurentUser;
-    }
-
-
 
     public void getRankingFromTheFile(){
         this.rankingList = rankingRecordFileReader.readRankingListFromFile();
@@ -124,7 +139,6 @@ public class CommonDataStructure {
         }
         return result;
     }
-
 
 
 

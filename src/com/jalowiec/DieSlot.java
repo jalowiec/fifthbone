@@ -1,6 +1,8 @@
 package com.jalowiec;
 
-public class DieSlot {
+import java.io.Serializable;
+
+public class DieSlot implements Serializable {
 
     private int columnIndex;
     private int rowIndex;

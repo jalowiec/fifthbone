@@ -1,6 +1,8 @@
 package com.jalowiec;
 
-public class UserPC extends  User {
+import java.io.Serializable;
+
+public class UserPC extends  User implements Serializable {
 
     private UserLevel userLevel;
 

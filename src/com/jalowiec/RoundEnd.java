@@ -2,14 +2,14 @@ package com.jalowiec;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class RoundEnd {
+public class RoundEnd implements Serializable {
 
-    private GridPane gridPane;
+    transient private GridPane gridPane;
     private List<Integer> fifthDiceList = new ArrayList<>();
     private List<Integer> alternativeFifthDiceList = new ArrayList<>();
     private Map<Integer, Integer> chosenFifthDiceMap = new HashMap<>();
@@ -354,7 +354,7 @@ public class RoundEnd {
         System.out.println("KONIEC GRY DLA UZYTKOWNIKA: " + user.getUserName());
         RankingRecordDrawer rankingRecordDrawer = commonDataStructure.getLeftPanelDrawer().getRankingRecordDrawer();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        RankingRecord rankingRecordAfterEndGame = new RankingRecord(user.getUserName(), Integer.parseInt(user.getUserDataStructures().getScoreValue()), simpleDateFormat.format(new Date()));
+        RankingRecord rankingRecordAfterEndGame = new RankingRecord(user.getUserName(), Integer.parseInt(user.getUserDataStructures().getStringScoreValue()), simpleDateFormat.format(new Date()));
         if (rankingRecordDrawer.isShouldBeAddedToRanking(rankingRecordAfterEndGame)) {
             rankingRecordDrawer.addToRanking(rankingRecordAfterEndGame);
         }

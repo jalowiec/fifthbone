@@ -16,12 +16,12 @@ import java.util.List;
 
 public class SceneUsersManager implements Serializable {
 
-    Stage mainStage;
-    UsersFileWriter usersFileWriter;
-    UsersFileReader usersFileReader = new UsersFileReader();
-    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
-    List<Node> nodeList = new ArrayList<>();
-    List<User> userNameList = usersFileReader.readUsersListFromFile();
+    transient private Stage mainStage;
+    private UsersFileWriter usersFileWriter;
+    private UsersFileReader usersFileReader = new UsersFileReader();
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+    transient private List<Node> nodeList = new ArrayList<>();
+    private List<User> userNameList = usersFileReader.readUsersListFromFile();
 
     public SceneUsersManager(Stage mainStage) {
         this.mainStage = mainStage;

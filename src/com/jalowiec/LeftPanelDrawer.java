@@ -8,7 +8,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
-public class LeftPanelDrawer {
+import java.io.Serializable;
+
+public class LeftPanelDrawer implements Serializable {
 
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
     private int refRowIndex = 13;
@@ -16,7 +18,7 @@ public class LeftPanelDrawer {
     private PlayingUsersDrawer playingUsersDrawer;
 
 
-    public LeftPanelDrawer() {
+    public LeftPanelDrawer () {
         rankingRecordDrawer = new RankingRecordDrawer();
         playingUsersDrawer = new PlayingUsersDrawer();
     }

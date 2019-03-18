@@ -3,8 +3,10 @@ package com.jalowiec;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 
-public class FifthDie extends Application {
+
+public class FifthDie extends Application implements Serializable {
 
 
 
@@ -23,6 +25,7 @@ public class FifthDie extends Application {
 
 
         CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+        commonDataStructure.setMainStage(mainStage);
         SceneMenuStart sceneMenuStart = new SceneMenuStart(mainStage);
     }
 

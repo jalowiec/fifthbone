@@ -1,8 +1,9 @@
 package com.jalowiec;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PlayingUsers {
+public class PlayingUsers implements Serializable {
 
     CommonDataStructure commonDataStructure;
 

@@ -7,15 +7,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayingUsersDrawer {
+public class PlayingUsersDrawer implements Serializable {
 
 
-    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
-    List<Node> playingUsersNameList = new ArrayList<>();
-    List<Node> playingUsersScoreList = new ArrayList<>();
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+    transient private List<Node> playingUsersNameList = new ArrayList<>();
+    transient private List<Node> playingUsersScoreList = new ArrayList<>();
 
 
     public void drawPlayingUsersInit() {
@@ -25,7 +26,7 @@ public class PlayingUsersDrawer {
             int i = 4;
             for (User element : playingUsersList) {
                 Text cellUserNameText = new Text(element.getUserName());
-                Text cellUserScoreText = new Text(element.getUserDataStructures().getScoreValue());
+                Text cellUserScoreText = new Text(element.getUserDataStructures().getStringScoreValue());
                 cellUserNameText.setId("leftpanelplayingplayers");
                 cellUserScoreText.setId("leftpanelscore");
                 GridPane.setHalignment(cellUserScoreText, HPos.CENTER);
@@ -62,7 +63,7 @@ public class PlayingUsersDrawer {
         for (User user : playingUsersList) {
             int i = 4;
             for (User element : playingUsersList) {
-                Text cellUserScoreText = new Text(element.getUserDataStructures().getScoreValue());
+                Text cellUserScoreText = new Text(element.getUserDataStructures().getStringScoreValue());
                 cellUserScoreText.setId("leftpanelscore");
                 GridPane.setHalignment(cellUserScoreText, HPos.CENTER);
                 if (element.getRoundEnd().isGameEnd()) {
@@ -71,7 +72,7 @@ public class PlayingUsersDrawer {
                 user.getGridPane().add(cellUserScoreText, 2, i, 2, 1);
 
                 if (!user.getPC() && (!element.getPC()) && element.equals(user)) {
-                    Text cellAlternativeScoreText = new Text("(" + element.getUserDataStructures().getAlternativeScoreValue() + ")");
+                    Text cellAlternativeScoreText = new Text("(" + element.getUserDataStructures().getStringAlternativeScoreValue() + ")");
                     cellAlternativeScoreText.setId("leftpanelalternaivescore");
                     GridPane.setHalignment(cellAlternativeScoreText, HPos.CENTER);
                     user.getGridPane().add(cellAlternativeScoreText, 3, i);

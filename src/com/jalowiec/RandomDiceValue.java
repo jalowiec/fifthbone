@@ -1,8 +1,9 @@
 package com.jalowiec;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class RandomDiceValue {
+public class RandomDiceValue implements Serializable {
     Random random = new Random();
 
 

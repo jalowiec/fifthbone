@@ -5,11 +5,13 @@ import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class RoundInitCommon {
+public class RoundInitCommon implements Serializable {
 
-    private GridPane gridPane;
+    transient private GridPane gridPane;
     private User user;
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
@@ -57,7 +59,9 @@ public class RoundInitCommon {
             imageView.setOnMouseClicked(mouseHandler);
             imageView.setCursor(Cursor.CLOSED_HAND);
         }
-        imageViewList.add(imageView);
+        if(imageViewList!=null) {
+            imageViewList.add(imageView);
+        }
 
         gridPane.add(imageView, diceSlotsList.get(slotNumber).getColumnIndex(),
                 diceSlotsList.get(slotNumber).getRowIndex(),
@@ -67,13 +71,11 @@ public class RoundInitCommon {
 
     public void removeAllDiceFromSlots() {
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
-        for(ImageView element : imageViewList){
-            gridPane.getChildren().remove(element);
+        if(imageViewList!=null) {
+            for (ImageView element : imageViewList) {
+                gridPane.getChildren().remove(element);
+            }
+            imageViewList.clear();
         }
-        imageViewList.clear();
     }
-
-
-
-
 }

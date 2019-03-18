@@ -17,14 +17,15 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class GameTableDrawer {
+public class GameTableDrawer implements Serializable {
 
 
-    private GridPane grid;
-    private Button endTurnButton;
-    private Button nextPlayerButton;
+    transient private GridPane grid;
+    transient private Button endTurnButton;
+    transient private Button nextPlayerButton;
     private User user;
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
 
@@ -33,15 +34,15 @@ public class GameTableDrawer {
         this.grid = user.getGridPane();
     }
 
-    public void drawTableHeader(){
+    public void drawTableHeader() {
         String[] rowValues = {"SUMA", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
         Text cellText;
 
-        for(int i=0; i<rowValues.length; i++){
+        for (int i = 0; i < rowValues.length; i++) {
             cellText = new Text(rowValues[i]);
             GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tableheader");
-            grid.add(cellText,  i+5, 0);
+            grid.add(cellText, i + 5, 0);
         }
 
 
@@ -51,7 +52,7 @@ public class GameTableDrawer {
             dialog.setTitle("Ostrzeżenie");
             dialog.setContentText("Czy chcesz wrocid do glownego menu? Niesapisana gra zostanie utracona!!!");
             Optional<ButtonType> result = dialog.showAndWait();
-            if(result.get() == ButtonType.OK) {
+            if (result.get() == ButtonType.OK) {
                 commonDataStructure.getSceneMenuStart().showScene();
             }
         };
@@ -59,64 +60,48 @@ public class GameTableDrawer {
         ImageView homeToMenuStartImage = new ImageView("file:resources/home.png");
         homeToMenuStartImage.setCursor(Cursor.HAND);
         homeToMenuStartImage.setOnMouseClicked(mouseHomeHandler);
-        grid.add(homeToMenuStartImage, 0 , 0);
+        grid.add(homeToMenuStartImage, 0, 0);
 
 
         EventHandler<MouseEvent> mouseSaveHandler = e -> {
 
             commonDataStructure.getStateOfGame().saveGame(commonDataStructure);
-            commonDataStructure.getStateOfGame().readGame(commonDataStructure);
 
         };
         ImageView saveGameImage = new ImageView("file:resources/save.png");
         saveGameImage.setCursor(Cursor.HAND);
         GridPane.setHalignment(saveGameImage, HPos.CENTER);
         saveGameImage.setOnMouseClicked(mouseSaveHandler);
-        grid.add(saveGameImage, 1 , 0);
+        grid.add(saveGameImage, 1, 0);
 
-  /*      EventHandler<MouseEvent> mouseEndGameHandler = e -> {
-
-            Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-            dialog.setTitle("Ostrzeżenie");
-            dialog.setContentText("Czy chcesz zakonczyc gre? Niesapisana gra zostanie utracona!!!");
-            Optional<ButtonType> result = dialog.showAndWait();
-            if(result.get() == ButtonType.OK) {
-                commonDataStructure.getSceneMenuStart().showScene();
-            }
-
-        };
-        ImageView endGameImage = new ImageView("file:resources/end.png");
-        endGameImage.setCursor(Cursor.HAND);
-        //homeToMenuStartImage.setOnMouseClicked(mouseHandler);
-        grid.add(endGameImage, 2 , 0);
-*/
     }
 
-    public void drawPointsRow(){
+    public void drawPointsRow() {
         String[] rowValues = {"PUNKTY", "10", "7", "6", "5", "4", "3", "4", "5", "6", "7", "10"};
         Text cellText;
 
-        for(int i=0; i<rowValues.length; i++){
+        for (int i = 0; i < rowValues.length; i++) {
             cellText = new Text(rowValues[i]);
             GridPane.setHalignment(cellText, HPos.CENTER);
             cellText.setId("tablerow");
-            grid.add(cellText,  i+5, 1);
+            grid.add(cellText, i + 5, 1);
         }
     }
+
     public void drawMinusSection() {
         Text cellText = new Text("-");
         cellText.setId("cellminus");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        GridPane.setConstraints(cellText, 5, 2, 1,4);
+        GridPane.setConstraints(cellText, 5, 2, 1, 4);
         grid.getChildren().add(cellText);
     }
 
 
-    public void drawPlusSection( ) {
+    public void drawPlusSection() {
         Text cellText = new Text("+");
         cellText.setId("cellplus");
         GridPane.setHalignment(cellText, HPos.CENTER);
-        GridPane.setConstraints(cellText,5, 6, 1,5);
+        GridPane.setConstraints(cellText, 5, 6, 1, 5);
         grid.getChildren().add(cellText);
     }
 
@@ -125,16 +110,16 @@ public class GameTableDrawer {
         cellText.setId("tableheader");
         cellText.getTransforms().add(new Rotate(-90));
         GridPane.setHalignment(cellText, HPos.RIGHT);
-        grid.add(cellText,  6, 15);
+        grid.add(cellText, 6, 15);
     }
 
     public void drawFifthBoneSection() {
         Text cellText = new Text("*");
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             cellText = new Text("*");
             GridPane.setHalignment(cellText, HPos.RIGHT);
             cellText.setId("tableheader");
-            grid.add(cellText,  5, 12+i);
+            grid.add(cellText, 5, 12 + i);
         }
     }
 
@@ -145,20 +130,19 @@ public class GameTableDrawer {
         cellSecondText.setId("tablerow");
         GridPane.setHalignment(cellFirstText, HPos.CENTER);
         GridPane.setHalignment(cellSecondText, HPos.CENTER);
-        grid.add(cellFirstText,  7, 20);
-        grid.add(cellSecondText,  13, 20);
-
+        grid.add(cellFirstText, 7, 20);
+        grid.add(cellSecondText, 13, 20);
 
 
     }
 
-    public void drawHorizontalLines(){
-        for(int i=0; i<5; i++){
+    public void drawHorizontalLines() {
+        for (int i = 0; i < 5; i++) {
             Line line = new Line(0, 0, 780, 0);
             GridPane.setValignment(line, VPos.BOTTOM);
             line.setStrokeWidth(1);
-            switch(i){
-                case 0 :
+            switch (i) {
+                case 0:
                     grid.add(line, 5, 0);
                     break;
                 case 1:
@@ -176,7 +160,7 @@ public class GameTableDrawer {
             }
 
         }
-        Line vLine = new Line(1,0,1,90);
+        Line vLine = new Line(1, 0, 1, 90);
         vLine.setStrokeWidth(1);
         grid.add(vLine, 15, 13);
     }
@@ -190,9 +174,11 @@ public class GameTableDrawer {
 
 
     public void drawScore(int score) {
-
-        grid.getChildren().remove(user.getUserDataStructures().getScoreText());
+        if(user.getUserDataStructures().getScoreText()!=null) {
+            grid.getChildren().remove(user.getUserDataStructures().getScoreText());
+        }
         user.getUserDataStructures().setScoreText(new Text(Integer.toString(score)));
+        user.getUserDataStructures().setScoreValue(score);
         Text cellText = user.getUserDataStructures().getScoreText();
         cellText.setId("score");
         GridPane.setHalignment(cellText, HPos.CENTER);
@@ -205,20 +191,19 @@ public class GameTableDrawer {
     public void setAlternativeScore(int score) {
 
         user.getUserDataStructures().setAlternativeScoreText(new Text(Integer.toString(score)));
+        user.getUserDataStructures().setAlternativeScoreValue(score);
     }
-
-
 
 
     public void drawUsedSlotsAfterRound(int pairSum, int rowPairPosition) {
         ImageView usedSlotCrossBlack = new ImageView("file:resources/markx_black.png");
         ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
-        if(rowPairPosition < 10) {
+        if (rowPairPosition < 10) {
             GridPane.setHalignment(usedSlotCrossBlack, HPos.CENTER);
-            grid.add(usedSlotCrossBlack, pairSum+4, rowPairPosition);
-        }else {
+            grid.add(usedSlotCrossBlack, pairSum + 4, rowPairPosition);
+        } else {
             GridPane.setHalignment(usedSlotCrossRed, HPos.CENTER);
-            grid.add(usedSlotCrossRed, pairSum+4, rowPairPosition);
+            grid.add(usedSlotCrossRed, pairSum + 4, rowPairPosition);
         }
     }
 
@@ -226,18 +211,18 @@ public class GameTableDrawer {
         Text cellText = new Text(Integer.toString(fifthDieValue));
         GridPane.setHalignment(cellText, HPos.CENTER);
         cellText.setId("fifthdie");
-        grid.add(cellText, 6, 12+row);
+        grid.add(cellText, 6, 12 + row);
     }
 
     public void drawChosenFifthDieSlots(int fifthDiePointer, int fifthDieRow) {
         ImageView usedSlotCrossBlack = new ImageView("file:resources/markx_black.png");
         ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
-        if(fifthDiePointer < 8) {
+        if (fifthDiePointer < 8) {
             GridPane.setHalignment(usedSlotCrossBlack, HPos.CENTER);
-            grid.add(usedSlotCrossBlack, fifthDiePointer+6, fifthDieRow+12);
+            grid.add(usedSlotCrossBlack, fifthDiePointer + 6, fifthDieRow + 12);
         } else {
             GridPane.setHalignment(usedSlotCrossRed, HPos.CENTER);
-            grid.add(usedSlotCrossRed, fifthDiePointer+6, fifthDieRow+12);
+            grid.add(usedSlotCrossRed, fifthDiePointer + 6, fifthDieRow + 12);
         }
     }
 
@@ -249,16 +234,16 @@ public class GameTableDrawer {
         return nextPlayerButton;
     }
 
-    public void drawRoundEndButton(RoundEnd roundEnd){
+    public void drawRoundEndButton(RoundEnd roundEnd) {
         endTurnButton = new Button("Zakoncz runde");
-        endTurnButton.setOnAction(e-> roundEnd.countScoreAfterRound(this));
-        if(!user.getPC()) {
+        endTurnButton.setOnAction(e -> roundEnd.countScoreAfterRound(this));
+        if (!user.getPC()) {
             endTurnButton.setDisable(true);
         }
         endTurnButton.setId("button");
         endTurnButton.setMinWidth(150);
         GridPane.setHalignment(endTurnButton, HPos.CENTER);
-        grid.add(endTurnButton, 9, 20, 3, 1);
+        grid.add(endTurnButton, 9, 25, 3, 1);
     }
 
     public void drawNextPlayerButton(Stage mainStage, PlayingUsers playingUsers) {
@@ -267,6 +252,8 @@ public class GameTableDrawer {
         nextPlayerButton.setOnAction(e -> {
 
             User nextPlayingUser = playingUsers.getNextUserWhoNotFinished(user);
+            int userIndex = commonDataStructure.getPlayersInTheGame().indexOf(nextPlayingUser);
+            commonDataStructure.setCurrentUserIndex(userIndex);
             mainStage.setScene(nextPlayingUser.getUserScene());
             nextPlayingUser.getRoundInitCommon().generateDicesInSlots();
             nextPlayingUser.getRoundInitCommon().clearFreeSlotState();
@@ -274,7 +261,7 @@ public class GameTableDrawer {
 
 
             user.getRoundEnd().setRoundEnd(false);
-            if(nextPlayingUser.getPC()){
+            if (nextPlayingUser.getPC()) {
                 nextPlayingUser.getGameTableDrawer().getEndTurnButton().setDisable(false);
             }
 
@@ -283,7 +270,7 @@ public class GameTableDrawer {
         nextPlayerButton.setMinWidth(150);
         nextPlayerButton.setDisable(true);
         GridPane.setHalignment(nextPlayerButton, HPos.CENTER);
-        user.getGridPane().add(nextPlayerButton, 12, 20, 3, 1);
+        user.getGridPane().add(nextPlayerButton, 12, 25, 3, 1);
 
     }
 

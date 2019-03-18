@@ -3,18 +3,19 @@ package com.jalowiec;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String userName;
     private Boolean isPC;
-    private Scene userScene;
-    private GridPane gridPane;
+    transient private Scene userScene;
+    transient private GridPane gridPane;
     private GameTableDrawer gameTableDrawer;
     private UserDataStructures userDataStructures;
     private RoundInitCommon roundInitCommon;
     private RoundProccesorUser roundProccesorUser;
     private RoundEnd roundEnd;
-    private RoundEnd alternativeRoundEnd;
 
 
     public User(String userName, Boolean isPC) {
@@ -77,15 +78,6 @@ public class User {
 
     public void setRoundEnd(RoundEnd roundEnd) {
         this.roundEnd = roundEnd;
-    }
-
-
-    public RoundEnd getAlternativeRoundEnd() {
-        return alternativeRoundEnd;
-    }
-
-    public void setAlternativeRoundEnd(RoundEnd alternativeRoundEnd) {
-        this.alternativeRoundEnd = alternativeRoundEnd;
     }
 
     public UserDataStructures getUserDataStructures() {

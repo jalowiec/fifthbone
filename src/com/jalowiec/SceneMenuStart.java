@@ -7,10 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SceneMenuStart {
+import java.io.Serializable;
+
+public class SceneMenuStart implements Serializable {
 
 
-    private Stage mainStage;
+    transient private Stage mainStage;
     private SceneUsersInGame sceneUsersInGame;
     private SceneUsersManager sceneUsersManager;
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();

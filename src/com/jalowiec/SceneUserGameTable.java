@@ -5,22 +5,24 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SceneUserGameTable {
+public class SceneUserGameTable implements Serializable {
 
-    Stage mainStage;
-    CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
-    List<User> usersInTheGame = commonDataStructure.getPlayersInTheGame();
+    transient private Stage mainStage;
+    private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
+    private List<User> usersInTheGame = commonDataStructure.getPlayersInTheGame();
 
-    public SceneUserGameTable(Stage mainStage) {
+    public SceneUserGameTable(Stage mainStage, int userIndex) {
         this.mainStage = mainStage;
         generateScenesForUsers();
-        showSceneForFirstUser();
+        showSceneForFirstUser(userIndex);
     }
 
-    public void showSceneForFirstUser() {
-        mainStage.setScene(usersInTheGame.get(0).getUserScene());
+    public void showSceneForFirstUser(int userIndex) {
+        commonDataStructure.setCurrentUserIndex(userIndex);
+        mainStage.setScene(usersInTheGame.get(userIndex).getUserScene());
     }
 
     public void generateScenesForUsers() {
@@ -29,10 +31,12 @@ public class SceneUserGameTable {
         for (User user : usersInTheGame) {
 
             user.setGridPane(new GridPane());
-            user.getGridPane().setPadding(new Insets(-20, 20, 30, 20));
+            user.getGridPane().setPadding(new Insets(30, 20, 30, 20));
             user.getGridPane().setGridLinesVisible(false);
 
-            user.setUserScene(new Scene(user.getGridPane(), 1210, 900));
+            Scene sceneForUser = new Scene(user.getGridPane(), 1210, 900);
+            user.setUserScene(sceneForUser);
+            commonDataStructure.getSceneList().add(sceneForUser);
             user.getUserScene().getStylesheets().add("userstyle.css");
 
             GameTableProperties gameTableProperties = new GameTableProperties(user);

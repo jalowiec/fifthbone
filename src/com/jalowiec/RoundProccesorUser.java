@@ -3,23 +3,20 @@ package com.jalowiec;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public class RoundProccesorUser {
+public class RoundProccesorUser implements Serializable {
 
-    private GridPane gridPane;
+    transient private GridPane gridPane;
     private User user;
-
-
-
 
 
     public RoundProccesorUser(User user) {
         this.gridPane = user.getGridPane();
         this.user = user;
     }
-
 
 
     public void swapDieInSlots(int slotNumber) {
@@ -55,10 +52,10 @@ public class RoundProccesorUser {
         }
     }
 
-    public boolean isSlotNumberChosen(int slotNumber){
+    public boolean isSlotNumberChosen(int slotNumber) {
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i] == slotNumber){
+        for (int i = 0; i < freeSlotState.length; i++) {
+            if (freeSlotState[i] == slotNumber) {
                 return true;
             }
         }
@@ -70,13 +67,14 @@ public class RoundProccesorUser {
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         gridPane.getChildren().remove(imageViewList.get(slotNumber));
 
+
     }
 
 
-    public int getFirstFreeSlotIndex(){
+    public int getFirstFreeSlotIndex() {
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i] == -1){
+        for (int i = 0; i < freeSlotState.length; i++) {
+            if (freeSlotState[i] == -1) {
                 return i;
             }
         }
@@ -84,10 +82,10 @@ public class RoundProccesorUser {
     }
 
 
-    public boolean isFreeSlot(){
+    public boolean isFreeSlot() {
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i]==-1){
+        for (int i = 0; i < freeSlotState.length; i++) {
+            if (freeSlotState[i] == -1) {
                 return true;
             }
         }
@@ -95,27 +93,27 @@ public class RoundProccesorUser {
         return false;
     }
 
-    public void closeFreeSlot(int freeSlotPosition, int slotNumber){
+    public void closeFreeSlot(int freeSlotPosition, int slotNumber) {
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
         freeSlotState[freeSlotPosition] = slotNumber;
     }
 
-    public void openFreeSlot(int slotNumber){
+    public void openFreeSlot(int slotNumber) {
         int[] freeSlotState = user.getUserDataStructures().getFreeSlotState();
-        for(int i=0; i<freeSlotState.length; i++){
-            if(freeSlotState[i]==slotNumber){
-                freeSlotState[i]=-1;
+        for (int i = 0; i < freeSlotState.length; i++) {
+            if (freeSlotState[i] == slotNumber) {
+                freeSlotState[i] = -1;
             }
         }
     }
 
 
-    public void setEndTurnButtonDisabled(){
+    public void setEndTurnButtonDisabled() {
         user.getGameTableDrawer().getEndTurnButton().setDisable(true);
     }
 
-    private void setEndTurnButtonEnabled(){
-        if(!isFreeSlot() && isChosenFifthDieCorrect()){
+    private void setEndTurnButtonEnabled() {
+        if (!isFreeSlot() && isChosenFifthDieCorrect()) {
             user.getGameTableDrawer().getEndTurnButton().setDisable(false);
         }
     }
@@ -131,10 +129,10 @@ public class RoundProccesorUser {
     }
 
 
-    public boolean isChosenFifthDieCorrect(){
+    public boolean isChosenFifthDieCorrect() {
         int fifthDieValue = user.getRoundEnd().getFifthDieValue(user.getUserDataStructures().getFreeSlotState().clone());
         Set<Integer> chosenFifthDiceSet = user.getRoundEnd().getChosenFifthDiceSet();
-        if(chosenFifthDiceSet.size()==3 && !chosenFifthDiceSet.contains(fifthDieValue) && !isFreeRound(chosenFifthDiceSet) ){
+        if (chosenFifthDiceSet.size() == 3 && !chosenFifthDiceSet.contains(fifthDieValue) && !isFreeRound(chosenFifthDiceSet)) {
             return false;
         }
 

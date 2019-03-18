@@ -1,8 +1,9 @@
 package com.jalowiec;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RankingRecord implements Comparable<RankingRecord> {
+public class RankingRecord implements Comparable<RankingRecord>, Serializable {
     private String userName;
     private int points;
     private String dateOfResult;
