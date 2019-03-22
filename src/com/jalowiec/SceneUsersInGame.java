@@ -68,6 +68,8 @@ public class SceneUsersInGame implements Serializable {
         startGameButton.setOnAction(e -> {
             if(isUsersSelected(checkBoxes, userNameList)) {
                 new SceneUserGameTable(mainStage, 0);
+                User firstUser = commonDataStructure.getPlayersInTheGame().get(0);
+                firstUser.getRoundInitCommon().generateDicesInSlots();
             } else {
                 Alert dialog = new Alert(Alert.AlertType.ERROR);
                 dialog.setTitle("Ostrzeżenie");

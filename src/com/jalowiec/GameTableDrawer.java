@@ -215,6 +215,7 @@ public class GameTableDrawer implements Serializable {
     }
 
     public void drawChosenFifthDieSlots(int fifthDiePointer, int fifthDieRow) {
+        System.out.println("pointer: " + fifthDiePointer);
         ImageView usedSlotCrossBlack = new ImageView("file:resources/markx_black.png");
         ImageView usedSlotCrossRed = new ImageView("file:resources/markx_red.png");
         if (fifthDiePointer < 8) {

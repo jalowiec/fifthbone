@@ -66,8 +66,6 @@ public class RoundProccesorUser implements Serializable {
     public void removeDieInSlot(int slotNumber) {
         List<ImageView> imageViewList = user.getUserDataStructures().getImageViewList();
         gridPane.getChildren().remove(imageViewList.get(slotNumber));
-
-
     }
 
 

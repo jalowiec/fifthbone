@@ -12,7 +12,7 @@ public class RoundEnd implements Serializable {
     transient private GridPane gridPane;
     private List<Integer> fifthDiceList = new ArrayList<>();
     private List<Integer> alternativeFifthDiceList = new ArrayList<>();
-    private Map<Integer, Integer> chosenFifthDiceMap = new HashMap<>();
+    private Map<Integer, Integer> chosenFifthDiceMap = new LinkedHashMap<>();
     private Map<Integer, Integer> alternativeChosenFifthDiceMap = new HashMap<>();
     private CommonDataStructure commonDataStructure;
     private GameTableDrawer gameTableDrawer;
@@ -56,9 +56,23 @@ public class RoundEnd implements Serializable {
         return chosenFifthDiceMap;
     }
 
+    public void setChosenFifthDiceMap(Map<Integer, Integer> chosenFifthDiceMap) {
+        this.chosenFifthDiceMap = chosenFifthDiceMap;
+    }
+
+    public List<Integer> getFifthDiceList() {
+        return fifthDiceList;
+    }
+
     public Map<Integer, Integer> getAlternativeChosenFifthDiceMap() {
         return alternativeChosenFifthDiceMap;
     }
+
+    public void setAlternativeChosenFifthDiceMap(Map<Integer, Integer> alternativeChosenFifthDiceMap) {
+        this.alternativeChosenFifthDiceMap = alternativeChosenFifthDiceMap;
+    }
+
+
 
     private void processFifthDie(int fifthDieValue) {
         if (!fifthDiceList.contains(fifthDieValue)) {

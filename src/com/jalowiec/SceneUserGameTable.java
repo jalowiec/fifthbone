@@ -14,6 +14,10 @@ public class SceneUserGameTable implements Serializable {
     private CommonDataStructure commonDataStructure = CommonDataStructure.getInstance();
     private List<User> usersInTheGame = commonDataStructure.getPlayersInTheGame();
 
+    public SceneUserGameTable() {
+
+    }
+
     public SceneUserGameTable(Stage mainStage, int userIndex) {
         this.mainStage = mainStage;
         generateScenesForUsers();
@@ -83,10 +87,6 @@ public class SceneUserGameTable implements Serializable {
 
         leftPanelDrawer.drawRankingRecordInPanel();
         leftPanelDrawer.drawInitPlayingUsersInPanel();
-
-
-        User firstUser = commonDataStructure.getPlayersInTheGame().get(0);
-        firstUser.getRoundInitCommon().generateDicesInSlots();
 
 
         mainStage.setTitle("The Fifth Dice");

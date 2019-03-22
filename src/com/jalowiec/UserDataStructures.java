@@ -43,6 +43,10 @@ public class UserDataStructures implements Serializable {
         return diceArray;
     }
 
+    public void setDiceArray(Die[] diceArray) {
+        this.diceArray = diceArray;
+    }
+
     public Map<Integer, Integer> getScorePointerMap() {
         return scorePointerMap;
     }
