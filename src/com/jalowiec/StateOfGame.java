@@ -17,6 +17,7 @@ public class StateOfGame implements Serializable {
         List<Integer> usersAlternativeScores = usersAlernativeScoresToList(playersInTheGame);
         Die[] diceArray = playersInTheGame.get(currentUserIndex).getUserDataStructures().getDiceArray();
         Map<User, Map<Integer, Integer>> chosenFifthDiceMap = saveChosenFifthDiceMapForUsers(playersInTheGame);
+        Map<User, Map<Integer, Integer>> chosenAlternativeFifthDiceMap = saveAlternativeChosenFifthDiceMapForUsers(playersInTheGame);
 
 
 
@@ -28,6 +29,7 @@ public class StateOfGame implements Serializable {
             outputStream.writeObject(usersAlternativeScores);
             outputStream.writeObject(diceArray);
             outputStream.writeObject(chosenFifthDiceMap);
+            outputStream.writeObject(chosenAlternativeFifthDiceMap);
 
 
             } catch (IOException e) {
@@ -52,17 +54,17 @@ public class StateOfGame implements Serializable {
             new SceneUserGameTable(commonDataStructure.getMainStage(), currentUserIndex);
             diceArray = diceArrayForCurrentUser.clone();
             Map<User, Map<Integer, Integer>> chosenFifthDiceMap = (Map<User, Map<Integer, Integer>>) inputStream.readObject();
+            Map<User, Map<Integer, Integer>> chosenAlternativeFifthDiceMap = (Map<User, Map<Integer, Integer>>) inputStream.readObject();
             setScoresForUsers(userList, usersScores);
             setFifthDieForUser(userList,chosenFifthDiceMap);
+            setAlternativeFifthDieForUser(userList,chosenAlternativeFifthDiceMap);
             restoreDrawChosenFifthDie(userList);
+            restoreDrawChosenFifthDieSlots(userList);
             setAlternativeScoresForUsers(userList, usersAlternativeScores);
             commonDataStructure.getLeftPanelDrawer().drawPlayingUsersScoreInPanel();
 
             restoreImageViewList(userList);
             restoreDices(currentUser, diceArray);
-
-
-
 
 
         } catch (FileNotFoundException e) {
@@ -80,6 +82,15 @@ public class StateOfGame implements Serializable {
             chosenFifthDiceMapForUsers.put(user, user.getRoundEnd().getChosenFifthDiceMap());
         }
         return chosenFifthDiceMapForUsers;
+    }
+
+
+    private Map<User, Map<Integer, Integer>> saveAlternativeChosenFifthDiceMapForUsers(List<User> playersInTheGame){
+        Map<User, Map<Integer, Integer>> chosenAlternativeFifthDiceMapForUsers = new HashMap<>();
+        for(User user : playersInTheGame){
+            chosenAlternativeFifthDiceMapForUsers.put(user, user.getRoundEnd().getAlternativeChosenFifthDiceMap());
+        }
+        return chosenAlternativeFifthDiceMapForUsers;
     }
 
 
@@ -137,17 +148,40 @@ public class StateOfGame implements Serializable {
 
     }
 
+    private void setAlternativeFifthDieForUser(List<User> userList, Map<User, Map<Integer, Integer>> chosenFifthDiceMap){
+        for(User user : userList){
+            user.getRoundEnd().setAlternativeChosenFifthDiceMap(chosenFifthDiceMap.get(user));
+        }
+
+    }
+
     private void restoreDrawChosenFifthDie(List<User> userList){
         for(User user : userList){
             Map<Integer, Integer> chosenFifthDiceMap = user.getRoundEnd().getChosenFifthDiceMap();
             int i=0;
             for(Map.Entry<Integer, Integer> entry : chosenFifthDiceMap.entrySet()){
-                System.out.println("pp: " + entry.getValue());
                 user.getGameTableDrawer().drawChosenFifthDie(entry.getKey(), i++);
                 user.getRoundEnd().getFifthDiceList().add(entry.getKey());
             }
         }
     }
 
+    private void restoreDrawChosenFifthDieSlots (List<User> userList) {
+        for(User user : userList){
+            Map<Integer, Integer> chosenFifthDiceMap = user.getRoundEnd().getChosenFifthDiceMap();
+            int row = 0;
+            for(Map.Entry<Integer, Integer> entry : chosenFifthDiceMap.entrySet()) {
+                int i = entry.getValue();
+                for(int j=1; j<=i; j++){
+                    user.getGameTableDrawer().drawChosenFifthDieSlots(j, row);
+                }
+                row++;
 
+            }
+
+        }
+
+
+
+    }
 }
