@@ -16,19 +16,21 @@ public class RankingRecordFileReader implements Serializable {
 
         File file = new File("c://Dice/diceranking.txt");
 
-        try (BufferedReader b = new BufferedReader(new FileReader(file))) {
-            String readLine = "";
+        if (file.exists()) {
+            try (BufferedReader b = new BufferedReader(new FileReader(file))) {
+                String readLine = "";
 
-            while ((readLine = b.readLine()) != null ) {
-                List<String> record = Pattern.compile("\\|").splitAsStream(readLine).collect(Collectors.toList());
-                RankingRecord rankingRecord = null;
-                rankingRecord = new RankingRecord(record.get(0), Integer.parseInt(record.get(1)), record.get(2));
+                while ((readLine = b.readLine()) != null) {
+                    List<String> record = Pattern.compile("\\|").splitAsStream(readLine).collect(Collectors.toList());
+                    RankingRecord rankingRecord = null;
+                    rankingRecord = new RankingRecord(record.get(0), Integer.parseInt(record.get(1)), record.get(2));
 
-                rankingList.add(rankingRecord);
+                    rankingList.add(rankingRecord);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return rankingList;
     }

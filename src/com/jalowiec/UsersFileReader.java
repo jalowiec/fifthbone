@@ -15,18 +15,20 @@ public class UsersFileReader implements Serializable {
         List<User> usersList = new ArrayList<>();
 
         File file = new File("c://Dice/users.txt");
+        if (file.exists()) {
+            try (BufferedReader b = new BufferedReader(new FileReader(file))) {
+                String readLine = "";
 
-        try (BufferedReader b = new BufferedReader(new FileReader(file))) {
-            String readLine = "";
+                while ((readLine = b.readLine()) != null) {
+                    usersList.add(new User(readLine, false));
+                }
 
-            while ((readLine = b.readLine()) != null ) {
-                usersList.add(new User(readLine, false));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return usersList;
+
     }
 
 
