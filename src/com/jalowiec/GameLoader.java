@@ -28,6 +28,10 @@ public class GameLoader implements Serializable {
             Map<User, Map<Integer, Integer>> chosenAlternativeFifthDiceMap = (Map<User, Map<Integer, Integer>>) inputStream.readObject();
             Map<User, Map<Integer, Integer>> scorePointerMaps = (Map<User, Map<Integer, Integer>>) inputStream.readObject();
             Map<User, Map<Integer, Integer>> alternativeScorePointerMaps = (Map<User, Map<Integer, Integer>>) inputStream.readObject();
+            List<Boolean> isRoundEndForUsersList = (List<Boolean>) inputStream.readObject();
+            List<Boolean> isGameEndForUsersList = (List<Boolean>) inputStream.readObject();
+            restoreIsRoundEnd(userList, isRoundEndForUsersList);
+            restoreIsGameEnd(userList, isGameEndForUsersList);
             setScoresForUsers(userList, usersScores);
             setFifthDieForUser(userList, chosenFifthDiceMap);
             setAlternativeFifthDieForUser(userList, chosenAlternativeFifthDiceMap);
@@ -36,6 +40,7 @@ public class GameLoader implements Serializable {
             restoreDrawChosenFifthDie(userList);
             restoreDrawChosenFifthDieSlots(userList);
             restoreDrawUsedSlotsAfterRound(userList);
+
 
             setAlternativeScoresForUsers(userList, usersAlternativeScores);
             commonDataStructure.getLeftPanelDrawer().drawPlayingUsersScoreInPanel();
@@ -148,9 +153,21 @@ public class GameLoader implements Serializable {
                     user.getGameTableDrawer().drawUsedSlotsAfterRound(entry.getKey(), i);
                 }}
             }
+        }
+    }
 
+    private void restoreIsRoundEnd(List<User> userList, List<Boolean> isRoundEndForUsersList){
+        for(int i=0; i<userList.size(); i++){
+            userList.get(i).getRoundEnd().setRoundEnd(isRoundEndForUsersList.get(i));
         }
 
+    }
+
+    private void restoreIsGameEnd(List<User> userList, List<Boolean> isGameEndForUsersList){
+        for(int i=0; i<userList.size(); i++){
+            userList.get(i).getRoundEnd().setGameEnd(isGameEndForUsersList.get(i));
+        }
 
     }
+
 }

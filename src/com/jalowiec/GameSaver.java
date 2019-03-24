@@ -20,6 +20,8 @@ public class GameSaver implements Serializable {
         Map<User, Map<Integer, Integer>> chosenAlternativeFifthDiceMap = saveAlternativeChosenFifthDiceMapForUsers(playersInTheGame);
         Map<User, Map<Integer, Integer>> scorePointerMaps = saveScorePointerMaps(playersInTheGame);
         Map<User, Map<Integer, Integer>> alternativeScorePointerMaps = saveAlternativeScorePointerMaps(playersInTheGame);
+        List<Boolean> isRoundEndForUsersList = saveIsRoundEndForUsers(playersInTheGame);
+        List<Boolean> isGameEndForUsersList = saveIsGameEndForUsers(playersInTheGame);
 
 
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("fifthdie.bin"))) {
@@ -33,6 +35,8 @@ public class GameSaver implements Serializable {
             outputStream.writeObject(chosenAlternativeFifthDiceMap);
             outputStream.writeObject(scorePointerMaps);
             outputStream.writeObject(alternativeScorePointerMaps);
+            outputStream.writeObject(isRoundEndForUsersList);
+            outputStream.writeObject(isGameEndForUsersList);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,7 +91,24 @@ public class GameSaver implements Serializable {
             usersScoresList.add(user.getUserDataStructures().getAlternativeScoreValue());
         }
         return usersScoresList;
+
+    }
+    private List<Boolean> saveIsRoundEndForUsers(List<User> userList){
+        List<Boolean> isRoundEndForUsersList = new ArrayList<>();
+        for(User user : userList){
+            isRoundEndForUsersList.add(user.getRoundEnd().isRoundEnd());
+        }
+
+        return isRoundEndForUsersList;
     }
 
+    private List<Boolean> saveIsGameEndForUsers(List<User> userList){
+        List<Boolean> isGameEndForUsersList = new ArrayList<>();
+        for(User user : userList){
+            isGameEndForUsersList.add(user.getRoundEnd().isRoundEnd());
+        }
+
+        return isGameEndForUsersList;
+    }
 
 }

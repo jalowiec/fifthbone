@@ -244,7 +244,7 @@ public class GameTableDrawer implements Serializable {
         endTurnButton.setId("button");
         endTurnButton.setMinWidth(150);
         GridPane.setHalignment(endTurnButton, HPos.CENTER);
-        grid.add(endTurnButton, 9, 20, 3, 1);
+        grid.add(endTurnButton, 9, 25, 3, 1);
     }
 
     public void drawNextPlayerButton(Stage mainStage, PlayingUsers playingUsers) {
@@ -271,7 +271,7 @@ public class GameTableDrawer implements Serializable {
         nextPlayerButton.setMinWidth(150);
         nextPlayerButton.setDisable(true);
         GridPane.setHalignment(nextPlayerButton, HPos.CENTER);
-        user.getGridPane().add(nextPlayerButton, 12, 20, 3, 1);
+        user.getGridPane().add(nextPlayerButton, 12, 25, 3, 1);
 
     }
 
