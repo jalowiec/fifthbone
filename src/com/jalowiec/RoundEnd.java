@@ -326,7 +326,6 @@ public class RoundEnd implements Serializable {
 
         if(!user.getPC()){
             Map<Integer, Integer> alternativeScorePointerMap = user.getUserDataStructures().getAlternativeScorePointerMap();
-            System.out.println(user.getUserDataStructures().getAlternativeScorePointerMap());
             int alternativeChosenFifthDieValue = getFifthDieValue(user.getUserDataStructures().getAlternativeSlotState().clone());
             int alternativeFirstPairSum = getFirstPairSum(user.getUserDataStructures().getAlternativeSlotState());
             int alternativeSecondPairSum = getSecondPairSum(user.getUserDataStructures().getAlternativeSlotState());
