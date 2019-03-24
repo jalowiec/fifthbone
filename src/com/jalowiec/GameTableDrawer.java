@@ -65,7 +65,8 @@ public class GameTableDrawer implements Serializable {
 
         EventHandler<MouseEvent> mouseSaveHandler = e -> {
 
-            commonDataStructure.getStateOfGame().saveGame(commonDataStructure);
+            GameSaver gameSaver = new GameSaver();
+            gameSaver.saveGame(commonDataStructure);
 
         };
         ImageView saveGameImage = new ImageView("file:resources/save.png");

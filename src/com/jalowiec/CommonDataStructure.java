@@ -20,7 +20,6 @@ public class CommonDataStructure implements Serializable {
     private RankingRecordFileWriter rankingRecordFileWriter;
     private PlayingUsers playingUsers;
     private SceneMenuStart sceneMenuStart;
-    private StateOfGame stateOfGame;
     private int currentUserIndex;
     transient private Stage mainStage;
 
@@ -32,7 +31,6 @@ public class CommonDataStructure implements Serializable {
         rankingRecordFileReader = new RankingRecordFileReader();
         rankingRecordFileWriter = new RankingRecordFileWriter();
         playingUsers = new PlayingUsers(this);
-        stateOfGame = new StateOfGame();
 
     }
 
@@ -76,9 +74,6 @@ public class CommonDataStructure implements Serializable {
         return sceneList;
     }
 
-    public void setSceneList(List<Scene> sceneList) {
-        this.sceneList = sceneList;
-    }
 
     public int getCurrentUserIndex() {
         return currentUserIndex;
@@ -94,10 +89,6 @@ public class CommonDataStructure implements Serializable {
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
-    }
-
-    public StateOfGame getStateOfGame() {
-        return stateOfGame;
     }
 
     public SceneMenuStart getSceneMenuStart() {

@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class SceneMenuStart implements Serializable {
@@ -44,8 +45,13 @@ public class SceneMenuStart implements Serializable {
         loadGameButton.setMinWidth(150);
         loadGameButton.setId("menustartbutton");
         loadGameButton.setCursor(Cursor.HAND);
+        File loadFile = new File("fifthdie.bin");
+        if(!loadFile.exists()){
+            loadGameButton.setDisable(true);
+        }
         loadGameButton.setOnAction(e-> {
-            commonDataStructure.getStateOfGame().readGame(commonDataStructure);
+            GameLoader gameLoader = new GameLoader();
+            gameLoader.readGame(commonDataStructure);
         });
 
         Button endGameButton = new Button("Zakoncz");
